@@ -15,6 +15,9 @@ export default [
     ],
   }),
   {
-    ignores: ["docs/vendor/**", "docs/js/**"],
+    ignores: [
+      "docs/vendor/**", // Third-party vendor libraries
+      "docs/js/**", // Documentation site JavaScript files (contain JSX)
+    ],
   },
 ];
