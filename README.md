@@ -18,8 +18,6 @@
 
 📣 Promo site: https://newtontech.github.io/Zotero-AI-Newton-website
 
-
-
 ## ✨ Killer Features
 
 - 🧠 **AI Knowledge Workspace**: Multi-turn chats with full history, auto-syncing your Zotero selection
@@ -33,8 +31,6 @@
 1. 🎯 **[Download XPI Now](release/zotero-ai-newton-0.0.1-beta.xpi)** – No build required!
 2. Zotero: **Tools → Add-ons → Install Add-on From File** → Pick the XPI
 3. ✅ **Auto-Updates** via `release/update-beta.json` – Stay on bleeding edge!
-
-
 
 ### ⚙️ 2-Min Setup
 
