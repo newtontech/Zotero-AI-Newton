@@ -27,6 +27,8 @@
     "lint:fix": "prettier --write . && eslint . --fix",
     "release": "zotero-plugin release",
     "test": "zotero-plugin test",
+    "validate-fixtures": "node scripts/validate-fixtures.ts",
+    "benchmark-stats": "node scripts/benchmark-stats.ts",
     "update-deps": "npm update --save"
   },
   "dependencies": {

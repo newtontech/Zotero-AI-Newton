@@ -49,3 +49,25 @@ The fixture set covers 16 papers spanning catalysis, batteries, MOFs, protein
 folding, gene editing, and AI-guided synthesis. This is a scaffold toward the
 stated 50-paper benchmark for issue #15; full coverage requires domain-expert
 curation of ground-truth summaries and keywords.
+
+## Automation Tools (NEW)
+
+### Fixture Validation
+- **Script**: `scripts/validate-fixtures.ts`
+- **Usage**: `npm run validate-fixtures`
+- **Purpose**: Validates fixture format, completeness, and consistency
+- **Features**: Checks required fields, data types, and provides progress tracking
+
+### Benchmark Statistics
+- **Script**: `scripts/benchmark-stats.ts`
+- **Usage**: `npm run benchmark-stats`
+- **Purpose**: Provides detailed statistics about current benchmark coverage
+- **Features**: Domain analysis, progress tracking, coverage gaps identification
+
+### Contribution Guide
+- **Document**: `test/fixtures/CONTRIBUTING.md`
+- **Purpose**: Step-by-step guide for domain experts to contribute real papers
+- **Content**: Format specifications, quality guidelines, examples, review process
+
+These automation tools make it easier for domain experts to contribute source-backed
+papers without needing to understand the full codebase.
