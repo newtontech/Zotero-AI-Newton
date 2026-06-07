@@ -53,18 +53,21 @@ curation of ground-truth summaries and keywords.
 ## Automation Tools (NEW)
 
 ### Fixture Validation
+
 - **Script**: `scripts/validate-fixtures.ts`
 - **Usage**: `npm run validate-fixtures`
 - **Purpose**: Validates fixture format, completeness, and consistency
 - **Features**: Checks required fields, data types, and provides progress tracking
 
 ### Benchmark Statistics
+
 - **Script**: `scripts/benchmark-stats.ts`
 - **Usage**: `npm run benchmark-stats`
 - **Purpose**: Provides detailed statistics about current benchmark coverage
 - **Features**: Domain analysis, progress tracking, coverage gaps identification
 
 ### Contribution Guide
+
 - **Document**: `test/fixtures/CONTRIBUTING.md`
 - **Purpose**: Step-by-step guide for domain experts to contribute real papers
 - **Content**: Format specifications, quality guidelines, examples, review process
