@@ -34,12 +34,18 @@ no longer registered as new default preferences.
 
 ## Accuracy Evaluation
 
-The lightweight baseline lives in `test/fixtures/ai-analysis-benchmark.json`.
-The pure scoring helpers in `src/modules/aiEvaluation.ts` track:
+The evaluation baseline lives in `test/fixtures/ai-analysis-benchmark.json` and
+`src/modules/aiEvaluation.ts`. The scoring helpers track:
 
-- required-fact coverage for summaries
-- keyword F1 for keyword extraction
+- **required-fact coverage** for summaries (substring-based)
+- **keyword F1** for keyword extraction (set-based precision/recall)
+- **ROUGE-L** for summary quality (LCS-based, beta=1.2)
+- **related-literature relevance** for recommendation quality
 
-This is not a substitute for a 50-paper benchmark. It is the first automated
-contract that keeps future prompt changes measurable before a larger benchmark
-is added.
+The `runBenchmark()` runner aggregates per-case metrics into a report, and
+`formatReportMarkdown()` produces a human-readable summary table.
+
+The fixture set covers 16 papers spanning catalysis, batteries, MOFs, protein
+folding, gene editing, and AI-guided synthesis. This is a scaffold toward the
+stated 50-paper benchmark for issue #15; full coverage requires domain-expert
+curation of ground-truth summaries and keywords.

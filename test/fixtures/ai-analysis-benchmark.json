@@ -2,10 +2,18 @@
   {
     "id": "fixture-perovskite-review",
     "title": "Perovskite review",
-    "expectedFacts": ["perovskite stability", "bandgap"],
+    "expectedFacts": ["perovskite stability", "bandgap screening"],
     "expectedKeywords": ["perovskite", "stability", "additives"],
     "candidateSummary": "This perovskite stability review compares bandgap trends across additives.",
-    "candidateKeywords": ["perovskite", "stability", "additives"]
+    "candidateKeywords": ["perovskite", "stability", "additives"],
+    "candidateRelated": [
+      "stability of halide perovskites",
+      "bandgap engineering"
+    ],
+    "expectedRelated": [
+      "stability of halide perovskites",
+      "bandgap engineering in solar cells"
+    ]
   },
   {
     "id": "fixture-zotero-workflow",
@@ -13,6 +21,366 @@
     "expectedFacts": ["citation management", "literature review"],
     "expectedKeywords": ["zotero", "citation management", "literature review"],
     "candidateSummary": "The paper describes Zotero-based citation management for literature review workflows.",
-    "candidateKeywords": ["zotero", "citation management", "literature review"]
+    "candidateKeywords": ["zotero", "citation management", "literature review"],
+    "candidateRelated": [
+      "reference manager tools",
+      "academic writing workflow"
+    ],
+    "expectedRelated": ["reference manager tools", "academic writing workflow"]
+  },
+  {
+    "id": "fixture-dft-catalysis",
+    "title": "DFT study of transition-metal catalysis",
+    "expectedFacts": [
+      "density functional theory",
+      "activation energy barrier",
+      "transition-metal catalyst"
+    ],
+    "expectedKeywords": [
+      "DFT",
+      "catalysis",
+      "activation energy",
+      "transition metal"
+    ],
+    "candidateSummary": "Density functional theory calculations reveal the activation energy barrier for the transition-metal catalyzed reaction pathway.",
+    "candidateKeywords": [
+      "DFT",
+      "catalysis",
+      "activation energy",
+      "transition metal"
+    ],
+    "candidateRelated": [
+      "computational catalysis design",
+      "DFT reaction mechanisms"
+    ],
+    "expectedRelated": [
+      "computational catalysis design",
+      "DFT reaction mechanisms"
+    ]
+  },
+  {
+    "id": "fixture-mof-gas-storage",
+    "title": "MOF materials for gas storage",
+    "expectedFacts": [
+      "metal-organic framework",
+      "hydrogen storage capacity",
+      "pore size distribution"
+    ],
+    "expectedKeywords": ["MOF", "gas storage", "hydrogen", "porous materials"],
+    "candidateSummary": "The study evaluates metal-organic framework materials for hydrogen storage capacity through pore size optimization.",
+    "candidateKeywords": ["MOF", "gas storage", "hydrogen", "porous materials"],
+    "candidateRelated": [
+      "porous framework materials",
+      "hydrogen storage applications"
+    ],
+    "expectedRelated": [
+      "porous framework materials",
+      "hydrogen storage applications"
+    ]
+  },
+  {
+    "id": "fixture-protein-folding-ml",
+    "title": "Machine learning for protein folding",
+    "expectedFacts": [
+      "neural network prediction",
+      "protein structure",
+      "folding accuracy"
+    ],
+    "expectedKeywords": [
+      "machine learning",
+      "protein folding",
+      "structure prediction",
+      "neural network"
+    ],
+    "candidateSummary": "Neural network prediction of protein structure achieves high folding accuracy through deep learning architecture.",
+    "candidateKeywords": [
+      "machine learning",
+      "protein folding",
+      "structure prediction",
+      "neural network"
+    ],
+    "candidateRelated": ["deep learning for biology", "AlphaFold comparison"],
+    "expectedRelated": ["deep learning for biology", "AlphaFold comparison"]
+  },
+  {
+    "id": "fixture-lithium-battery-solid",
+    "title": "Solid-state electrolytes for lithium batteries",
+    "expectedFacts": [
+      "solid electrolyte",
+      "ionic conductivity",
+      "lithium-ion transport"
+    ],
+    "expectedKeywords": [
+      "solid-state battery",
+      "electrolyte",
+      "ionic conductivity",
+      "lithium"
+    ],
+    "candidateSummary": "Novel solid electrolyte design improves ionic conductivity for efficient lithium-ion transport in solid-state batteries.",
+    "candidateKeywords": [
+      "solid-state battery",
+      "electrolyte",
+      "ionic conductivity",
+      "lithium"
+    ],
+    "candidateRelated": [
+      "battery safety improvements",
+      "solid electrolyte interface"
+    ],
+    "expectedRelated": [
+      "battery safety improvements",
+      "solid electrolyte interface"
+    ]
+  },
+  {
+    "id": "fixture-graphene-nanoribbon",
+    "title": "Graphene nanoribbon electronic properties",
+    "expectedFacts": [
+      "graphene nanoribbons",
+      "bandgap opening",
+      "edge state effects"
+    ],
+    "expectedKeywords": [
+      "graphene",
+      "nanoribbons",
+      "bandgap",
+      "quantum transport"
+    ],
+    "candidateSummary": "Graphene nanoribbons exhibit controllable bandgap opening through edge state engineering for quantum transport applications.",
+    "candidateKeywords": [
+      "graphene",
+      "nanoribbons",
+      "bandgap",
+      "quantum transport"
+    ],
+    "candidateRelated": ["2D material electronics", "nanoribbon fabrication"],
+    "expectedRelated": ["2D material electronics", "nanoribbon fabrication"]
+  },
+  {
+    "id": "fixture-crispr-gene-editing",
+    "title": "CRISPR-Cas9 gene editing efficiency",
+    "expectedFacts": [
+      "CRISPR-Cas9 system",
+      "off-target effects",
+      "editing efficiency"
+    ],
+    "expectedKeywords": ["CRISPR", "gene editing", "Cas9", "off-target"],
+    "candidateSummary": "The CRISPR-Cas9 system demonstrates high editing efficiency while minimizing off-target effects through improved guide RNA design.",
+    "candidateKeywords": ["CRISPR", "gene editing", "Cas9", "off-target"],
+    "candidateRelated": ["guide RNA optimization", "gene therapy applications"],
+    "expectedRelated": ["guide RNA optimization", "gene therapy applications"]
+  },
+  {
+    "id": "fixture-quantum-chemistry-ccsd",
+    "title": "Coupled-cluster calculations for reaction energetics",
+    "expectedFacts": [
+      "CCSD(T) method",
+      "reaction energetics",
+      "basis set convergence"
+    ],
+    "expectedKeywords": [
+      "coupled-cluster",
+      "CCSD",
+      "reaction energy",
+      "quantum chemistry"
+    ],
+    "candidateSummary": "CCSD(T) method provides accurate reaction energetics with careful basis set convergence analysis for small molecule reactions.",
+    "candidateKeywords": [
+      "coupled-cluster",
+      "CCSD",
+      "reaction energy",
+      "quantum chemistry"
+    ],
+    "candidateRelated": [
+      "post-Hartree-Fock methods",
+      "basis set extrapolation"
+    ],
+    "expectedRelated": ["post-Hartree-Fock methods", "basis set extrapolation"]
+  },
+  {
+    "id": "fixture-solar-cell-efficiency",
+    "title": "Organic photovoltaic efficiency improvement",
+    "expectedFacts": [
+      "power conversion efficiency",
+      "bulk heterojunction",
+      "donor-acceptor blend"
+    ],
+    "expectedKeywords": [
+      "organic solar cell",
+      "photovoltaic",
+      "efficiency",
+      "donor-acceptor"
+    ],
+    "candidateSummary": "Organic solar cell power conversion efficiency improved through optimized bulk heterojunction donor-acceptor blend morphology.",
+    "candidateKeywords": [
+      "organic solar cell",
+      "photovoltaic",
+      "efficiency",
+      "donor-acceptor"
+    ],
+    "candidateRelated": ["non-fullerene acceptors", "morphology control"],
+    "expectedRelated": ["non-fullerene acceptors", "morphology control"]
+  },
+  {
+    "id": "fixture-molecular-dynamics-water",
+    "title": "Molecular dynamics simulation of water interfaces",
+    "expectedFacts": [
+      "hydrogen bond network",
+      "interfacial water structure",
+      "molecular dynamics simulation"
+    ],
+    "expectedKeywords": [
+      "molecular dynamics",
+      "water interface",
+      "hydrogen bonding",
+      "simulation"
+    ],
+    "candidateSummary": "Molecular dynamics simulation reveals hydrogen bond network structure at the water interface with enhanced sampling techniques.",
+    "candidateKeywords": [
+      "molecular dynamics",
+      "water interface",
+      "hydrogen bonding",
+      "simulation"
+    ],
+    "candidateRelated": ["force field development", "interfacial chemistry"],
+    "expectedRelated": ["force field development", "interfacial chemistry"]
+  },
+  {
+    "id": "fixture-co2-reduction-electro",
+    "title": "Electrocatalytic CO2 reduction on copper",
+    "expectedFacts": [
+      "CO2 reduction reaction",
+      "copper catalyst",
+      "product selectivity"
+    ],
+    "expectedKeywords": [
+      "CO2 reduction",
+      "electrocatalysis",
+      "copper",
+      "selectivity"
+    ],
+    "candidateSummary": "Electrocatalytic CO2 reduction on copper surfaces achieves tunable product selectivity through surface structure control.",
+    "candidateKeywords": [
+      "CO2 reduction",
+      "electrocatalysis",
+      "copper",
+      "selectivity"
+    ],
+    "candidateRelated": [
+      "carbon capture utilization",
+      "electrochemical fuel synthesis"
+    ],
+    "expectedRelated": [
+      "carbon capture utilization",
+      "electrochemical fuel synthesis"
+    ]
+  },
+  {
+    "id": "fixture-nanoparticle-drug-delivery",
+    "title": "Nanoparticle-based targeted drug delivery",
+    "expectedFacts": [
+      "targeted delivery mechanism",
+      "nanoparticle surface functionalization",
+      "drug release kinetics"
+    ],
+    "expectedKeywords": [
+      "nanoparticle",
+      "drug delivery",
+      "targeting",
+      "surface functionalization"
+    ],
+    "candidateSummary": "Targeted drug delivery using nanoparticle surface functionalization achieves controlled drug release kinetics at tumor sites.",
+    "candidateKeywords": [
+      "nanoparticle",
+      "drug delivery",
+      "targeting",
+      "surface functionalization"
+    ],
+    "candidateRelated": ["cancer nanomedicine", "lipid nanoparticle carriers"],
+    "expectedRelated": ["cancer nanomedicine", "lipid nanoparticle carriers"]
+  },
+  {
+    "id": "fixture-thermoelectric-materials",
+    "title": "High-performance thermoelectric materials",
+    "expectedFacts": [
+      "figure of merit ZT",
+      "phonon scattering",
+      "carrier concentration optimization"
+    ],
+    "expectedKeywords": [
+      "thermoelectric",
+      "ZT",
+      "phonon scattering",
+      "power factor"
+    ],
+    "candidateSummary": "High figure of merit ZT achieved through phonon scattering engineering and carrier concentration optimization in thermoelectric materials.",
+    "candidateKeywords": [
+      "thermoelectric",
+      "ZT",
+      "phonon scattering",
+      "power factor"
+    ],
+    "candidateRelated": ["waste heat recovery", "topological insulators"],
+    "expectedRelated": ["waste heat recovery", "topological insulators"]
+  },
+  {
+    "id": "fixture-single-atom-catalyst",
+    "title": "Single-atom catalysts for oxygen reduction",
+    "expectedFacts": [
+      "single-atom dispersion",
+      "oxygen reduction reaction",
+      "metal-nitrogen-carbon sites"
+    ],
+    "expectedKeywords": [
+      "single-atom catalyst",
+      "ORR",
+      "Fe-N-C",
+      "electrocatalysis"
+    ],
+    "candidateSummary": "Single-atom dispersion on metal-nitrogen-carbon sites achieves high activity for the oxygen reduction reaction in fuel cells.",
+    "candidateKeywords": [
+      "single-atom catalyst",
+      "ORR",
+      "Fe-N-C",
+      "electrocatalysis"
+    ],
+    "candidateRelated": [
+      "fuel cell electrocatalysts",
+      "atomic-level catalyst design"
+    ],
+    "expectedRelated": [
+      "fuel cell electrocatalysts",
+      "atomic-level catalyst design"
+    ]
+  },
+  {
+    "id": "fixture-ai-retrosynthesis",
+    "title": "AI-guided retrosynthetic planning",
+    "expectedFacts": [
+      "neural network pathway prediction",
+      "synthetic accessibility score",
+      "reaction template library"
+    ],
+    "expectedKeywords": [
+      "retrosynthesis",
+      "AI planning",
+      "reaction prediction",
+      "organic synthesis"
+    ],
+    "candidateSummary": "Neural network pathway prediction combined with a reaction template library enables automated retrosynthetic planning with synthetic accessibility scoring.",
+    "candidateKeywords": [
+      "retrosynthesis",
+      "AI planning",
+      "reaction prediction",
+      "organic synthesis"
+    ],
+    "candidateRelated": [
+      "computer-aided synthesis",
+      "chemical reaction databases"
+    ],
+    "expectedRelated": [
+      "computer-aided synthesis",
+      "chemical reaction databases"
+    ]
   }
 ]
