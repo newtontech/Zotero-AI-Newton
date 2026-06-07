@@ -6,6 +6,8 @@ import {
   describeItems,
 } from "./workspaceContext";
 import { requestLLMCompletion, summarizeContextForHistory } from "./llmClient";
+import { buildAnalysisInstruction, getAnalysisTemplates } from "./aiAnalysis";
+import type { AnalysisKind } from "./aiAnalysis";
 
 const PANEL_ID = "zotero-ai-workspace-pane";
 
@@ -173,6 +175,8 @@ function buildSectionBody(
   statusLine.id = `${PANEL_ID}-status`;
   statusLine.classList.add("ai-workspace-status");
 
+  const history = getHistoryStore();
+
   const inputArea = doc.createElement("div");
   inputArea.classList.add("ai-workspace-input");
 
@@ -185,13 +189,9 @@ function buildSectionBody(
 
   const templateSelect = doc.createElement("select");
   templateSelect.classList.add("ai-workspace-template-select");
-  [
-    ["summary", getString("workspace-template-summary")],
-    ["methods", getString("workspace-template-methods")],
-    ["review", getString("workspace-template-review")],
-  ].forEach(([value, label]) => {
+  getAnalysisTemplates(context, history).forEach(({ kind, label }) => {
     const option = doc.createElement("option");
-    option.value = value;
+    option.value = kind;
     option.textContent = label;
     templateSelect.appendChild(option);
   });
@@ -201,7 +201,8 @@ function buildSectionBody(
   templateBtn.textContent = "→";
   templateBtn.title = getString("workspace-templates-label");
   templateBtn.addEventListener("click", () => {
-    const text = templateSelect.selectedOptions?.[0]?.textContent || "";
+    const kind = (templateSelect.value || "summary") as AnalysisKind;
+    const text = buildAnalysisInstruction(kind, collectContext(), history);
     if (!text) return;
     const caret = textarea.selectionStart || textarea.value.length;
     const before = textarea.value.slice(0, caret);
@@ -232,7 +233,6 @@ function buildSectionBody(
   sendButton.classList.add("ai-workspace-send");
   sendButton.textContent = getString("workspace-send");
 
-  const history = getHistoryStore();
   renderHistory(historyContainer, history);
 
   const sendHandler = async () => {

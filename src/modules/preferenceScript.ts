@@ -1,25 +1,8 @@
 import { config } from "../../package.json";
 import { getString } from "../utils/locale";
 import { getPref, setPref } from "../utils/prefs";
-
-type AISettingKey =
-  | "provider"
-  | "apiBase"
-  | "apiKey"
-  | "apiModel"
-  | "conversationMode"
-  | "agentTone";
-
-type AISettings = Record<AISettingKey, string>;
-
-const DEFAULT_SETTINGS: AISettings = {
-  provider: "openai",
-  apiBase: "https://api.openai.com/v1",
-  apiKey: "",
-  apiModel: "gpt-4o-mini",
-  conversationMode: "auto",
-  agentTone: "concise",
-};
+import { DEFAULT_AI_SETTINGS, getProviderDefaults } from "./aiConfig";
+import type { AISettingKey, AISettings } from "./aiConfig";
 
 export async function registerPrefsScripts(_window: Window) {
   // This function is called when the prefs window is opened
@@ -54,8 +37,8 @@ export async function registerPrefsScripts(_window: Window) {
 }
 
 function loadSettingsFromPrefs(): AISettings {
-  const merged: Partial<AISettings> = { ...DEFAULT_SETTINGS };
-  Object.entries(DEFAULT_SETTINGS).forEach(([key, fallback]) => {
+  const merged: Partial<AISettings> = { ...DEFAULT_AI_SETTINGS };
+  Object.entries(DEFAULT_AI_SETTINGS).forEach(([key, fallback]) => {
     const value = getPref(key);
     if (value === undefined || value === null || value === "") {
       merged[key as AISettingKey] = fallback;
@@ -156,7 +139,7 @@ function bindPrefEvents() {
   const doc = prefs.window.document;
   if (!doc) return;
   if (!prefs.settings) {
-    prefs.settings = { ...DEFAULT_SETTINGS };
+    prefs.settings = { ...DEFAULT_AI_SETTINGS };
   }
   const settings = prefs.settings;
   const bindings: Array<{
@@ -212,38 +195,35 @@ function bindPrefEvents() {
         prefs.settings[key] = nextValue;
       }
       if (key === "provider") {
+        const defaults = getProviderDefaults(nextValue);
         const apiBaseEl = doc.querySelector(
           `#zotero-prefpane-${config.addonRef}-api-base`,
         ) as HTMLInputElement | null;
         const apiModelEl = doc.querySelector(
           `#zotero-prefpane-${config.addonRef}-api-model`,
         ) as HTMLInputElement | null;
-        if (nextValue === "openai" && !settings.apiBase) {
-          settings.apiBase = "https://api.openai.com/v1";
+        const previousDefaults = Object.values({
+          openai: getProviderDefaults("openai"),
+          deepseek: getProviderDefaults("deepseek"),
+          custom: getProviderDefaults("custom"),
+        });
+        const baseLooksDefault = previousDefaults.some(
+          (provider) => provider.apiBase === settings.apiBase,
+        );
+        const modelLooksDefault = previousDefaults.some(
+          (provider) => provider.model === settings.apiModel,
+        );
+
+        if (!settings.apiBase || baseLooksDefault) {
+          settings.apiBase = defaults.apiBase;
           setPref("apiBase", settings.apiBase);
           if (apiBaseEl) {
             apiBaseEl.value = settings.apiBase;
             apiBaseEl.setAttribute("value", settings.apiBase);
           }
         }
-        if (nextValue === "deepseek" && !settings.apiBase) {
-          settings.apiBase = "https://api.deepseek.com";
-          setPref("apiBase", settings.apiBase);
-          if (apiBaseEl) {
-            apiBaseEl.value = settings.apiBase;
-            apiBaseEl.setAttribute("value", settings.apiBase);
-          }
-        }
-        if (nextValue === "openai" && !settings.apiModel) {
-          settings.apiModel = "gpt-4o-mini";
-          setPref("apiModel", settings.apiModel);
-          if (apiModelEl) {
-            apiModelEl.value = settings.apiModel;
-            apiModelEl.setAttribute("value", settings.apiModel);
-          }
-        }
-        if (nextValue === "deepseek" && !settings.apiModel) {
-          settings.apiModel = "deepseek-chat";
+        if (!settings.apiModel || modelLooksDefault) {
+          settings.apiModel = defaults.model;
           setPref("apiModel", settings.apiModel);
           if (apiModelEl) {
             apiModelEl.value = settings.apiModel;

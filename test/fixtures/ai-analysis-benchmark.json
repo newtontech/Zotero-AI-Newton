@@ -1,0 +1,18 @@
+[
+  {
+    "id": "fixture-perovskite-review",
+    "title": "Perovskite review",
+    "expectedFacts": ["perovskite stability", "bandgap"],
+    "expectedKeywords": ["perovskite", "stability", "additives"],
+    "candidateSummary": "This perovskite stability review compares bandgap trends across additives.",
+    "candidateKeywords": ["perovskite", "stability", "additives"]
+  },
+  {
+    "id": "fixture-zotero-workflow",
+    "title": "Zotero literature workflow",
+    "expectedFacts": ["citation management", "literature review"],
+    "expectedKeywords": ["zotero", "citation management", "literature review"],
+    "candidateSummary": "The paper describes Zotero-based citation management for literature review workflows.",
+    "candidateKeywords": ["zotero", "citation management", "literature review"]
+  }
+]
