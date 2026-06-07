@@ -18,8 +18,6 @@
 
 📣 Promo site: https://newtontech.github.io/Zotero-AI-Newton-website
 
-
-
 ## ✨ Killer Features
 
 - 🧠 **AI Knowledge Workspace**: Multi-turn chats with full history, auto-syncing your Zotero selection
@@ -36,12 +34,12 @@
 
 ## Compatibility Matrix
 
-| Component | Supported | Notes |
-|-----------|-----------|-------|
-| Zotero | 7.x | Primary target for the current beta |
-| OS | macOS, Windows, Linux | Follows Zotero desktop support; report OS-specific UI issues with screenshots |
-| Providers | OpenAI-compatible APIs, DeepSeek-compatible APIs | Configure base URL, API key, and model in preferences |
-| Network mode | User-provided API key | Zotero data stays local; selected context is sent only to the configured provider |
+| Component    | Supported                                        | Notes                                                                             |
+| ------------ | ------------------------------------------------ | --------------------------------------------------------------------------------- |
+| Zotero       | 7.x                                              | Primary target for the current beta                                               |
+| OS           | macOS, Windows, Linux                            | Follows Zotero desktop support; report OS-specific UI issues with screenshots     |
+| Providers    | OpenAI-compatible APIs, DeepSeek-compatible APIs | Configure base URL, API key, and model in preferences                             |
+| Network mode | User-provided API key                            | Zotero data stays local; selected context is sent only to the configured provider |
 
 ## Release Flow
 
@@ -55,8 +53,6 @@
 ## Screenshot Checklist
 
 Before each public beta, refresh screenshots or GIFs for add-on installation, preferences, item chat, PDF Q&A, and collection context preview.
-
-
 
 ### ⚙️ 2-Min Setup
 

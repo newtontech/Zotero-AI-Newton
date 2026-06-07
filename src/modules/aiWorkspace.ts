@@ -67,7 +67,8 @@ export async function ensureReaderSidebar(doc: Document) {
   );
 
   const panel =
-    (doc as any).createXULElement?.("tabpanel") ?? doc.createElement("tabpanel");
+    (doc as any).createXULElement?.("tabpanel") ??
+    doc.createElement("tabpanel");
   panel.id = "zotero-ai-reader-panel";
 
   const body = doc.createElement("div");
@@ -294,7 +295,10 @@ function buildSectionBody(
   // Quick context snapshot under the toolbar
   const contextSummary = doc.createElement("div");
   contextSummary.classList.add("ai-workspace-context-summary");
-  contextSummary.textContent = describeItems(context.items, context.attachments);
+  contextSummary.textContent = describeItems(
+    context.items,
+    context.attachments,
+  );
   panel.insertBefore(contextSummary, historyContainer);
 
   if (setSectionSummary) {
