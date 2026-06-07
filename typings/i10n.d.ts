@@ -3,6 +3,9 @@
 /* eslint-disable */
 // @ts-nocheck
 export type FluentMessageId =
+  | 'analysis-keywords-prompt'
+  | 'analysis-related-prompt'
+  | 'analysis-summary-prompt'
   | 'item-info-row-example-label'
   | 'item-section-example1-head-text'
   | 'item-section-example1-sidenav-tooltip'
@@ -77,8 +80,8 @@ export type FluentMessageId =
   | 'workspace-status-error'
   | 'workspace-status-waiting'
   | 'workspace-system-prompt'
-  | 'workspace-template-methods'
-  | 'workspace-template-review'
+  | 'workspace-template-keywords'
+  | 'workspace-template-related'
   | 'workspace-template-summary'
   | 'workspace-templates-label'
   | 'workspace-tone-concise'

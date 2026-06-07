@@ -76,6 +76,11 @@ Install the XPI as above. Hot-reload: `npm run start` 🔥
 
 **Edit → Preferences → Zotero AI Newton**: Pick provider, API URL/key, model, scope & tone. All local, zero telemetry! 🔒
 
+The active AI surface is intentionally small for the beta: summaries, keyword
+extraction, related-reading directions, and grounded chat. See
+[AI Feature Roadmap](docs/AI_ROADMAP.md) for the YAGNI boundary and evaluation
+baseline.
+
 ## 🎯 Get Started in Seconds
 
 - Select items/collection → **AI Workspace** tab for context preview

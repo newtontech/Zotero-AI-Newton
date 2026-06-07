@@ -11,10 +11,6 @@ declare namespace _ZoteroTypes {
       "apiBase": string;
       "apiKey": string;
       "apiModel": string;
-      "openaiKey": string;
-      "openaiModel": string;
-      "deepseekKey": string;
-      "deepseekModel": string;
       "conversationMode": string;
       "agentTone": string;
     };
