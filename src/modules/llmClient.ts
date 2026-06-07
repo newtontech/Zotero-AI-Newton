@@ -32,8 +32,8 @@ function resolveProvider(): ProviderChoice {
   const legacyDeepSeekModel =
     (getPref("deepseekModel") as string) || "deepseek-chat";
 
-  let name: ProviderChoice["name"] = (providerPref as ProviderChoice["name"]) ||
-    "openai";
+  let name: ProviderChoice["name"] =
+    (providerPref as ProviderChoice["name"]) || "openai";
 
   if (!apiKey && legacyOpenAIKey) {
     apiKey = legacyOpenAIKey;
