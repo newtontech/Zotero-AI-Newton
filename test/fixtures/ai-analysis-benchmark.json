@@ -13,7 +13,18 @@
     "expectedRelated": [
       "stability of halide perovskites",
       "bandgap engineering in solar cells"
-    ]
+    ],
+    "expectedCitations": ["Smith2023", "Jones2022"],
+    "candidateCitations": ["Smith2023", "Jones2022"],
+    "evidenceChunks": [
+      "Perovskite stability depends on additive composition.",
+      "Bandgap screening identifies optimal materials."
+    ],
+    "claims": [
+      "Perovskite stability is improved by additives.",
+      "Bandgap screening optimizes material selection."
+    ],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-zotero-workflow",
@@ -26,7 +37,8 @@
       "reference manager tools",
       "academic writing workflow"
     ],
-    "expectedRelated": ["reference manager tools", "academic writing workflow"]
+    "expectedRelated": ["reference manager tools", "academic writing workflow"],
+    "sourceType": "metadata"
   },
   {
     "id": "fixture-dft-catalysis",
@@ -56,7 +68,18 @@
     "expectedRelated": [
       "computational catalysis design",
       "DFT reaction mechanisms"
-    ]
+    ],
+    "expectedCitations": ["Zhang2023", "Brown2021"],
+    "candidateCitations": ["Zhang2023", "Brown2021"],
+    "evidenceChunks": [
+      "DFT calculations show activation barrier of 15 kcal/mol.",
+      "Transition-metal catalysts lower reaction energy."
+    ],
+    "claims": [
+      "DFT reveals activation energy barrier.",
+      "Transition-metal catalysts are effective."
+    ],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-mof-gas-storage",
@@ -76,7 +99,8 @@
     "expectedRelated": [
       "porous framework materials",
       "hydrogen storage applications"
-    ]
+    ],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-protein-folding-ml",
@@ -100,7 +124,8 @@
       "neural network"
     ],
     "candidateRelated": ["deep learning for biology", "AlphaFold comparison"],
-    "expectedRelated": ["deep learning for biology", "AlphaFold comparison"]
+    "expectedRelated": ["deep learning for biology", "AlphaFold comparison"],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-lithium-battery-solid",
@@ -130,7 +155,8 @@
     "expectedRelated": [
       "battery safety improvements",
       "solid electrolyte interface"
-    ]
+    ],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-graphene-nanoribbon",
@@ -154,7 +180,8 @@
       "quantum transport"
     ],
     "candidateRelated": ["2D material electronics", "nanoribbon fabrication"],
-    "expectedRelated": ["2D material electronics", "nanoribbon fabrication"]
+    "expectedRelated": ["2D material electronics", "nanoribbon fabrication"],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-crispr-gene-editing",
@@ -168,7 +195,8 @@
     "candidateSummary": "The CRISPR-Cas9 system demonstrates high editing efficiency while minimizing off-target effects through improved guide RNA design.",
     "candidateKeywords": ["CRISPR", "gene editing", "Cas9", "off-target"],
     "candidateRelated": ["guide RNA optimization", "gene therapy applications"],
-    "expectedRelated": ["guide RNA optimization", "gene therapy applications"]
+    "expectedRelated": ["guide RNA optimization", "gene therapy applications"],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-quantum-chemistry-ccsd",
@@ -195,7 +223,8 @@
       "post-Hartree-Fock methods",
       "basis set extrapolation"
     ],
-    "expectedRelated": ["post-Hartree-Fock methods", "basis set extrapolation"]
+    "expectedRelated": ["post-Hartree-Fock methods", "basis set extrapolation"],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-solar-cell-efficiency",
@@ -219,7 +248,8 @@
       "donor-acceptor"
     ],
     "candidateRelated": ["non-fullerene acceptors", "morphology control"],
-    "expectedRelated": ["non-fullerene acceptors", "morphology control"]
+    "expectedRelated": ["non-fullerene acceptors", "morphology control"],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-molecular-dynamics-water",
@@ -243,7 +273,8 @@
       "simulation"
     ],
     "candidateRelated": ["force field development", "interfacial chemistry"],
-    "expectedRelated": ["force field development", "interfacial chemistry"]
+    "expectedRelated": ["force field development", "interfacial chemistry"],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-co2-reduction-electro",
@@ -273,7 +304,8 @@
     "expectedRelated": [
       "carbon capture utilization",
       "electrochemical fuel synthesis"
-    ]
+    ],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-nanoparticle-drug-delivery",
@@ -297,7 +329,8 @@
       "surface functionalization"
     ],
     "candidateRelated": ["cancer nanomedicine", "lipid nanoparticle carriers"],
-    "expectedRelated": ["cancer nanomedicine", "lipid nanoparticle carriers"]
+    "expectedRelated": ["cancer nanomedicine", "lipid nanoparticle carriers"],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-thermoelectric-materials",
@@ -321,7 +354,8 @@
       "power factor"
     ],
     "candidateRelated": ["waste heat recovery", "topological insulators"],
-    "expectedRelated": ["waste heat recovery", "topological insulators"]
+    "expectedRelated": ["waste heat recovery", "topological insulators"],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-single-atom-catalyst",
@@ -351,7 +385,8 @@
     "expectedRelated": [
       "fuel cell electrocatalysts",
       "atomic-level catalyst design"
-    ]
+    ],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-ai-retrosynthesis",
@@ -381,1061 +416,1382 @@
     "expectedRelated": [
       "computer-aided synthesis",
       "chemical reaction databases"
-    ]
+    ],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-vaccine-mrna",
-    "title": "mRNA vaccine development and delivery",
+    "id": "fixture-graph-neural-networks",
+    "title": "Graph Neural Networks for Molecular Property Prediction",
+    "expectedFacts": [
+      "graph neural network architecture",
+      "molecular graph representation",
+      "property prediction accuracy"
+    ],
+    "expectedKeywords": [
+      "graph neural network",
+      "molecular property prediction",
+      "deep learning",
+      "computational chemistry"
+    ],
+    "candidateSummary": "Graph neural network architecture enables accurate molecular property prediction through graph-based representation learning.",
+    "candidateKeywords": [
+      "graph neural network",
+      "molecular property prediction",
+      "deep learning",
+      "computational chemistry"
+    ],
+    "candidateRelated": [
+      "molecular graph representation learning",
+      "quantum chemistry with neural networks"
+    ],
+    "expectedRelated": [
+      "molecular graph representation learning",
+      "quantum chemistry with neural networks"
+    ],
+    "expectedCitations": ["Gilmer2017", "Kipf2017"],
+    "candidateCitations": ["Gilmer2017", "Kipf2017"],
+    "evidenceChunks": [
+      "Graph neural networks achieve state-of-the-art on molecular property prediction.",
+      "Message passing neural networks generalize convolutional networks to graphs."
+    ],
+    "claims": [
+      "GNNs enable accurate molecular property prediction.",
+      "Graph-based representation learning is effective."
+    ],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-transformer-language-models",
+    "title": "Attention Is All You Need: Transformer Architectures",
+    "expectedFacts": [
+      "self-attention mechanism",
+      "encoder-decoder architecture",
+      "parallelization advantage"
+    ],
+    "expectedKeywords": [
+      "transformer",
+      "attention mechanism",
+      "natural language processing",
+      "neural machine translation"
+    ],
+    "candidateSummary": "The transformer architecture based on self-attention achieves parallelization advantages for neural machine translation.",
+    "candidateKeywords": [
+      "transformer",
+      "attention mechanism",
+      "NLP",
+      "machine translation"
+    ],
+    "candidateRelated": [
+      "attention mechanisms in neural networks",
+      "sequence-to-sequence learning"
+    ],
+    "expectedRelated": [
+      "attention mechanisms in neural networks",
+      "sequence modeling with transformers"
+    ],
+    "expectedCitations": ["Vaswani2017"],
+    "candidateCitations": ["Vaswani2017"],
+    "evidenceChunks": [
+      "Self-attention allows parallelization in sequence models.",
+      "Transformer achieves state-of-the-art translation quality."
+    ],
+    "claims": [
+      "Transformers use self-attention.",
+      "Transformers enable parallel training."
+    ],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-clinical-trial-mrna",
+    "title": "mRNA Vaccine Efficacy in Phase 3 Clinical Trials",
     "expectedFacts": [
       "mRNA vaccine platform",
-      "lipid nanoparticle delivery",
-      "spike protein immunogenicity"
+      "phase 3 clinical trial",
+      "vaccine efficacy rate"
     ],
     "expectedKeywords": [
       "mRNA vaccine",
-      "lipid nanoparticle",
-      "immunogenicity",
-      "spike protein"
+      "clinical trial",
+      "efficacy",
+      "immunization"
     ],
-    "candidateSummary": "mRNA vaccine platform using lipid nanoparticle delivery achieves strong immunogenicity through optimized spike protein expression.",
+    "candidateSummary": "Phase 3 clinical trials demonstrate high efficacy rates for mRNA vaccine platforms in preventing symptomatic infection.",
     "candidateKeywords": [
       "mRNA vaccine",
-      "lipid nanoparticle",
-      "immunogenicity",
-      "spike protein"
+      "clinical trial",
+      "efficacy",
+      "vaccine"
     ],
-    "candidateRelated": ["vaccine adjuvant systems", "RNA therapeutics"],
-    "expectedRelated": ["vaccine adjuvant systems", "RNA therapeutics"]
+    "candidateRelated": [
+      "vaccine clinical trial methodology",
+      "mRNA vaccine safety"
+    ],
+    "expectedRelated": [
+      "vaccine clinical trial design",
+      "mRNA vaccine immunogenicity"
+    ],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-cancer-immunotherapy",
-    "title": "Checkpoint inhibitor immunotherapy for cancer",
+    "title": "Checkpoint Inhibitors in Cancer Immunotherapy",
     "expectedFacts": [
-      "PD-1/PD-L1 pathway",
-      "immune checkpoint blockade",
-      "tumor microenvironment"
+      "PD-1 checkpoint inhibition",
+      "tumor microenvironment",
+      "immune response activation"
     ],
     "expectedKeywords": [
       "immunotherapy",
       "checkpoint inhibitor",
       "PD-1",
-      "PD-L1",
-      "tumor microenvironment"
+      "cancer treatment"
     ],
-    "candidateSummary": "Immune checkpoint blockade targeting PD-1/PD-L1 pathway modulates tumor microenvironment for enhanced anticancer immunity.",
+    "candidateSummary": "Checkpoint inhibitors targeting PD-1 activate immune responses in the tumor microenvironment for cancer treatment.",
     "candidateKeywords": [
       "immunotherapy",
       "checkpoint inhibitor",
       "PD-1",
-      "PD-L1",
-      "tumor microenvironment"
+      "cancer"
     ],
     "candidateRelated": [
-      "cancer immunotherapy combinations",
-      "biomarker development"
+      "cancer immunotherapy mechanisms",
+      "immune checkpoint blockade"
+    ],
+    "expectedRelated": ["cancer immunotherapy", "immune checkpoint inhibitors"],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-climate-modeling-cmip6",
+    "title": "CMIP6 Climate Model Projections",
+    "expectedFacts": [
+      "CMIP6 model ensemble",
+      "global temperature projection",
+      "climate sensitivity"
+    ],
+    "expectedKeywords": [
+      "climate modeling",
+      "CMIP6",
+      "global warming",
+      "climate projection"
+    ],
+    "candidateSummary": "CMIP6 climate model ensemble projects global temperature increases under various emission scenarios.",
+    "candidateKeywords": [
+      "climate model",
+      "CMIP6",
+      "temperature projection",
+      "emission scenario"
+    ],
+    "candidateRelated": [
+      "climate model intercomparison",
+      "global climate projections"
+    ],
+    "expectedRelated": ["CMIP6 climate projections", "climate model ensemble"],
+    "insufficientEvidence": false,
+    "sourceType": "metadata"
+  },
+  {
+    "id": "fixture-ocean-acidification",
+    "title": "Ocean Acidification Impacts on Marine Ecosystems",
+    "expectedFacts": [
+      "pH decrease in ocean surface",
+      "calcium carbonate saturation",
+      "marine ecosystem impact"
+    ],
+    "expectedKeywords": [
+      "ocean acidification",
+      "pH",
+      "marine ecosystem",
+      "calcium carbonate"
+    ],
+    "candidateSummary": "Ocean acidification reduces pH and calcium carbonate saturation with significant impacts on marine ecosystems.",
+    "candidateKeywords": [
+      "ocean acidification",
+      "pH",
+      "marine ecosystem",
+      "calcification"
+    ],
+    "candidateRelated": ["marine chemistry changes", "ocean pH trends"],
+    "expectedRelated": [
+      "ocean acidification impacts",
+      "marine carbonate chemistry"
+    ],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-seismic-hazard-assessment",
+    "title": "Probabilistic Seismic Hazard Assessment",
+    "expectedFacts": [
+      "seismic hazard model",
+      "ground motion prediction",
+      "fault rupture probability"
+    ],
+    "expectedKeywords": [
+      "seismic hazard",
+      "earthquake probability",
+      "ground motion",
+      "fault modeling"
+    ],
+    "candidateSummary": "Probabilistic seismic hazard assessment combines fault rupture probability with ground motion prediction equations.",
+    "candidateKeywords": [
+      "seismic hazard",
+      "earthquake",
+      "ground motion",
+      "hazard assessment"
+    ],
+    "candidateRelated": ["earthquake engineering", "seismic risk modeling"],
+    "expectedRelated": [
+      "probabilistic seismic hazard",
+      "earthquake risk assessment"
+    ],
+    "sourceType": "metadata"
+  },
+  {
+    "id": "fixture-wind-turbine-aerodynamics",
+    "title": "Large Eddy Simulation of Wind Turbine Aerodynamics",
+    "expectedFacts": [
+      "large eddy simulation",
+      "wind turbine blade aerodynamics",
+      "wake turbulence"
+    ],
+    "expectedKeywords": ["wind turbine", "aerodynamics", "LES", "wake flow"],
+    "candidateSummary": "Large eddy simulation captures wind turbine blade aerodynamics and wake turbulence for optimized turbine design.",
+    "candidateKeywords": [
+      "wind turbine",
+      "aerodynamics",
+      "LES",
+      "wake simulation"
+    ],
+    "candidateRelated": ["wind energy modeling", "turbulence simulation"],
+    "expectedRelated": ["wind turbine aerodynamics", "large eddy simulation"],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-robotics-slam",
+    "title": "Simultaneous Localization and Mapping for Autonomous Robots",
+    "expectedFacts": [
+      "SLAM algorithm",
+      "lidar point cloud",
+      "pose graph optimization"
+    ],
+    "expectedKeywords": ["SLAM", "localization", "mapping", "autonomous robot"],
+    "candidateSummary": "SLAM algorithms using lidar point clouds enable real-time localization and mapping for autonomous robots.",
+    "candidateKeywords": ["SLAM", "localization", "mapping", "robotics"],
+    "candidateRelated": ["robot navigation", "lidar-based SLAM"],
+    "expectedRelated": [
+      "simultaneous localization and mapping",
+      "robot perception"
+    ],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-polymer-battery-electrolyte",
+    "title": "Polymer Electrolytes for Lithium Battery Applications",
+    "expectedFacts": [
+      "polymer electrolyte membrane",
+      "lithium-ion conductivity",
+      "mechanical stability"
+    ],
+    "expectedKeywords": [
+      "polymer electrolyte",
+      "lithium battery",
+      "ionic conductivity",
+      "battery separator"
+    ],
+    "candidateSummary": "Polymer electrolyte membranes provide lithium-ion conductivity with mechanical stability for battery applications.",
+    "candidateKeywords": [
+      "polymer electrolyte",
+      "lithium battery",
+      "ionic conductivity",
+      "battery"
+    ],
+    "candidateRelated": [
+      "solid polymer electrolytes",
+      "battery separator materials"
     ],
     "expectedRelated": [
-      "cancer immunotherapy combinations",
-      "biomarker development"
-    ]
+      "polymer electrolyte for batteries",
+      "lithium-ion polymer battery"
+    ],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-quantum-computing",
-    "title": "Quantum error correction with topological codes",
+    "id": "fixture-ceramic-composites",
+    "title": "High-Temperature Ceramic Matrix Composites",
     "expectedFacts": [
-      "topological quantum error correction",
-      "surface code",
-      "fault-tolerant quantum computation"
+      "ceramic matrix composite",
+      "high-temperature stability",
+      "fiber reinforcement"
     ],
     "expectedKeywords": [
-      "quantum error correction",
-      "topological code",
-      "surface code",
-      "fault-tolerant"
+      "ceramic composite",
+      "high-temperature",
+      "fiber reinforcement",
+      "CMCs"
     ],
-    "candidateSummary": "Topological quantum error correction using surface codes enables fault-tolerant quantum computation with high threshold.",
+    "candidateSummary": "Ceramic matrix composites with fiber reinforcement achieve high-temperature stability for aerospace applications.",
     "candidateKeywords": [
-      "quantum error correction",
-      "topological code",
-      "surface code",
-      "fault-tolerant"
+      "ceramic composite",
+      "high-temperature",
+      "fiber reinforcement",
+      "aerospace"
     ],
-    "candidateRelated": ["quantum fault tolerance", "error-correcting codes"],
-    "expectedRelated": ["quantum fault tolerance", "error-correcting codes"]
+    "candidateRelated": [
+      "ceramic materials for high temperature",
+      "composite materials"
+    ],
+    "expectedRelated": [
+      "ceramic matrix composites",
+      "high-temperature ceramics"
+    ],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-superconductor-high-tc",
-    "title": "High-temperature superconductivity in cuprates",
+    "id": "fixture-organic-synthesis-gold",
+    "title": "Gold-Catalyzed Organic Synthesis Reactions",
     "expectedFacts": [
-      "cuprate high-Tc superconductor",
-      "pseudogap phase",
-      "d-wave symmetry"
+      "gold catalysis",
+      "activation of alkynes",
+      "carbocation intermediate"
     ],
     "expectedKeywords": [
-      "high-Tc superconductor",
+      "gold catalyst",
+      "organic synthesis",
+      "alkyne activation",
+      "homogeneous catalysis"
+    ],
+    "candidateSummary": "Gold catalysis enables activation of alkynes through carbocation intermediates for organic synthesis.",
+    "candidateKeywords": [
+      "gold catalysis",
+      "organic synthesis",
+      "alkyne",
+      "catalysis"
+    ],
+    "candidateRelated": [
+      "homogeneous gold catalysis",
+      "alkyne activation mechanisms"
+    ],
+    "expectedRelated": [
+      "gold-catalyzed reactions",
+      "homogeneous gold catalysis"
+    ],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-enzyme-kinetics-molecular-dynamics",
+    "title": "Molecular Dynamics of Enzyme-Substrate Binding",
+    "expectedFacts": [
+      "enzyme-substrate complex",
+      "molecular dynamics simulation",
+      "binding free energy"
+    ],
+    "expectedKeywords": [
+      "enzyme kinetics",
+      "molecular dynamics",
+      "binding free energy",
+      "protein-ligand"
+    ],
+    "candidateSummary": "Molecular dynamics simulation calculates binding free energy for enzyme-substrate complex formation.",
+    "candidateKeywords": [
+      "enzyme",
+      "molecular dynamics",
+      "binding energy",
+      "protein"
+    ],
+    "candidateRelated": ["protein-ligand binding", "enzyme mechanism"],
+    "expectedRelated": [
+      "enzyme-substrate binding",
+      "molecular dynamics of enzymes"
+    ],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-superconductivity-cuprates",
+    "title": "High-Temperature Superconductivity in Cuprate Materials",
+    "expectedFacts": [
+      "cuprate superconductor",
+      "critical temperature",
+      "d-wave pairing symmetry"
+    ],
+    "expectedKeywords": [
+      "superconductivity",
       "cuprate",
-      "pseudogap",
-      "d-wave symmetry"
+      "critical temperature",
+      "pairing symmetry"
     ],
-    "candidateSummary": "Cuprate high-temperature superconductors exhibit pseudogap phase and d-wave symmetry in the superconducting state.",
+    "candidateSummary": "Cuprate superconductors exhibit high critical temperature with d-wave pairing symmetry in the superconducting state.",
     "candidateKeywords": [
-      "high-Tc superconductor",
+      "superconductivity",
       "cuprate",
-      "pseudogap",
-      "d-wave symmetry"
+      "critical temperature",
+      "superconductor"
     ],
     "candidateRelated": [
-      "unconventional superconductivity",
-      "strongly correlated electrons"
+      "high-temperature superconductivity",
+      "unconventional superconductors"
+    ],
+    "expectedRelated": ["cuprate superconductors", "high-Tc superconductivity"],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-quantum-computing-superconducting",
+    "title": "Superconducting Qubits for Quantum Computing",
+    "expectedFacts": [
+      "superconducting qubit",
+      "quantum gate fidelity",
+      "decoherence time"
+    ],
+    "expectedKeywords": [
+      "quantum computing",
+      "superconducting qubit",
+      "quantum gate",
+      "decoherence"
+    ],
+    "candidateSummary": "Superconducting qubits achieve high quantum gate fidelity with improved decoherence times for quantum computing.",
+    "candidateKeywords": [
+      "quantum computing",
+      "superconducting qubit",
+      "quantum gate",
+      "qubit"
+    ],
+    "candidateRelated": [
+      "quantum error correction",
+      "superconducting quantum circuits"
+    ],
+    "expectedRelated": ["superconducting qubits", "quantum computing hardware"],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-insufficient-evidence-case",
+    "title": "Unknown Mechanism of Action for Novel Compound X",
+    "expectedFacts": [],
+    "expectedKeywords": ["compound X", "mechanism unknown", "preliminary data"],
+    "candidateSummary": "There is insufficient evidence to determine the mechanism of action for compound X based on available data.",
+    "candidateKeywords": [
+      "insufficient evidence",
+      "unknown mechanism",
+      "compound X"
+    ],
+    "candidateRelated": [],
+    "expectedRelated": [],
+    "insufficientEvidence": true,
+    "evidenceChunks": [
+      "Preliminary data shows activity but mechanism is unclear."
+    ],
+    "claims": [
+      "The mechanism of action cannot be determined from available evidence."
+    ],
+    "sourceType": "metadata"
+  },
+  {
+    "id": "fixture-drug-delivery-nanoparticle-2",
+    "title": "Lipid Nanoparticles for mRNA Delivery",
+    "expectedFacts": [
+      "lipid nanoparticle formulation",
+      "mRNA encapsulation efficiency",
+      "cellular uptake mechanism"
+    ],
+    "expectedKeywords": [
+      "lipid nanoparticle",
+      "mRNA delivery",
+      "encapsulation",
+      "cellular uptake"
+    ],
+    "candidateSummary": "Lipid nanoparticle formulations optimize mRNA encapsulation efficiency and cellular uptake for delivery applications.",
+    "candidateKeywords": [
+      "lipid nanoparticle",
+      "mRNA",
+      "delivery",
+      "encapsulation"
+    ],
+    "candidateRelated": ["mRNA vaccine delivery", "nanoparticle formulation"],
+    "expectedRelated": [
+      "lipid nanoparticles for mRNA",
+      "mRNA vaccine delivery systems"
+    ],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-metagenomics-microbiome",
+    "title": "Metagenomic Analysis of Human Gut Microbiome",
+    "expectedFacts": [
+      "metagenomic sequencing",
+      "gut microbiome diversity",
+      "functional gene annotation"
+    ],
+    "expectedKeywords": [
+      "metagenomics",
+      "microbiome",
+      "gut bacteria",
+      "functional annotation"
+    ],
+    "candidateSummary": "Metagenomic sequencing reveals gut microbiome diversity and functional gene annotation for health studies.",
+    "candidateKeywords": [
+      "metagenomics",
+      "microbiome",
+      "gut bacteria",
+      "sequencing"
+    ],
+    "candidateRelated": ["human microbiome project", "gut microbiota analysis"],
+    "expectedRelated": [
+      "gut microbiome metagenomics",
+      "human microbiome diversity"
+    ],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-neuroscience-brain-connectivity",
+    "title": "Functional Brain Connectivity in Resting State",
+    "expectedFacts": [
+      "resting-state fMRI",
+      "functional connectivity",
+      "default mode network"
+    ],
+    "expectedKeywords": [
+      "neuroscience",
+      "brain connectivity",
+      "fMRI",
+      "default mode network"
+    ],
+    "candidateSummary": "Resting-state fMRI reveals functional connectivity patterns in the default mode network of the brain.",
+    "candidateKeywords": [
+      "neuroscience",
+      "fMRI",
+      "brain connectivity",
+      "resting state"
+    ],
+    "candidateRelated": ["brain networks", "functional connectivity MRI"],
+    "expectedRelated": [
+      "resting-state functional connectivity",
+      "brain network analysis"
+    ],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-battery-recycling",
+    "title": "Recycling Methods for Lithium-Ion Batteries",
+    "expectedFacts": [
+      "lithium-ion battery recycling",
+      "hydrometallurgical process",
+      "metal recovery rate"
+    ],
+    "expectedKeywords": [
+      "battery recycling",
+      "lithium-ion",
+      "hydrometallurgy",
+      "metal recovery"
+    ],
+    "candidateSummary": "Hydrometallurgical processes achieve high metal recovery rates for lithium-ion battery recycling.",
+    "candidateKeywords": [
+      "battery recycling",
+      "lithium-ion",
+      "recycling",
+      "metal recovery"
+    ],
+    "candidateRelated": [
+      "battery waste management",
+      "lithium recovery methods"
     ],
     "expectedRelated": [
-      "unconventional superconductivity",
-      "strongly correlated electrons"
-    ]
+      "lithium-ion battery recycling",
+      "battery material recovery"
+    ],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-metamaterial-optics",
-    "title": "Optical metamaterials for negative refraction",
+    "id": "fixture-co2-sequestration-geological",
+    "title": "Geological Carbon Dioxide Sequestration",
     "expectedFacts": [
-      "negative refractive index",
-      "optical metamaterial",
-      "subwavelength structuring"
+      "CO2 geological storage",
+      "caprock integrity",
+      "injectivity assessment"
     ],
     "expectedKeywords": [
-      "metamaterial",
-      "negative refraction",
-      "refractive index",
-      "transformation optics"
+      "carbon sequestration",
+      "geological storage",
+      "CO2 injection",
+      "caprock"
     ],
-    "candidateSummary": "Optical metamaterials with subwavelength structuring achieve negative refractive index for transformation optics applications.",
+    "candidateSummary": "Geological carbon dioxide sequestration requires caprock integrity assessment and injectivity evaluation.",
     "candidateKeywords": [
-      "metamaterial",
-      "negative refraction",
-      "refractive index",
-      "transformation optics"
-    ],
-    "candidateRelated": ["plasmonic metamaterials", "invisibility cloaking"],
-    "expectedRelated": ["plasmonic metamaterials", "invisibility cloaking"]
-  },
-  {
-    "id": "fixture-nlp-transformer",
-    "title": "Transformer architecture for natural language processing",
-    "expectedFacts": [
-      "self-attention mechanism",
-      "transformer architecture",
-      "parallelization in NLP"
-    ],
-    "expectedKeywords": [
-      "transformer",
-      "self-attention",
-      "NLP",
-      "parallelization",
-      "sequence modeling"
-    ],
-    "candidateSummary": "Transformer architecture with self-attention mechanism enables efficient parallelization for sequence modeling in NLP.",
-    "candidateKeywords": [
-      "transformer",
-      "self-attention",
-      "NLP",
-      "parallelization",
-      "sequence modeling"
-    ],
-    "candidateRelated": ["attention mechanisms", "language model pre-training"],
-    "expectedRelated": ["attention mechanisms", "language model pre-training"]
-  },
-  {
-    "id": "fixture-computer-vision-cnn",
-    "title": "Convolutional neural networks for image recognition",
-    "expectedFacts": [
-      "convolutional neural network",
-      "image classification",
-      "hierarchical feature learning"
-    ],
-    "expectedKeywords": [
-      "CNN",
-      "convolutional neural network",
-      "image recognition",
-      "deep learning",
-      "feature extraction"
-    ],
-    "candidateSummary": "Convolutional neural networks enable hierarchical feature learning for improved image classification performance.",
-    "candidateKeywords": [
-      "CNN",
-      "convolutional neural network",
-      "image recognition",
-      "deep learning",
-      "feature extraction"
-    ],
-    "candidateRelated": ["object detection", "semantic segmentation"],
-    "expectedRelated": ["object detection", "semantic segmentation"]
-  },
-  {
-    "id": "fixture-biomaterial-scaffold",
-    "title": "Biomaterial scaffolds for tissue engineering",
-    "expectedFacts": [
-      "biomaterial scaffold",
-      "tissue regeneration",
-      "porous architecture"
-    ],
-    "expectedKeywords": [
-      "biomaterial",
-      "scaffold",
-      "tissue engineering",
-      "regeneration",
-      "porous"
-    ],
-    "candidateSummary": "Biomaterial scaffolds with controlled porous architecture promote tissue regeneration through cell-matrix interactions.",
-    "candidateKeywords": [
-      "biomaterial",
-      "scaffold",
-      "tissue engineering",
-      "regeneration",
-      "porous"
-    ],
-    "candidateRelated": ["stem cell differentiation", "extracellular matrix"],
-    "expectedRelated": ["stem cell differentiation", "extracellular matrix"]
-  },
-  {
-    "id": "fixture-organic-synthesis-photoredox",
-    "title": "Photoredox catalysis in organic synthesis",
-    "expectedFacts": [
-      "photoredox catalysis",
-      "visible light activation",
-      "single-electron transfer"
-    ],
-    "expectedKeywords": [
-      "photoredox",
-      "visible light",
-      "catalysis",
-      "SET",
-      "organic synthesis"
-    ],
-    "candidateSummary": "Photoredox catalysis using visible light activation enables single-electron transfer processes in organic synthesis.",
-    "candidateKeywords": [
-      "photoredox",
-      "visible light",
-      "catalysis",
-      "SET",
-      "organic synthesis"
-    ],
-    "candidateRelated": ["organic photocatalysis", "green chemistry"],
-    "expectedRelated": ["organic photocatalysis", "green chemistry"]
-  },
-  {
-    "id": "fixture-neuroscience-connectome",
-    "title": "Connectome mapping of neural circuits",
-    "expectedFacts": [
-      "connectome mapping",
-      "neural circuit reconstruction",
-      "synaptic connectivity"
-    ],
-    "expectedKeywords": [
-      "connectome",
-      "neural circuit",
-      "brain mapping",
-      "synaptic connectivity"
-    ],
-    "candidateSummary": "Connectome mapping reveals synaptic connectivity patterns through neural circuit reconstruction techniques.",
-    "candidateKeywords": [
-      "connectome",
-      "neural circuit",
-      "brain mapping",
-      "synaptic connectivity"
-    ],
-    "candidateRelated": ["neuronal network dynamics", "brain connectivity"],
-    "expectedRelated": ["neuronal network dynamics", "brain connectivity"]
-  },
-  {
-    "id": "fixture-reinforcement-learning",
-    "title": "Deep reinforcement learning for game playing",
-    "expectedFacts": [
-      "deep reinforcement learning",
-      "Q-learning",
-      "game-playing AI"
-    ],
-    "expectedKeywords": [
-      "reinforcement learning",
-      "deep Q-network",
-      "DQN",
-      "game AI",
-      "policy gradient"
-    ],
-    "candidateSummary": "Deep reinforcement learning combines Q-learning with deep neural networks for superhuman game-playing performance.",
-    "candidateKeywords": [
-      "reinforcement learning",
-      "deep Q-network",
-      "DQN",
-      "game AI",
-      "policy gradient"
+      "carbon sequestration",
+      "geological storage",
+      "CO2",
+      "injection"
     ],
     "candidateRelated": [
-      "multi-agent reinforcement learning",
-      "robotics applications"
+      "carbon capture and storage",
+      "geological CO2 storage"
     ],
     "expectedRelated": [
-      "multi-agent reinforcement learning",
-      "robotics applications"
-    ]
+      "geological carbon sequestration",
+      "CO2 geological storage"
+    ],
+    "sourceType": "metadata"
   },
   {
-    "id": "fixture-fuel-cell-cathode",
-    "title": "Cathode materials for proton exchange membrane fuel cells",
+    "id": "fixture-membrane-desalination",
+    "title": "Reverse Osmosis Membranes for Seawater Desalination",
     "expectedFacts": [
-      "PEM fuel cell cathode",
-      "oxygen reduction reaction",
-      "platinum alloy catalyst"
+      "reverse osmosis membrane",
+      "salt rejection rate",
+      "water permeability"
     ],
     "expectedKeywords": [
-      "fuel cell",
-      "PEM",
-      "cathode",
-      "ORR",
-      "platinum catalyst"
+      "desalination",
+      "reverse osmosis",
+      "membrane",
+      "water treatment"
     ],
-    "candidateSummary": "Platinum alloy cathode catalysts enhance oxygen reduction reaction performance in proton exchange membrane fuel cells.",
+    "candidateSummary": "Reverse osmosis membranes achieve high salt rejection rates with optimized water permeability for desalination.",
     "candidateKeywords": [
-      "fuel cell",
-      "PEM",
-      "cathode",
-      "ORR",
-      "platinum catalyst"
+      "desalination",
+      "reverse osmosis",
+      "membrane",
+      "water treatment"
     ],
     "candidateRelated": [
-      "fuel cell durability",
-      "non-precious metal catalysts"
+      "water desalination technology",
+      "membrane separation"
     ],
-    "expectedRelated": ["fuel cell durability", "non-precious metal catalysts"]
+    "expectedRelated": [
+      "reverse osmosis desalination",
+      "membrane-based desalination"
+    ],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-2d-material-mos2",
-    "title": "Molybdenum disulfide 2D semiconductor devices",
+    "id": "fixture-green-hydrogen-electrolysis",
+    "title": "PEM Electrolysis for Green Hydrogen Production",
     "expectedFacts": [
-      "MoS2 monolayer",
-      "2D semiconductor",
-      "field-effect transistor"
+      "PEM electrolyzer",
+      "green hydrogen production",
+      "water electrolysis efficiency"
     ],
     "expectedKeywords": [
-      "MoS2",
-      "2D material",
-      "transition metal dichalcogenide",
-      "FET",
-      "semiconductor"
+      "green hydrogen",
+      "PEM electrolysis",
+      "water electrolysis",
+      "renewable energy"
     ],
-    "candidateSummary": "Molybdenum disulfide monolayers enable 2D semiconductor field-effect transistors with novel electronic properties.",
+    "candidateSummary": "PEM electrolysis enables green hydrogen production with high efficiency using renewable energy sources.",
     "candidateKeywords": [
-      "MoS2",
-      "2D material",
-      "transition metal dichalcogenide",
-      "FET",
-      "semiconductor"
+      "green hydrogen",
+      "electrolysis",
+      "PEM",
+      "renewable energy"
     ],
-    "candidateRelated": ["2D heterostructures", "valleytronics"],
-    "expectedRelated": ["2D heterostructures", "valleytronics"]
+    "candidateRelated": [
+      "hydrogen production methods",
+      "electrolyzer technology"
+    ],
+    "expectedRelated": ["PEM water electrolysis", "green hydrogen production"],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-enzyme-engineering",
-    "title": "Directed evolution of enzyme catalysts",
+    "id": "fixture-perovskite-solar-stability",
+    "title": "Long-Term Stability of Perovskite Solar Cells",
     "expectedFacts": [
-      "directed enzyme evolution",
-      "mutagenesis screening",
-      "catalytic activity enhancement"
+      "perovskite solar cell stability",
+      "encapsulation method",
+      "degradation mechanism"
     ],
     "expectedKeywords": [
-      "enzyme engineering",
-      "directed evolution",
-      "mutagenesis",
-      "biocatalysis"
+      "perovskite solar cell",
+      "stability",
+      "encapsulation",
+      "degradation"
     ],
-    "candidateSummary": "Directed evolution through iterative mutagenesis and screening enhances enzyme catalytic activity for biocatalysis applications.",
+    "candidateSummary": "Encapsulation methods improve long-term stability of perovskite solar cells by preventing degradation.",
     "candidateKeywords": [
-      "enzyme engineering",
-      "directed evolution",
-      "mutagenesis",
-      "biocatalysis"
+      "perovskite",
+      "solar cell",
+      "stability",
+      "encapsulation"
     ],
-    "candidateRelated": ["protein engineering", "industrial biotechnology"],
-    "expectedRelated": ["protein engineering", "industrial biotechnology"]
+    "candidateRelated": [
+      "perovskite device stability",
+      "solar cell degradation"
+    ],
+    "expectedRelated": [
+      "perovskite solar cell stability",
+      "device encapsulation"
+    ],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-quantum-machine-learning",
+    "title": "Quantum Machine Learning Algorithms",
+    "expectedFacts": [
+      "quantum neural network",
+      "variational quantum algorithm",
+      "quantum advantage"
+    ],
+    "expectedKeywords": [
+      "quantum machine learning",
+      "quantum neural network",
+      "variational algorithm",
+      "quantum advantage"
+    ],
+    "candidateSummary": "Quantum machine learning algorithms using variational quantum circuits demonstrate potential quantum advantage.",
+    "candidateKeywords": [
+      "quantum ML",
+      "quantum neural network",
+      "variational algorithm",
+      "QML"
+    ],
+    "candidateRelated": [
+      "quantum algorithms for ML",
+      "variational quantum eigensolver"
+    ],
+    "expectedRelated": [
+      "quantum machine learning",
+      "variational quantum algorithms"
+    ],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-federated-learning-privacy",
+    "title": "Federated Learning for Privacy-Preserving Machine Learning",
+    "expectedFacts": [
+      "federated learning framework",
+      "privacy-preserving training",
+      "distributed model aggregation"
+    ],
+    "expectedKeywords": [
+      "federated learning",
+      "privacy preservation",
+      "distributed learning",
+      "machine learning"
+    ],
+    "candidateSummary": "Federated learning enables privacy-preserving distributed model training through secure model aggregation.",
+    "candidateKeywords": [
+      "federated learning",
+      "privacy",
+      "distributed learning",
+      "ML"
+    ],
+    "candidateRelated": ["privacy-preserving ML", "distributed training"],
+    "expectedRelated": [
+      "federated learning",
+      "privacy-preserving machine learning"
+    ],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-blockchain-consensus",
+    "title": "Proof-of-Stake Consensus in Blockchain Systems",
+    "expectedFacts": [
+      "proof-of-stake consensus",
+      "validator selection",
+      "energy efficiency"
+    ],
+    "expectedKeywords": [
+      "blockchain",
+      "proof-of-stake",
+      "consensus mechanism",
+      "cryptocurrency"
+    ],
+    "candidateSummary": "Proof-of-stake consensus mechanisms achieve energy efficiency through validator selection in blockchain systems.",
+    "candidateKeywords": [
+      "blockchain",
+      "proof-of-stake",
+      "consensus",
+      "cryptocurrency"
+    ],
+    "candidateRelated": [
+      "blockchain consensus mechanisms",
+      "proof-of-work vs proof-of-stake"
+    ],
+    "expectedRelated": ["proof-of-stake blockchain", "consensus mechanisms"],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-epidemiology-sir-model",
+    "title": "SIR Model for Infectious Disease Modeling",
+    "expectedFacts": [
+      "SIR compartmental model",
+      "basic reproduction number",
+      "epidemic threshold"
+    ],
+    "expectedKeywords": [
+      "epidemiology",
+      "SIR model",
+      "infectious disease",
+      "reproduction number"
+    ],
+    "candidateSummary": "The SIR compartmental model calculates the basic reproduction number and epidemic threshold for infectious diseases.",
+    "candidateKeywords": [
+      "epidemiology",
+      "SIR model",
+      "infectious disease",
+      "modeling"
+    ],
+    "candidateRelated": ["disease modeling", "epidemic spreading"],
+    "expectedRelated": ["SIR epidemic model", "infectious disease modeling"],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-structural-biology-cryo-em",
+    "title": "Cryo-EM Structure Determination of Protein Complexes",
+    "expectedFacts": [
+      "cryo-electron microscopy",
+      "protein complex structure",
+      "resolution improvement"
+    ],
+    "expectedKeywords": [
+      "cryo-EM",
+      "protein structure",
+      "electron microscopy",
+      "structural biology"
+    ],
+    "candidateSummary": "Cryo-electron microscopy achieves high-resolution structure determination of protein complexes in structural biology.",
+    "candidateKeywords": [
+      "cryo-EM",
+      "protein structure",
+      "electron microscopy",
+      "structural biology"
+    ],
+    "candidateRelated": [
+      "protein structure determination",
+      "electron microscopy methods"
+    ],
+    "expectedRelated": [
+      "cryo-EM structure determination",
+      "protein complex structure"
+    ],
+    "sourceType": "pdf-text"
   },
   {
     "id": "fixture-carbon-capture-absorption",
-    "title": "Amine-based carbon capture absorption processes",
+    "title": "Amine-Based Carbon Capture from Flue Gas",
     "expectedFacts": [
+      "amine absorption process",
+      "CO2 capture efficiency",
+      "regeneration energy requirement"
+    ],
+    "expectedKeywords": [
+      "carbon capture",
       "amine absorption",
-      "carbon dioxide capture",
-      "regeneration energy penalty"
+      "CO2 separation",
+      "flue gas"
     ],
-    "expectedKeywords": [
-      "carbon capture",
-      "amine scrubbing",
-      "CO2 absorption",
-      "regeneration"
-    ],
-    "candidateSummary": "Amine-based absorption processes for carbon dioxide capture with focus on reducing regeneration energy penalty.",
+    "candidateSummary": "Amine-based absorption processes achieve high CO2 capture efficiency with optimized regeneration energy requirements.",
     "candidateKeywords": [
       "carbon capture",
-      "amine scrubbing",
-      "CO2 absorption",
-      "regeneration"
-    ],
-    "candidateRelated": ["post-combustion capture", "solvent development"],
-    "expectedRelated": ["post-combustion capture", "solvent development"]
-  },
-  {
-    "id": "fixture-topological-insulator",
-    "title": "Topological insulators and quantum spin Hall effect",
-    "expectedFacts": [
-      "topological insulator",
-      "quantum spin Hall effect",
-      "spin-momentum locking"
-    ],
-    "expectedKeywords": [
-      "topological insulator",
-      "quantum spin Hall",
-      "edge state",
-      "spin-orbit coupling"
-    ],
-    "candidateSummary": "Topological insulators exhibit quantum spin Hall effect with spin-momentum locking in protected edge states.",
-    "candidateKeywords": [
-      "topological insulator",
-      "quantum spin Hall",
-      "edge state",
-      "spin-orbit coupling"
+      "amine absorption",
+      "CO2",
+      "separation"
     ],
     "candidateRelated": [
-      "quantum anomalous Hall effect",
-      "topological quantum computing"
+      "post-combustion carbon capture",
+      "CO2 separation technology"
     ],
-    "expectedRelated": [
-      "quantum anomalous Hall effect",
-      "topological quantum computing"
-    ]
+    "expectedRelated": ["amine-based carbon capture", "CO2 capture technology"],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-flow-chemistry",
-    "title": "Continuous flow chemistry for pharmaceutical synthesis",
+    "id": "fixture-smart-grid-optimization",
+    "title": "Demand Response Optimization in Smart Grids",
     "expectedFacts": [
-      "continuous flow chemistry",
-      "microreactor",
-      "pharmaceutical synthesis"
+      "smart grid demand response",
+      "load balancing algorithm",
+      "renewable integration"
     ],
     "expectedKeywords": [
-      "flow chemistry",
-      "continuous flow",
-      "microreactor",
-      "pharmaceutical",
-      "process intensification"
+      "smart grid",
+      "demand response",
+      "load balancing",
+      "renewable energy"
     ],
-    "candidateSummary": "Continuous flow chemistry using microreactors enables pharmaceutical synthesis with improved safety and efficiency.",
+    "candidateSummary": "Demand response optimization in smart grids enables load balancing and renewable energy integration.",
     "candidateKeywords": [
-      "flow chemistry",
-      "continuous flow",
-      "microreactor",
-      "pharmaceutical",
-      "process intensification"
+      "smart grid",
+      "demand response",
+      "load balancing",
+      "renewable"
+    ],
+    "candidateRelated": ["grid optimization", "renewable energy integration"],
+    "expectedRelated": ["smart grid demand response", "grid load balancing"],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-biodegradable-plastics",
+    "title": "Biodegradable Polymer Blends for Sustainable Packaging",
+    "expectedFacts": [
+      "biodegradable polymer blend",
+      "compostable packaging material",
+      "degradation rate"
+    ],
+    "expectedKeywords": [
+      "biodegradable plastic",
+      "polymer blend",
+      "sustainable packaging",
+      "compostable"
+    ],
+    "candidateSummary": "Biodegradable polymer blends achieve compostable packaging with controlled degradation rates for sustainable applications.",
+    "candidateKeywords": [
+      "biodegradable",
+      "polymer blend",
+      "packaging",
+      "sustainable"
     ],
     "candidateRelated": [
-      "continuous manufacturing",
-      "process analytical technology"
+      "sustainable packaging materials",
+      "biodegradable polymers"
     ],
     "expectedRelated": [
-      "continuous manufacturing",
-      "process analytical technology"
-    ]
+      "biodegradable polymer blends",
+      "sustainable packaging"
+    ],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-plasmonic-sensing",
-    "title": "Plasmonic nanosensors for biomolecule detection",
+    "id": "fixture-ai-driven-drug-discovery",
+    "title": "AI-Driven Molecular Docking for Drug Discovery",
     "expectedFacts": [
-      "plasmonic nanosensor",
-      "localized surface plasmon resonance",
-      "biomolecule detection"
+      "molecular docking simulation",
+      "AI-driven screening",
+      "binding affinity prediction"
     ],
     "expectedKeywords": [
-      "plasmonic",
-      "LSPR",
-      "nanosensor",
-      "biomolecule detection",
-      "gold nanoparticle"
+      "drug discovery",
+      "molecular docking",
+      "AI screening",
+      "binding affinity"
     ],
-    "candidateSummary": "Plasmonic nanosensors using localized surface plasmon resonance enable sensitive biomolecule detection with gold nanoparticles.",
+    "candidateSummary": "AI-driven molecular docking simulation enables high-throughput binding affinity prediction for drug discovery.",
     "candidateKeywords": [
-      "plasmonic",
-      "LSPR",
-      "nanosensor",
-      "biomolecule detection",
-      "gold nanoparticle"
+      "drug discovery",
+      "molecular docking",
+      "AI",
+      "binding affinity"
     ],
-    "candidateRelated": ["label-free biosensing", "nanobiosensors"],
-    "expectedRelated": ["label-free biosensing", "nanobiosensors"]
+    "candidateRelated": ["computational drug discovery", "molecular screening"],
+    "expectedRelated": [
+      "AI-driven drug discovery",
+      "molecular docking simulation"
+    ],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-gan-led-efficiency",
-    "title": "GaN-based LED efficiency improvement",
+    "id": "fixture-spacecraft-thermal-control",
+    "title": "Thermal Control Systems for Spacecraft",
     "expectedFacts": [
-      "GaN LED",
-      "quantum well active region",
-      "efficiency droop reduction"
+      "spacecraft thermal control",
+      "heat pipe technology",
+      "thermal management"
     ],
     "expectedKeywords": [
-      "GaN",
-      "LED",
-      "quantum well",
-      "efficiency droop",
-      "light-emitting diode"
+      "spacecraft",
+      "thermal control",
+      "heat pipe",
+      "thermal management"
     ],
-    "candidateSummary": "GaN-based LEDs with optimized quantum well active regions achieve efficiency droop reduction for high-power lighting applications.",
+    "candidateSummary": "Spacecraft thermal control systems using heat pipe technology enable effective thermal management in space environments.",
     "candidateKeywords": [
-      "GaN",
-      "LED",
-      "quantum well",
-      "efficiency droop",
-      "light-emitting diode"
+      "spacecraft",
+      "thermal control",
+      "heat pipe",
+      "space"
     ],
-    "candidateRelated": ["solid-state lighting", "wide bandgap semiconductors"],
-    "expectedRelated": ["solid-state lighting", "wide bandgap semiconductors"]
+    "candidateRelated": ["spacecraft thermal design", "heat transfer in space"],
+    "expectedRelated": [
+      "spacecraft thermal control",
+      "thermal management systems"
+    ],
+    "sourceType": "metadata"
   },
   {
-    "id": "fixture-dna-data-storage",
-    "title": "DNA-based data storage systems",
+    "id": "fixture-automotive-li-battery",
+    "title": "Lithium-Ion Battery Management for Electric Vehicles",
     "expectedFacts": [
-      "DNA data storage",
-      "oligonucleotide synthesis",
-      "sequencing-based readout"
+      "battery management system",
+      "state-of-charge estimation",
+      "thermal management"
     ],
     "expectedKeywords": [
-      "DNA storage",
-      "oligonucleotide",
-      "data encoding",
-      "DNA sequencing",
-      "information density"
+      "electric vehicle",
+      "battery management",
+      "lithium-ion",
+      "BMS"
     ],
-    "candidateSummary": "DNA-based data storage systems using oligonucleotide synthesis and sequencing-based readout achieve ultra-high information density.",
+    "candidateSummary": "Battery management systems for electric vehicles optimize state-of-charge estimation and thermal management.",
     "candidateKeywords": [
-      "DNA storage",
-      "oligonucleotide",
-      "data encoding",
-      "DNA sequencing",
-      "information density"
+      "electric vehicle",
+      "battery management",
+      "lithium-ion",
+      "BMS"
     ],
-    "candidateRelated": ["molecular data storage", "archival storage"],
-    "expectedRelated": ["molecular data storage", "archival storage"]
+    "candidateRelated": ["EV battery technology", "battery management systems"],
+    "expectedRelated": [
+      "electric vehicle battery management",
+      "lithium-ion BMS"
+    ],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-polymer-composite",
-    "title": "Conductive polymer composites for flexible electronics",
+    "id": "fixture-2d-materials-mos2",
+    "title": "Molybdenum Disulfide 2D Material Electronics",
     "expectedFacts": [
-      "conductive polymer composite",
-      "flexible electronics",
-      "percolation threshold"
+      "MoS2 monolayer",
+      "field-effect transistor",
+      "bandgap tuning"
+    ],
+    "expectedKeywords": [
+      "MoS2",
+      "2D material",
+      "field-effect transistor",
+      "bandgap"
+    ],
+    "candidateSummary": "Molybdenum disulfide monolayers enable field-effect transistors with tunable bandgap for 2D material electronics.",
+    "candidateKeywords": ["MoS2", "2D material", "transistor", "bandgap"],
+    "candidateRelated": [
+      "2D material electronics",
+      "transition metal dichalcogenides"
+    ],
+    "expectedRelated": ["MoS2 electronics", "2D material transistors"],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-polymer-composite-mechanical",
+    "title": "Mechanical Properties of Polymer Nanocomposites",
+    "expectedFacts": [
+      "polymer nanocomposite",
+      "mechanical reinforcement",
+      "nanoparticle dispersion"
     ],
     "expectedKeywords": [
       "polymer composite",
-      "conductive",
-      "flexible electronics",
-      "percolation",
-      "nanocomposite"
+      "nanocomposite",
+      "mechanical properties",
+      "reinforcement"
     ],
-    "candidateSummary": "Conductive polymer composites for flexible electronics applications with controlled percolation threshold and mechanical flexibility.",
+    "candidateSummary": "Polymer nanocomposites achieve mechanical reinforcement through optimized nanoparticle dispersion.",
     "candidateKeywords": [
       "polymer composite",
-      "conductive",
-      "flexible electronics",
-      "percolation",
-      "nanocomposite"
+      "nanocomposite",
+      "mechanical",
+      "reinforcement"
     ],
-    "candidateRelated": ["printed electronics", "wearable devices"],
-    "expectedRelated": ["printed electronics", "wearable devices"]
+    "candidateRelated": ["polymer nanocomposites", "composite materials"],
+    "expectedRelated": [
+      "polymer nanocomposite mechanical properties",
+      "nanoparticle reinforcement"
+    ],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-ionic-liquid-electrolyte",
-    "title": "Ionic liquids as electrolytes for energy storage",
+    "id": "fixture-biocatalysis-enzyme-engineering",
+    "title": "Protein Engineering for Enhanced Biocatalysis",
     "expectedFacts": [
-      "ionic liquid electrolyte",
-      "wide electrochemical window",
-      "supercapacitor"
+      "enzyme engineering",
+      "directed evolution",
+      "catalytic activity enhancement"
     ],
     "expectedKeywords": [
-      "ionic liquid",
-      "electrolyte",
-      "electrochemical window",
-      "supercapacitor",
+      "biocatalysis",
+      "enzyme engineering",
+      "directed evolution",
+      "protein design"
+    ],
+    "candidateSummary": "Protein engineering through directed evolution enhances catalytic activity for biocatalysis applications.",
+    "candidateKeywords": [
+      "biocatalysis",
+      "enzyme engineering",
+      "directed evolution",
+      "protein"
+    ],
+    "candidateRelated": ["enzyme catalysis", "protein engineering methods"],
+    "expectedRelated": [
+      "enzyme engineering",
+      "directed evolution for biocatalysis"
+    ],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-atmospheric-chemistry-aerosol",
+    "title": "Atmospheric Aerosol Chemistry and Climate Impact",
+    "expectedFacts": [
+      "atmospheric aerosol particles",
+      "cloud condensation nuclei",
+      "radiative forcing"
+    ],
+    "expectedKeywords": [
+      "atmospheric chemistry",
+      "aerosol",
+      "climate impact",
+      "radiative forcing"
+    ],
+    "candidateSummary": "Atmospheric aerosol particles act as cloud condensation nuclei and influence radiative forcing for climate impact.",
+    "candidateKeywords": [
+      "atmospheric chemistry",
+      "aerosol",
+      "climate",
+      "radiative forcing"
+    ],
+    "candidateRelated": ["atmospheric science", "climate change aerosols"],
+    "expectedRelated": [
+      "atmospheric aerosol chemistry",
+      "aerosol climate effects"
+    ],
+    "sourceType": "metadata"
+  },
+  {
+    "id": "fixture-flow-battery-redox",
+    "title": "Redox Flow Batteries for Grid Energy Storage",
+    "expectedFacts": [
+      "redox flow battery",
+      "vanadium electrolyte",
+      "energy storage capacity"
+    ],
+    "expectedKeywords": [
+      "flow battery",
+      "redox flow",
+      "vanadium",
       "energy storage"
     ],
-    "candidateSummary": "Ionic liquid electrolytes with wide electrochemical windows enable high-performance supercapacitors for energy storage applications.",
+    "candidateSummary": "Redox flow batteries using vanadium electrolyte provide scalable energy storage capacity for grid applications.",
     "candidateKeywords": [
-      "ionic liquid",
-      "electrolyte",
-      "electrochemical window",
-      "supercapacitor",
+      "flow battery",
+      "redox",
+      "vanadium",
       "energy storage"
     ],
-    "candidateRelated": ["redox-active ionic liquids", "grid-scale storage"],
-    "expectedRelated": ["redox-active ionic liquids", "grid-scale storage"]
+    "candidateRelated": ["grid energy storage", "redox battery technology"],
+    "expectedRelated": ["redox flow batteries", "grid-scale energy storage"],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-microfluidic-diagnostic",
-    "title": "Microfluidic point-of-care diagnostic devices",
+    "id": "fixture-photonic-crystal-sensor",
+    "title": "Photonic Crystal Sensors for Biomedical Detection",
     "expectedFacts": [
-      "microfluidic diagnostic",
-      "point-of-care testing",
-      "lab-on-a-chip"
+      "photonic crystal sensor",
+      "optical refractive index sensing",
+      "biomedical detection"
     ],
     "expectedKeywords": [
-      "microfluidic",
-      "point-of-care",
-      "lab-on-a-chip",
-      "diagnostic",
-      "biomarker detection"
+      "photonic crystal",
+      "optical sensor",
+      "biomedical detection",
+      "refractive index"
     ],
-    "candidateSummary": "Microfluidic point-of-care diagnostic devices enable lab-on-a-chip biomarker detection for rapid clinical decision-making.",
+    "candidateSummary": "Photonic crystal sensors enable highly sensitive optical refractive index sensing for biomedical detection applications.",
     "candidateKeywords": [
-      "microfluidic",
-      "point-of-care",
-      "lab-on-a-chip",
-      "diagnostic",
-      "biomarker detection"
+      "photonic crystal",
+      "sensor",
+      "biomedical",
+      "optical sensing"
     ],
-    "candidateRelated": ["paper-based diagnostics", "wearable health monitors"],
-    "expectedRelated": ["paper-based diagnostics", "wearable health monitors"]
+    "candidateRelated": ["optical biosensors", "photonic crystal applications"],
+    "expectedRelated": [
+      "photonic crystal sensors",
+      "optical biomedical sensors"
+    ],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-single-molecule-magnet",
-    "title": "Single-molecule magnets for molecular spintronics",
+    "id": "fixture-multi-agent-rl",
+    "title": "Multi-Agent Reinforcement Learning for Cooperative Tasks",
     "expectedFacts": [
-      "single-molecule magnet",
-      "magnetic anisotropy barrier",
-      "quantum tunneling of magnetization"
+      "multi-agent reinforcement learning",
+      "cooperative policy",
+      "game-theoretic equilibrium"
     ],
     "expectedKeywords": [
-      "single-molecule magnet",
-      "SMM",
-      "magnetic anisotropy",
-      "spintronics",
-      "quantum tunneling"
+      "multi-agent RL",
+      "cooperative learning",
+      "reinforcement learning",
+      "game theory"
     ],
-    "candidateSummary": "Single-molecule magnets with high magnetic anisotropy barriers exhibit quantum tunneling of magnetization for molecular spintronics.",
+    "candidateSummary": "Multi-agent reinforcement learning enables cooperative policy learning through game-theoretic equilibrium for multi-agent tasks.",
     "candidateKeywords": [
-      "single-molecule magnet",
-      "SMM",
-      "magnetic anisotropy",
-      "spintronics",
-      "quantum tunneling"
-    ],
-    "candidateRelated": ["molecular quantum magnets", "molecular electronics"],
-    "expectedRelated": ["molecular quantum magnets", "molecular electronics"]
-  },
-  {
-    "id": "fixture-perovskite-led",
-    "title": "Perovskite light-emitting diodes for display applications",
-    "expectedFacts": [
-      "perovskite LED",
-      "electroluminescence",
-      "display technology"
-    ],
-    "expectedKeywords": [
-      "perovskite LED",
-      "PeLED",
-      "electroluminescence",
-      "display",
-      "quantum dot"
-    ],
-    "candidateSummary": "Perovskite light-emitting diodes using electroluminescence enable high-color-purity display technology with quantum dot integration.",
-    "candidateKeywords": [
-      "perovskite LED",
-      "PeLED",
-      "electroluminescence",
-      "display",
-      "quantum dot"
-    ],
-    "candidateRelated": ["solution-processed LEDs", "next-generation displays"],
-    "expectedRelated": ["solution-processed LEDs", "next-generation displays"]
-  },
-  {
-    "id": "fixture-zeolite-catalysis",
-    "title": "Zeolite catalysts for petrochemical processing",
-    "expectedFacts": [
-      "zeolite catalyst",
-      "shape-selective catalysis",
-      "fluid catalytic cracking"
-    ],
-    "expectedKeywords": [
-      "zeolite",
-      "catalysis",
-      "shape-selective",
-      "FCC",
-      "petrochemical"
-    ],
-    "candidateSummary": "Zeolite catalysts enable shape-selective catalysis for fluid catalytic cracking in petrochemical processing applications.",
-    "candidateKeywords": [
-      "zeolite",
-      "catalysis",
-      "shape-selective",
-      "FCC",
-      "petrochemical"
-    ],
-    "candidateRelated": ["acid site characterization", "catalyst deactivation"],
-    "expectedRelated": ["acid site characterization", "catalyst deactivation"]
-  },
-  {
-    "id": "fixture-organic-ferroelectric",
-    "title": "Organic ferroelectric materials for memory devices",
-    "expectedFacts": [
-      "organic ferroelectric",
-      "pvdf-trfe",
-      "non-volatile memory"
-    ],
-    "expectedKeywords": [
-      "ferroelectric",
-      "organic",
-      "PVDF",
-      "non-volatile memory",
-      "polarization"
-    ],
-    "candidateSummary": "Organic ferroelectric materials based on PVDF-TrFE copolymers enable non-volatile memory devices with reversible polarization.",
-    "candidateKeywords": [
-      "ferroelectric",
-      "organic",
-      "PVDF",
-      "non-volatile memory",
-      "polarization"
-    ],
-    "candidateRelated": ["flexible memory devices", "organic electronics"],
-    "expectedRelated": ["flexible memory devices", "organic electronics"]
-  },
-  {
-    "id": "fixture-carbon-nanotube-transistor",
-    "title": "Carbon nanotube thin-film transistors for flexible electronics",
-    "expectedFacts": [
-      "carbon nanotube transistor",
-      "thin-film transistor",
-      "flexible electronics"
-    ],
-    "expectedKeywords": [
-      "carbon nanotube",
-      "CNT",
-      "TFT",
-      "flexible electronics",
-      "thin-film transistor"
-    ],
-    "candidateSummary": "Carbon nanotube thin-film transistors enable high-performance flexible electronics with solution-processable semiconductor channels.",
-    "candidateKeywords": [
-      "carbon nanotube",
-      "CNT",
-      "TFT",
-      "flexible electronics",
-      "thin-film transistor"
-    ],
-    "candidateRelated": ["printed electronics", "flexible displays"],
-    "expectedRelated": ["printed electronics", "flexible displays"]
-  },
-  {
-    "id": "fixture-automated-synthesis",
-    "title": "Fully automated synthesis platforms for drug discovery",
-    "expectedFacts": [
-      "automated synthesis platform",
-      "drug discovery",
-      "flow chemistry integration"
-    ],
-    "expectedKeywords": [
-      "automated synthesis",
-      "drug discovery",
-      "flow chemistry",
-      "high-throughput",
-      "medicinal chemistry"
-    ],
-    "candidateSummary": "Fully automated synthesis platforms integrate flow chemistry for accelerated drug discovery and high-throughput medicinal chemistry.",
-    "candidateKeywords": [
-      "automated synthesis",
-      "drug discovery",
-      "flow chemistry",
-      "high-throughput",
-      "medicinal chemistry"
-    ],
-    "candidateRelated": ["AI-driven synthesis planning", "lab automation"],
-    "expectedRelated": ["AI-driven synthesis planning", "lab automation"]
-  },
-  {
-    "id": "fixture-photo electrochemical-co2",
-    "title": "Photo-electrochemical CO2 reduction to fuels",
-    "expectedFacts": [
-      "photo-electrochemical CO2 reduction",
-      "semiconductor photocathode",
-      "solar-to-fuel conversion"
-    ],
-    "expectedKeywords": [
-      "photo-electrochemical",
-      "CO2 reduction",
-      "semiconductor",
-      "solar fuel",
-      "photocathode"
-    ],
-    "candidateSummary": "Photo-electrochemical CO2 reduction using semiconductor photocathodes enables solar-to-fuel conversion with high selectivity.",
-    "candidateKeywords": [
-      "photo-electrochemical",
-      "CO2 reduction",
-      "semiconductor",
-      "solar fuel",
-      "photocathode"
+      "multi-agent RL",
+      "cooperative",
+      "reinforcement learning",
+      "game theory"
     ],
     "candidateRelated": [
-      "artificial photosynthesis",
-      "solar energy conversion"
+      "cooperative multi-agent systems",
+      "reinforcement learning"
     ],
-    "expectedRelated": ["artificial photosynthesis", "solar energy conversion"]
+    "expectedRelated": ["multi-agent reinforcement learning", "cooperative RL"],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-single-cell-genomics",
-    "title": "Single-cell RNA sequencing for transcriptome analysis",
+    "id": "fixture-piezoelectric-energy-harvesting",
+    "title": "Piezoelectric Materials for Vibration Energy Harvesting",
     "expectedFacts": [
-      "single-cell RNA sequencing",
-      "transcriptome heterogeneity",
-      "cell type identification"
+      "piezoelectric energy harvesting",
+      "vibration-to-electric conversion",
+      "power output density"
     ],
     "expectedKeywords": [
-      "single-cell RNA-seq",
-      "transcriptome",
-      "cell heterogeneity",
-      "scRNA-seq",
-      "single-cell analysis"
+      "piezoelectric",
+      "energy harvesting",
+      "vibration",
+      "power generation"
     ],
-    "candidateSummary": "Single-cell RNA sequencing reveals transcriptome heterogeneity and enables precise cell type identification in complex tissues.",
+    "candidateSummary": "Piezoelectric materials enable vibration-to-electric energy conversion with optimized power output density.",
     "candidateKeywords": [
-      "single-cell RNA-seq",
-      "transcriptome",
-      "cell heterogeneity",
-      "scRNA-seq",
-      "single-cell analysis"
+      "piezoelectric",
+      "energy harvesting",
+      "vibration",
+      "power"
     ],
-    "candidateRelated": ["single-cell multi-omics", "developmental biology"],
-    "expectedRelated": ["single-cell multi-omics", "developmental biology"]
+    "candidateRelated": [
+      "energy harvesting technology",
+      "piezoelectric materials"
+    ],
+    "expectedRelated": [
+      "piezoelectric energy harvesting",
+      "vibration energy conversion"
+    ],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-membrane-separations",
-    "title": "Polymeric membranes for water desalination",
+    "id": "fixture-water-purification-membrane",
+    "title": "Nanomaterial-Enhanced Water Purification Membranes",
     "expectedFacts": [
-      "polymeric membrane",
-      "reverse osmosis",
-      "water desalination"
+      "nanomaterial membrane",
+      "water purification efficiency",
+      "fouling resistance"
     ],
     "expectedKeywords": [
-      "membrane separation",
-      "reverse osmosis",
-      "desalination",
-      "polyamide",
+      "water purification",
+      "nanomaterial membrane",
+      "fouling resistance",
       "water treatment"
     ],
-    "candidateSummary": "Polymeric membranes for reverse osmosis enable efficient water desalination with polyamide thin-film composite architectures.",
+    "candidateSummary": "Nanomaterial-enhanced membranes improve water purification efficiency with fouling resistance for treatment applications.",
     "candidateKeywords": [
-      "membrane separation",
-      "reverse osmosis",
-      "desalination",
-      "polyamide",
-      "water treatment"
-    ],
-    "candidateRelated": ["forward osmosis", "membrane fouling control"],
-    "expectedRelated": ["forward osmosis", "membrane fouling control"]
-  },
-  {
-    "id": "fixture-quantum-sensor-nv",
-    "title": "Nitrogen-vacancy centers in diamond for quantum sensing",
-    "expectedFacts": [
-      "nitrogen-vacancy center",
-      "diamond quantum sensor",
-      "magnetic field sensing"
-    ],
-    "expectedKeywords": [
-      "NV center",
-      "diamond",
-      "quantum sensing",
-      "magnetic sensing",
-      "spin qubit"
-    ],
-    "candidateSummary": "Nitrogen-vacancy centers in diamond enable quantum sensing applications including high-sensitivity magnetic field detection.",
-    "candidateKeywords": [
-      "NV center",
-      "diamond",
-      "quantum sensing",
-      "magnetic sensing",
-      "spin qubit"
-    ],
-    "candidateRelated": ["quantum metrology", "biomedical imaging"],
-    "expectedRelated": ["quantum metrology", "biomedical imaging"]
-  },
-  {
-    "id": "fixture-thermal-energy-storage",
-    "title": "Phase change materials for thermal energy storage",
-    "expectedFacts": [
-      "phase change material",
-      "thermal energy storage",
-      "latent heat"
-    ],
-    "expectedKeywords": [
-      "phase change material",
-      "PCM",
-      "thermal storage",
-      "latent heat",
-      "energy efficiency"
-    ],
-    "candidateSummary": "Phase change materials with high latent heat capacity enable efficient thermal energy storage for building applications.",
-    "candidateKeywords": [
-      "phase change material",
-      "PCM",
-      "thermal storage",
-      "latent heat",
-      "energy efficiency"
-    ],
-    "candidateRelated": ["building energy efficiency", "waste heat recovery"],
-    "expectedRelated": ["building energy efficiency", "waste heat recovery"]
-  },
-  {
-    "id": "fixture-organic-battery",
-    "title": "Organic electrode materials for sustainable batteries",
-    "expectedFacts": [
-      "organic electrode",
-      "sustainable battery",
-      "redox-active organic"
-    ],
-    "expectedKeywords": [
-      "organic battery",
-      "organic electrode",
-      "sustainable",
-      "redox-active",
-      "lithium-ion"
-    ],
-    "candidateSummary": "Organic electrode materials provide sustainable alternatives for lithium-ion batteries using redox-active organic molecules.",
-    "candidateKeywords": [
-      "organic battery",
-      "organic electrode",
-      "sustainable",
-      "redox-active",
-      "lithium-ion"
+      "water purification",
+      "membrane",
+      "nanomaterial",
+      "fouling resistance"
     ],
     "candidateRelated": [
-      "bio-derived electrode materials",
-      "recyclable batteries"
+      "water treatment membranes",
+      "nanomaterial water filtration"
     ],
     "expectedRelated": [
-      "bio-derived electrode materials",
-      "recyclable batteries"
-    ]
+      "nanomaterial water purification",
+      "membrane fouling resistance"
+    ],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-3d-bi printing",
-    "title": "3D bioprinting of tissue constructs",
+    "id": "fixture-ai-medical-imaging",
+    "title": "Deep Learning for Medical Image Segmentation",
     "expectedFacts": [
-      "3D bioprinting",
-      "tissue construct",
-      "bioink development"
+      "deep learning segmentation",
+      "medical image analysis",
+      "U-Net architecture"
     ],
     "expectedKeywords": [
-      "3D bioprinting",
-      "tissue engineering",
-      "bioink",
-      "organ-on-a-chip",
-      "regenerative medicine"
+      "medical imaging",
+      "deep learning",
+      "image segmentation",
+      "U-Net"
     ],
-    "candidateSummary": "3D bioprinting of tissue constructs using optimized bioinks enables advances in regenerative medicine and organ-on-a-chip platforms.",
+    "candidateSummary": "Deep learning approaches using U-Net architecture achieve accurate medical image segmentation for diagnostic applications.",
     "candidateKeywords": [
-      "3D bioprinting",
-      "tissue engineering",
-      "bioink",
-      "organ-on-a-chip",
-      "regenerative medicine"
+      "medical imaging",
+      "deep learning",
+      "segmentation",
+      "U-Net"
     ],
     "candidateRelated": [
-      "vascularized tissue constructs",
-      "bioprinting resolution"
+      "medical image analysis",
+      "deep learning for healthcare"
     ],
     "expectedRelated": [
-      "vascularized tissue constructs",
-      "bioprinting resolution"
-    ]
+      "medical image segmentation",
+      "deep learning medical imaging"
+    ],
+    "sourceType": "pdf-text"
   },
   {
-    "id": "fixture-supercritical-fluid-extraction",
-    "title": "Supercritical fluid extraction for natural products",
+    "id": "fixture-solid-state-cooling",
+    "title": "Caloric Materials for Solid-State Cooling",
     "expectedFacts": [
-      "supercritical fluid extraction",
-      "CO2 extraction",
-      "natural product isolation"
+      "caloric material effect",
+      "solid-state cooling",
+      "adiabatic temperature change"
     ],
     "expectedKeywords": [
-      "supercritical fluid",
-      "SFE",
-      "CO2 extraction",
-      "natural products",
-      "green extraction"
+      "solid-state cooling",
+      "caloric material",
+      "adiabatic temperature",
+      "refrigeration"
     ],
-    "candidateSummary": "Supercritical fluid extraction using CO2 enables green isolation of natural products with tunable selectivity and minimal environmental impact.",
+    "candidateSummary": "Caloric materials enable solid-state cooling through adiabatic temperature change for refrigeration applications.",
     "candidateKeywords": [
-      "supercritical fluid",
-      "SFE",
-      "CO2 extraction",
-      "natural products",
-      "green extraction"
+      "solid-state cooling",
+      "caloric material",
+      "adiabatic",
+      "cooling"
+    ],
+    "candidateRelated": ["refrigeration technology", "caloric effects"],
+    "expectedRelated": [
+      "caloric materials for cooling",
+      "solid-state refrigeration"
+    ],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-plasma-catalysis",
+    "title": "Plasma-Enhanced Catalytic Reactions",
+    "expectedFacts": [
+      "plasma catalysis",
+      "non-thermal plasma activation",
+      "reaction rate enhancement"
+    ],
+    "expectedKeywords": [
+      "plasma catalysis",
+      "non-thermal plasma",
+      "catalytic reaction",
+      "plasma activation"
+    ],
+    "candidateSummary": "Non-thermal plasma activation enhances catalytic reaction rates in plasma-catalysis systems.",
+    "candidateKeywords": [
+      "plasma catalysis",
+      "non-thermal plasma",
+      "catalysis",
+      "reaction enhancement"
     ],
     "candidateRelated": [
-      "green analytical chemistry",
-      "phytochemical analysis"
-    ],
-    "expectedRelated": ["green analytical chemistry", "phytochemical analysis"]
-  },
-  {
-    "id": "fixture-molecular-machine",
-    "title": "Artificial molecular machines for cargo transport",
-    "expectedFacts": [
-      "artificial molecular machine",
-      "cargo transport",
-      "supramolecular chemistry"
-    ],
-    "expectedKeywords": [
-      "molecular machine",
-      "cargo transport",
-      "supramolecular",
-      "molecular motor",
-      "stimuli-responsive"
-    ],
-    "candidateSummary": "Artificial molecular machines using supramolecular chemistry principles enable controlled cargo transport with stimuli-responsive behavior.",
-    "candidateKeywords": [
-      "molecular machine",
-      "cargo transport",
-      "supramolecular",
-      "molecular motor",
-      "stimuli-responsive"
-    ],
-    "candidateRelated": ["molecular switches", "nanoscale transport"],
-    "expectedRelated": ["molecular switches", "nanoscale transport"]
-  },
-  {
-    "id": "fixture-perovskite-solar-tandem",
-    "title": "Perovskite-silicon tandem solar cells for high efficiency",
-    "expectedFacts": [
-      "perovskite-silicon tandem",
-      "high efficiency solar cell",
-      "current matching"
-    ],
-    "expectedKeywords": [
-      "tandem solar cell",
-      "perovskite-silicon",
-      "current matching",
-      "high efficiency",
-      "multi-junction"
-    ],
-    "candidateSummary": "Perovskite-silicon tandem solar cells achieve high efficiency through optimized current matching in multi-junction architectures.",
-    "candidateKeywords": [
-      "tandem solar cell",
-      "perovskite-silicon",
-      "current matching",
-      "high efficiency",
-      "multi-junction"
-    ],
-    "candidateRelated": [
-      "multi-junction solar cells",
-      "tandem device optimization"
+      "plasma-assisted catalysis",
+      "non-thermal plasma reactions"
     ],
     "expectedRelated": [
-      "multi-junction solar cells",
-      "tandem device optimization"
-    ]
+      "plasma-enhanced catalysis",
+      "plasma catalytic reactions"
+    ],
+    "sourceType": "pdf-text"
+  },
+  {
+    "id": "fixture-spin-electronics",
+    "title": "Spintronic Devices for Information Processing",
+    "expectedFacts": [
+      "spintronic device",
+      "spin transport",
+      "magnetoresistance effect"
+    ],
+    "expectedKeywords": [
+      "spintronics",
+      "spin transport",
+      "magnetoresistance",
+      "spin device"
+    ],
+    "candidateSummary": "Spintronic devices utilize spin transport and magnetoresistance effects for information processing applications.",
+    "candidateKeywords": [
+      "spintronics",
+      "spin transport",
+      "magnetoresistance",
+      "spin"
+    ],
+    "candidateRelated": ["spin-based electronics", "magnetoresistive devices"],
+    "expectedRelated": ["spintronic devices", "spin transport electronics"],
+    "sourceType": "pdf-text"
   }
 ]

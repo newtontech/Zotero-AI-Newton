@@ -9,49 +9,53 @@ export interface AIAnalysisBenchmarkCase {
   candidateRelated?: string[];
   /** Titles/abstracts of ground-truth related papers. */
   expectedRelated?: string[];
-  /** DOI for source-backed fixtures. */
-  doi?: string;
-  /** arXiv ID for preprint fixtures. */
-  arxivId?: string;
-  /** Publication year. */
-  year?: number;
-  /** Authors list. */
-  authors?: string[];
-  /** Publication venue. */
-  venue?: string;
+
+  // --- Groundedness fields (issue #33) ---
+  /** Expected citations in the answer (e.g., author-year or [N] refs). */
+  expectedCitations?: string[];
+  /** Citations actually produced by the candidate answer. */
+  candidateCitations?: string[];
+  /** Evidence chunks from source PDFs/metadata the answer should be grounded in. */
+  evidenceChunks?: string[];
+  /** Discrete claims extracted from the candidate answer for groundedness checking. */
+  claims?: string[];
+  /**
+   * Set to true when the correct answer is "insufficient evidence".
+   * The candidate should refuse or explicitly state evidence is lacking.
+   */
+  insufficientEvidence?: boolean;
+  /**
+   * Whether this case evaluates metadata-only vs full PDF-text grounding.
+   * - "metadata": only title/abstract/keywords available
+   * - "pdf-text": full-text PDF chunks available
+   */
+  sourceType?: "metadata" | "pdf-text";
 }
 
 export interface AIAnalysisEvaluation {
   id: string;
   factCoverage: number;
-  keywordPrecision: number;
-  keywordRecall: number;
   keywordF1: number;
   rougeL: number;
-  rougeLPrecision: number;
-  rougeLRecall: number;
   relatedRelevance: number;
-  relatedPrecision: number;
-  relatedRecall: number;
   passed: boolean;
-}
 
-export interface LLMProviderResult {
-  provider: string;
-  model: string;
-  evaluation: AIAnalysisEvaluation;
-}
-
-export interface LLMProviderComparison {
-  caseId: string;
-  results: LLMProviderResult[];
-  bestProvider: string;
-  metricComparisons: {
-    factCoverage: { [provider: string]: number };
-    keywordF1: { [provider: string]: number };
-    rougeL: { [provider: string]: number };
-    relatedRelevance: { [provider: string]: number };
-  };
+  // --- Groundedness metrics (issue #33) ---
+  /** Citation precision: how many candidate citations are in expected set. */
+  citationPrecision?: number;
+  /** Citation recall: how many expected citations are present in candidate. */
+  citationRecall?: number;
+  /** Unsupported-claim rate: fraction of claims NOT supported by evidence. */
+  unsupportedClaimRate?: number;
+  /** Evidence coverage: fraction of evidence chunks that support at least one claim. */
+  evidenceCoverage?: number;
+  /**
+   * Refusal quality (0-1): did the candidate correctly refuse when
+   * `insufficientEvidence` is true, or correctly answer when false?
+   */
+  refusalQuality?: number;
+  /** Source type for this evaluation case. */
+  sourceType?: "metadata" | "pdf-text";
 }
 
 export interface BenchmarkReport {
@@ -59,16 +63,20 @@ export interface BenchmarkReport {
   totalCases: number;
   avgFactCoverage: number;
   avgKeywordF1: number;
-  avgKeywordPrecision: number;
-  avgKeywordRecall: number;
   avgRougeL: number;
   avgRelatedRelevance: number;
-  avgRelatedPrecision: number;
-  avgRelatedRecall: number;
   passRate: number;
   perCase: AIAnalysisEvaluation[];
-  /** Optional LLM provider comparison results. */
-  providerComparisons?: LLMProviderComparison[];
+
+  // --- Groundedness aggregates (issue #33) ---
+  avgCitationPrecision: number;
+  avgCitationRecall: number;
+  avgUnsupportedClaimRate: number;
+  avgEvidenceCoverage: number;
+  avgRefusalQuality: number;
+  /** Breakdown of cases by source type. */
+  metadataCases: number;
+  pdfTextCases: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -97,31 +105,25 @@ export function scoreFactCoverage(
 
 // ---------------------------------------------------------------------------
 // Keyword F1 (set-based, from PR #18)
-// Returns { precision, recall, f1 }
 // ---------------------------------------------------------------------------
 
 export function scoreKeywordF1(
   candidateKeywords: string[],
   expectedKeywords: string[],
-): { precision: number; recall: number; f1: number } {
-  if (!candidateKeywords.length && !expectedKeywords.length) {
-    return { precision: 1, recall: 1, f1: 1 };
-  }
-  if (!candidateKeywords.length || !expectedKeywords.length) {
-    return { precision: 0, recall: 0, f1: 0 };
-  }
+): number {
+  if (!candidateKeywords.length && !expectedKeywords.length) return 1;
+  if (!candidateKeywords.length || !expectedKeywords.length) return 0;
 
   const predicted = new Set(candidateKeywords.map(normalizeTerm));
   const expected = new Set(expectedKeywords.map(normalizeTerm));
   const truePositive = [...predicted].filter((term) =>
     expected.has(term),
   ).length;
-  if (!truePositive) return { precision: 0, recall: 0, f1: 0 };
+  if (!truePositive) return 0;
 
   const precision = truePositive / predicted.size;
   const recall = truePositive / expected.size;
-  const f1 = (2 * precision * recall) / (precision + recall);
-  return { precision, recall, f1 };
+  return (2 * precision * recall) / (precision + recall);
 }
 
 // ---------------------------------------------------------------------------
@@ -166,30 +168,156 @@ export function scoreRougeL(candidate: string, reference: string): number {
 
 // ---------------------------------------------------------------------------
 // Related-literature relevance
-// Returns { precision, recall, score }
 // ---------------------------------------------------------------------------
 
 export function scoreRelatedRelevance(
   candidateRelated: string[],
   expectedRelated: string[],
-): { precision: number; recall: number; score: number } {
-  if (!expectedRelated.length) {
-    return { precision: 1, recall: 1, score: 1 };
-  }
-  if (!candidateRelated.length) {
-    return { precision: 0, recall: 0, score: 0 };
-  }
+): number {
+  if (!expectedRelated.length) return 1;
+  if (!candidateRelated.length) return 0;
 
   const expected = expectedRelated.map((t) => normalizeTerm(t));
   const matched = candidateRelated.filter((cand) => {
     const nc = normalizeTerm(cand);
     return expected.some((exp) => nc.includes(exp) || exp.includes(nc));
   });
+  return matched.length / expected.length;
+}
 
-  const precision = matched.length / candidateRelated.length;
-  const recall = matched.length / expectedRelated.length;
-  const score = matched.length / expectedRelated.length;
-  return { precision, recall, score };
+// ---------------------------------------------------------------------------
+// Groundedness metrics (issue #33)
+// ---------------------------------------------------------------------------
+
+/**
+ * Citation precision: fraction of candidate citations that appear in the
+ * expected-citation set.
+ *
+ * A citation is considered "matched" when the normalized candidate string
+ * contains the normalized expected string or vice-versa (handles variations
+ * like "Smith2023" vs "Smith et al., 2023").
+ */
+export function scoreCitationPrecision(
+  candidateCitations: string[],
+  expectedCitations: string[],
+): number {
+  if (!candidateCitations.length) return 1; // nothing to penalize
+  if (!expectedCitations.length) return 0;
+
+  const expected = expectedCitations.map(normalizeTerm);
+  const matched = candidateCitations.filter((cand) => {
+    const nc = normalizeTerm(cand);
+    return expected.some((exp) => nc.includes(exp) || exp.includes(nc));
+  });
+  return matched.length / candidateCitations.length;
+}
+
+/**
+ * Citation recall: fraction of expected citations that are present in the
+ * candidate's citation list.
+ */
+export function scoreCitationRecall(
+  candidateCitations: string[],
+  expectedCitations: string[],
+): number {
+  if (!expectedCitations.length) return 1;
+  if (!candidateCitations.length) return 0;
+
+  const candidate = candidateCitations.map(normalizeTerm);
+  const matched = expectedCitations.filter((exp) => {
+    const ne = normalizeTerm(exp);
+    return candidate.some((cand) => cand.includes(ne) || ne.includes(cand));
+  });
+  return matched.length / expectedCitations.length;
+}
+
+/**
+ * Unsupported-claim rate: fraction of claims that are NOT supported by any
+ * evidence chunk.
+ *
+ * A claim is "supported" when any evidence chunk contains the normalized
+ * claim text (substring match).  This is intentionally permissive – the
+ * evidence chunk may be a direct quote or a close paraphrase.
+ *
+ * Returns 0 when there are no claims (nothing unsupported).
+ */
+export function scoreUnsupportedClaimRate(
+  claims: string[],
+  evidenceChunks: string[],
+): number {
+  if (!claims.length) return 0;
+  if (!evidenceChunks.length) return 1; // all claims unsupported
+
+  const evidence = evidenceChunks.map(normalizeTerm);
+  const unsupported = claims.filter((claim) => {
+    const nc = normalizeTerm(claim);
+    return !evidence.some((ev) => ev.includes(nc) || nc.includes(ev));
+  });
+  return unsupported.length / claims.length;
+}
+
+/**
+ * Evidence coverage: fraction of evidence chunks that support at least one
+ * claim.
+ *
+ * This measures whether the provided evidence is actually *used* in the
+ * answer.  Low coverage may indicate the model ignored relevant sources.
+ *
+ * Returns 1 when there are no evidence chunks.
+ */
+export function scoreEvidenceCoverage(
+  claims: string[],
+  evidenceChunks: string[],
+): number {
+  if (!evidenceChunks.length) return 1;
+  if (!claims.length) return 0;
+
+  const normalizedClaims = claims.map(normalizeTerm);
+  const covered = evidenceChunks.filter((ev) => {
+    const ne = normalizeTerm(ev);
+    return normalizedClaims.some((nc) => nc.includes(ne) || ne.includes(nc));
+  });
+  return covered.length / evidenceChunks.length;
+}
+
+/**
+ * Refusal quality: did the candidate correctly handle insufficient-evidence
+ * cases?
+ *
+ * - When `insufficientEvidence` is **true**: the candidate should refuse to
+ *   answer or explicitly state that evidence is lacking.  We check for
+ *   refusal keywords in the summary.
+ * - When `insufficientEvidence` is **false**: the candidate should answer
+ *   normally; refusal is penalized.
+ *
+ * Returns 1 for correct behavior, 0 otherwise.
+ */
+export function scoreRefusalQuality(
+  candidateSummary: string,
+  insufficientEvidence: boolean,
+): number {
+  const refusalKeywords = [
+    "insufficient",
+    "not enough",
+    "cannot answer",
+    "unable to",
+    "lack of evidence",
+    "evidence is lacking",
+    "cannot determine",
+    "not available",
+  ];
+  const normalized = normalizeTerm(candidateSummary);
+  const didRefuse = refusalKeywords.some((kw) =>
+    normalized.includes(normalizeTerm(kw)),
+  );
+
+  if (insufficientEvidence) {
+    // Correct behaviour: the model refused
+    return didRefuse ? 1 : 0;
+  } else {
+    // Correct behaviour: the model did NOT refuse
+    return !didRefuse ? 1 : 0;
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -203,59 +331,76 @@ export function evaluateAnalysisCase(
     keywordF1: 0.7,
     rougeL: 0.5,
     relatedRelevance: 0.8,
+    // Groundedness thresholds (issue #33)
+    citationPrecision: 0.5,
+    citationRecall: 0.5,
+    unsupportedClaimRate: 0.3, // <= 30% claims may be unsupported
+    evidenceCoverage: 0.5,
+    refusalQuality: 0.8,
   },
 ): AIAnalysisEvaluation {
   const factCoverage = scoreFactCoverage(
     benchmark.candidateSummary,
     benchmark.expectedFacts,
   );
-
-  const keywordMetrics = scoreKeywordF1(
+  const keywordF1 = scoreKeywordF1(
     benchmark.candidateKeywords,
     benchmark.expectedKeywords,
   );
-
   const rougeL = scoreRougeL(
     benchmark.candidateSummary,
     benchmark.expectedFacts.join(". "),
   );
-
-  // Calculate ROUGE-L precision and recall
-  const refTokens = normalizeTerm(benchmark.expectedFacts.join(". "))
-    .split(/\s+/)
-    .filter(Boolean);
-  const candTokens = normalizeTerm(benchmark.candidateSummary)
-    .split(/\s+/)
-    .filter(Boolean);
-  const lcs =
-    refTokens.length && candTokens.length
-      ? lcsLength(refTokens, candTokens)
-      : 0;
-  const rougeLPrecision = candTokens.length ? lcs / candTokens.length : 1;
-  const rougeLRecall = refTokens.length ? lcs / refTokens.length : 1;
-
-  const relatedMetrics = scoreRelatedRelevance(
+  const relatedRelevance = scoreRelatedRelevance(
     benchmark.candidateRelated ?? [],
     benchmark.expectedRelated ?? [],
+  );
+
+  // --- Groundedness metrics ---
+  const citationPrecision = scoreCitationPrecision(
+    benchmark.candidateCitations ?? [],
+    benchmark.expectedCitations ?? [],
+  );
+  const citationRecall = scoreCitationRecall(
+    benchmark.candidateCitations ?? [],
+    benchmark.expectedCitations ?? [],
+  );
+  const unsupportedClaimRate = scoreUnsupportedClaimRate(
+    benchmark.claims ?? [],
+    benchmark.evidenceChunks ?? [],
+  );
+  const evidenceCoverage = scoreEvidenceCoverage(
+    benchmark.claims ?? [],
+    benchmark.evidenceChunks ?? [],
+  );
+  const refusalQuality = scoreRefusalQuality(
+    benchmark.candidateSummary,
+    benchmark.insufficientEvidence ?? false,
   );
 
   return {
     id: benchmark.id,
     factCoverage,
-    keywordPrecision: keywordMetrics.precision,
-    keywordRecall: keywordMetrics.recall,
-    keywordF1: keywordMetrics.f1,
+    keywordF1,
     rougeL,
-    rougeLPrecision,
-    rougeLRecall,
-    relatedRelevance: relatedMetrics.score,
-    relatedPrecision: relatedMetrics.precision,
-    relatedRecall: relatedMetrics.recall,
+    relatedRelevance,
     passed:
       factCoverage >= thresholds.factCoverage &&
-      keywordMetrics.f1 >= thresholds.keywordF1 &&
+      keywordF1 >= thresholds.keywordF1 &&
       rougeL >= thresholds.rougeL &&
-      relatedMetrics.score >= thresholds.relatedRelevance,
+      relatedRelevance >= thresholds.relatedRelevance &&
+      citationPrecision >= thresholds.citationPrecision &&
+      citationRecall >= thresholds.citationRecall &&
+      unsupportedClaimRate <= thresholds.unsupportedClaimRate &&
+      evidenceCoverage >= thresholds.evidenceCoverage &&
+      refusalQuality >= thresholds.refusalQuality,
+    // Groundedness fields
+    citationPrecision,
+    citationRecall,
+    unsupportedClaimRate,
+    evidenceCoverage,
+    refusalQuality,
+    sourceType: benchmark.sourceType,
   };
 }
 
@@ -270,26 +415,48 @@ export function runBenchmark(
     keywordF1: 0.7,
     rougeL: 0.5,
     relatedRelevance: 0.8,
+    citationPrecision: 0.5,
+    citationRecall: 0.5,
+    unsupportedClaimRate: 0.3,
+    evidenceCoverage: 0.5,
+    refusalQuality: 0.8,
   },
 ): BenchmarkReport {
   const perCase = cases.map((c) => evaluateAnalysisCase(c, thresholds));
   const total = perCase.length || 1;
+
+  const metadataCases = perCase.filter(
+    (e) => e.sourceType === "metadata",
+  ).length;
+  const pdfTextCases = perCase.filter(
+    (e) => e.sourceType === "pdf-text",
+  ).length;
+
+  // Helpers to safely average optional groundedness fields
+  const avg = (vals: (number | undefined)[]): number => {
+    const defined = vals.filter((v): v is number => v !== undefined);
+    if (!defined.length) return 0;
+    return defined.reduce((s, v) => s + v, 0) / defined.length;
+  };
+
   return {
     runDate: new Date().toISOString(),
     totalCases: cases.length,
     avgFactCoverage: perCase.reduce((s, e) => s + e.factCoverage, 0) / total,
     avgKeywordF1: perCase.reduce((s, e) => s + e.keywordF1, 0) / total,
-    avgKeywordPrecision:
-      perCase.reduce((s, e) => s + e.keywordPrecision, 0) / total,
-    avgKeywordRecall: perCase.reduce((s, e) => s + e.keywordRecall, 0) / total,
     avgRougeL: perCase.reduce((s, e) => s + e.rougeL, 0) / total,
     avgRelatedRelevance:
       perCase.reduce((s, e) => s + e.relatedRelevance, 0) / total,
-    avgRelatedPrecision:
-      perCase.reduce((s, e) => s + e.relatedPrecision, 0) / total,
-    avgRelatedRecall: perCase.reduce((s, e) => s + e.relatedRecall, 0) / total,
     passRate: perCase.filter((e) => e.passed).length / total,
     perCase,
+    // Groundedness aggregates
+    avgCitationPrecision: avg(perCase.map((e) => e.citationPrecision)),
+    avgCitationRecall: avg(perCase.map((e) => e.citationRecall)),
+    avgUnsupportedClaimRate: avg(perCase.map((e) => e.unsupportedClaimRate)),
+    avgEvidenceCoverage: avg(perCase.map((e) => e.evidenceCoverage)),
+    avgRefusalQuality: avg(perCase.map((e) => e.refusalQuality)),
+    metadataCases,
+    pdfTextCases,
   };
 }
 
@@ -310,229 +477,46 @@ export function formatReportMarkdown(report: BenchmarkReport): string {
     "|--------|---------|--------|",
     `| Fact Coverage | ${report.avgFactCoverage.toFixed(3)} | 0.80 |`,
     `| Keyword F1 | ${report.avgKeywordF1.toFixed(3)} | 0.70 |`,
-    `| Keyword Precision | ${report.avgKeywordPrecision.toFixed(3)} | - |`,
-    `| Keyword Recall | ${report.avgKeywordRecall.toFixed(3)} | - |`,
     `| ROUGE-L | ${report.avgRougeL.toFixed(3)} | 0.50 |`,
     `| Related Relevance | ${report.avgRelatedRelevance.toFixed(3)} | 0.80 |`,
-    `| Related Precision | ${report.avgRelatedPrecision.toFixed(3)} | - |`,
-    `| Related Recall | ${report.avgRelatedRecall.toFixed(3)} | - |`,
+    "",
+    "### Groundedness Metrics",
+    "",
+    "| Metric | Average | Target |",
+    "|--------|---------|--------|",
+    `| Citation Precision | ${report.avgCitationPrecision.toFixed(3)} | 0.50 |`,
+    `| Citation Recall | ${report.avgCitationRecall.toFixed(3)} | 0.50 |`,
+    `| Unsupported-Claim Rate | ${report.avgUnsupportedClaimRate.toFixed(3)} | ≤0.30 |`,
+    `| Evidence Coverage | ${report.avgEvidenceCoverage.toFixed(3)} | 0.50 |`,
+    `| Refusal Quality | ${report.avgRefusalQuality.toFixed(3)} | 0.80 |`,
+    "",
+    "### Source-Type BreakDown",
+    "",
+    `| Source Type | Count |`,
+    `|------------|-------|`,
+    `| Metadata-only | ${report.metadataCases} |`,
+    `| PDF-text | ${report.pdfTextCases} |`,
+    "",
     `| Pass Rate | ${(report.passRate * 100).toFixed(1)}% | 100% |`,
     "",
     "## Per-Case Results",
     "",
-    "| ID | Fact Cov. | KW F1 | KW P/R | ROUGE-L | Related | Passed |",
-    "|----|-----------|--------|---------|---------|---------|--------|",
+    "| ID | Fact Cov. | Keyword F1 | ROUGE-L | Related | Cit. Prec. | Cit. Rec. | Unsup. | Evidence | Refusal | Type | Passed |",
+    "|----|-----------|------------|---------|---------|------------|-----------|--------|----------|---------|------|--------|",
     ...report.perCase.map(
       (e) =>
-        `| ${e.id} | ${e.factCoverage.toFixed(2)} | ${e.keywordF1.toFixed(2)} | ${e.keywordPrecision.toFixed(2)}/${e.keywordRecall.toFixed(2)} | ${e.rougeL.toFixed(2)} | ${e.relatedRelevance.toFixed(2)} | ${e.passed ? "Yes" : "No"} |`,
+        `| ${e.id} | ${e.factCoverage.toFixed(2)} | ${e.keywordF1.toFixed(2)} | ${e.rougeL.toFixed(2)} | ${e.relatedRelevance.toFixed(2)} | ${(e.citationPrecision ?? 0).toFixed(2)} | ${(e.citationRecall ?? 0).toFixed(2)} | ${(e.unsupportedClaimRate ?? 0).toFixed(2)} | ${(e.evidenceCoverage ?? 0).toFixed(2)} | ${(e.refusalQuality ?? 0).toFixed(2)} | ${e.sourceType ?? "n/a"} | ${e.passed ? "Yes" : "No"} |`,
     ),
     "",
-  ];
-
-  // Add LLM provider comparison section if available
-  if (report.providerComparisons && report.providerComparisons.length > 0) {
-    lines.push("## LLM Provider Comparison", "");
-    lines.push(
-      "| Case ID | Metric | " +
-        report.providerComparisons[0].results
-          .map((r) => r.provider)
-          .join(" | ") +
-        " | Best |",
-    );
-    lines.push(
-      "|---------|--------|" +
-        report.providerComparisons[0].results.map(() => "--------").join("|") +
-        "|--------|",
-    );
-
-    const metrics = [
-      "factCoverage",
-      "keywordF1",
-      "rougeL",
-      "relatedRelevance",
-    ] as const;
-    const metricLabels = [
-      "Fact Coverage",
-      "Keyword F1",
-      "ROUGE-L",
-      "Related Relevance",
-    ];
-
-    metrics.forEach((metric, idx) => {
-      const row = [
-        `| ${report.providerComparisons![0].caseId} | ${metricLabels[idx]} |`,
-      ];
-      report.providerComparisons!.forEach((comp) => {
-        const values = comp.results.map((r) => {
-          const val = r.evaluation[metric];
-          return typeof val === "number" ? val.toFixed(3) : "N/A";
-        });
-        row.push(values.join(" | ") + " |");
-      });
-      lines.push(row.join(""));
-    });
-    lines.push("");
-  }
-
-  return lines.join("\n");
-}
-
-// ---------------------------------------------------------------------------
-// LLM Provider Comparison
-// ---------------------------------------------------------------------------
-
-/**
- * Compare multiple LLM providers on the same benchmark case.
- * Each provider result should have the candidate outputs (summary, keywords, related).
- */
-export function compareProviders(
-  benchmark: AIAnalysisBenchmarkCase,
-  providerResults: Array<{
-    provider: string;
-    model: string;
-    candidateSummary: string;
-    candidateKeywords: string[];
-    candidateRelated?: string[];
-  }>,
-  thresholds = {
-    factCoverage: 0.8,
-    keywordF1: 0.7,
-    rougeL: 0.5,
-    relatedRelevance: 0.8,
-  },
-): LLMProviderComparison {
-  const results: LLMProviderResult[] = providerResults.map((pr) => {
-    const evaluation = evaluateAnalysisCase(
-      {
-        ...benchmark,
-        candidateSummary: pr.candidateSummary,
-        candidateKeywords: pr.candidateKeywords,
-        candidateRelated: pr.candidateRelated,
-      },
-      thresholds,
-    );
-    return {
-      provider: pr.provider,
-      model: pr.model,
-      evaluation,
-    };
-  });
-
-  // Determine best provider for each metric
-  const metricComparisons = {
-    factCoverage: {} as { [provider: string]: number },
-    keywordF1: {} as { [provider: string]: number },
-    rougeL: {} as { [provider: string]: number },
-    relatedRelevance: {} as { [provider: string]: number },
-  };
-
-  results.forEach((r) => {
-    metricComparisons.factCoverage[r.provider] = r.evaluation.factCoverage;
-    metricComparisons.keywordF1[r.provider] = r.evaluation.keywordF1;
-    metricComparisons.rougeL[r.provider] = r.evaluation.rougeL;
-    metricComparisons.relatedRelevance[r.provider] =
-      r.evaluation.relatedRelevance;
-  });
-
-  // Simple best provider: highest average of all metrics
-  let bestProvider = results[0].provider;
-  let bestScore = -1;
-  results.forEach((r) => {
-    const avg =
-      (r.evaluation.factCoverage +
-        r.evaluation.keywordF1 +
-        r.evaluation.rougeL +
-        r.evaluation.relatedRelevance) /
-      4;
-    if (avg > bestScore) {
-      bestScore = avg;
-      bestProvider = r.provider;
-    }
-  });
-
-  return {
-    caseId: benchmark.id,
-    results,
-    bestProvider,
-    metricComparisons,
-  };
-}
-
-/**
- * Run provider comparison across multiple benchmark cases.
- */
-export function runProviderComparison(
-  cases: AIAnalysisBenchmarkCase[],
-  providerResultsMap: Map<
-    string,
-    Array<{
-      caseId: string;
-      candidateSummary: string;
-      candidateKeywords: string[];
-      candidateRelated?: string[];
-      model: string;
-    }>
-  >,
-  thresholds = {
-    factCoverage: 0.8,
-    keywordF1: 0.7,
-    rougeL: 0.5,
-    relatedRelevance: 0.8,
-  },
-): LLMProviderComparison[] {
-  return cases.map((benchmark) => {
-    const providerResults = Array.from(providerResultsMap.entries()).map(
-      ([provider, results]) => {
-        const result = results.find((r) => r.caseId === benchmark.id);
-        if (!result) {
-          throw new Error(
-            `No result found for provider ${provider}, case ${benchmark.id}`,
-          );
-        }
-        return {
-          provider,
-          model: result.model,
-          candidateSummary: result.candidateSummary,
-          candidateKeywords: result.candidateKeywords,
-          candidateRelated: result.candidateRelated,
-        };
-      },
-    );
-    return compareProviders(benchmark, providerResults, thresholds);
-  });
-}
-
-/**
- * Format LLM provider comparison as a markdown string.
- */
-export function formatProviderComparisonMarkdown(
-  comparisons: LLMProviderComparison[],
-): string {
-  const lines: string[] = [
-    "# LLM Provider Comparison Report",
+    "---",
     "",
-    `**Run date:** ${new Date().toISOString()}`,
-    `**Total cases:** ${comparisons.length}`,
+    "**Groundedness metrics explanation:**",
+    "- **Citation Precision**: fraction of candidate citations that are correct.",
+    "- **Citation Recall**: fraction of expected citations that were found.",
+    "- **Unsupported-Claim Rate**: lower is better (≤0.30 target).",
+    "- **Evidence Coverage**: fraction of evidence chunks actually used.",
+    "- **Refusal Quality**: did the model correctly refuse when evidence was insufficient?",
     "",
   ];
-
-  comparisons.forEach((comp) => {
-    lines.push(`## Case: ${comp.caseId}`, "");
-    lines.push(
-      "| Provider | Model | Fact Cov. | KW F1 | ROUGE-L | Related | Passed |",
-    );
-    lines.push(
-      "|----------|-------|-----------|-------|---------|---------|--------|",
-    );
-    comp.results.forEach((r) => {
-      lines.push(
-        `| ${r.provider} | ${r.model} | ${r.evaluation.factCoverage.toFixed(3)} | ${r.evaluation.keywordF1.toFixed(3)} | ${r.evaluation.rougeL.toFixed(3)} | ${r.evaluation.relatedRelevance.toFixed(3)} | ${r.evaluation.passed ? "Yes" : "No"} |`,
-      );
-    });
-    lines.push("");
-    lines.push(`**Best provider:** ${comp.bestProvider}`);
-    lines.push("");
-  });
-
   return lines.join("\n");
 }

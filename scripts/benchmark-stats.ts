@@ -3,7 +3,8 @@
  * Benchmark statistics script
  *
  * This script provides detailed statistics about the current AI analysis benchmark,
- * helping track progress toward the 50-paper goal for issue #15.
+ * helping track progress toward the 50-paper goal for issue #15 and groundedness
+ * metrics for issue #33.
  *
  * Usage: node scripts/benchmark-stats.ts
  */
@@ -30,6 +31,13 @@ interface AIAnalysisBenchmarkCase {
   authors?: string[];
   year?: number;
   venue?: string;
+  // Groundedness fields (issue #33)
+  expectedCitations?: string[];
+  candidateCitations?: string[];
+  evidenceChunks?: string[];
+  claims?: string[];
+  insufficientEvidence?: boolean;
+  sourceType?: "metadata" | "pdf-text";
 }
 
 interface DomainStats {
@@ -48,6 +56,13 @@ interface BenchmarkStatistics {
   averageFacts: number;
   averageKeywords: number;
   averageRelated: number;
+  // Groundedness statistics (issue #33)
+  fixturesWithCitations: number;
+  fixturesWithEvidence: number;
+  fixturesWithClaims: number;
+  insufficientEvidenceCases: number;
+  metadataCases: number;
+  pdfTextCases: number;
 }
 
 function categorizeDomain(fixture: AIAnalysisBenchmarkCase): string {
@@ -114,6 +129,26 @@ function calculateStatistics(
     (f) => f.doi || f.arxivId || f.year || f.authors,
   ).length;
 
+  // Groundedness statistics (issue #33)
+  const fixturesWithCitations = fixtures.filter(
+    (f) => f.expectedCitations && f.expectedCitations.length > 0,
+  ).length;
+  const fixturesWithEvidence = fixtures.filter(
+    (f) => f.evidenceChunks && f.evidenceChunks.length > 0,
+  ).length;
+  const fixturesWithClaims = fixtures.filter(
+    (f) => f.claims && f.claims.length > 0,
+  ).length;
+  const insufficientEvidenceCases = fixtures.filter(
+    (f) => f.insufficientEvidence === true,
+  ).length;
+  const metadataCases = fixtures.filter(
+    (f) => f.sourceType === "metadata",
+  ).length;
+  const pdfTextCases = fixtures.filter(
+    (f) => f.sourceType === "pdf-text",
+  ).length;
+
   // Domain analysis
   const domainMap = new Map<string, DomainStats>();
   fixtures.forEach((fixture) => {
@@ -147,6 +182,13 @@ function calculateStatistics(
     averageFacts: Math.round(avgFacts * 10) / 10,
     averageKeywords: Math.round(avgKeywords * 10) / 10,
     averageRelated: Math.round(avgRelated * 10) / 10,
+    // Groundedness statistics
+    fixturesWithCitations,
+    fixturesWithEvidence,
+    fixturesWithClaims,
+    insufficientEvidenceCases,
+    metadataCases,
+    pdfTextCases,
   };
 }
 
@@ -192,6 +234,24 @@ function main() {
     console.log(
       `Average related papers per fixture: ${stats.averageRelated}\n`,
     );
+
+    console.log("📊 Groundedness Metrics (Issue #33)");
+    console.log("-----------------------------------");
+    console.log(
+      `Fixtures with citations: ${stats.fixturesWithCitations}/${stats.totalFixtures}`,
+    );
+    console.log(
+      `Fixtures with evidence chunks: ${stats.fixturesWithEvidence}/${stats.totalFixtures}`,
+    );
+    console.log(
+      `Fixtures with claims: ${stats.fixturesWithClaims}/${stats.totalFixtures}`,
+    );
+    console.log(
+      `Insufficient-evidence cases: ${stats.insufficientEvidenceCases}`,
+    );
+    console.log(`Metadata-only cases: ${stats.metadataCases}`);
+    console.log(`PDF-text cases: ${stats.pdfTextCases}`);
+    console.log("");
 
     console.log("🚀 Recommended Next Steps");
     console.log("-------------------------");
