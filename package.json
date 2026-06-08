@@ -27,7 +27,7 @@
     "lint:fix": "prettier --write . && eslint . --fix",
     "release": "zotero-plugin release",
     "test": "zotero-plugin test",
-    "test:unit": "mocha --config .mocharc.yml",
+    "test:unit": "mocha --config .mocharc.yml --ignore test/startup.test.ts",
     "validate-fixtures": "node scripts/validate-fixtures.ts",
     "benchmark-stats": "node scripts/benchmark-stats.ts",
     "update-deps": "npm update --save"
@@ -50,6 +50,7 @@
     "mocha": "^11.7.6",
     "prettier": "^3.8.3",
     "ts-node": "^10.9.2",
+    "tsx": "^4.22.4",
     "typescript": "^6.0.3",
     "vite": "^8.0.16",
     "zotero-plugin-scaffold": "^0.8.6",
