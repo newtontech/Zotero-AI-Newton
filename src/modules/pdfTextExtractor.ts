@@ -41,9 +41,7 @@ function getCreators(item: Zotero.Item): string[] {
     if (!creators) return [];
     return creators
       .slice(0, 3)
-      .map(
-        (c: any) => c.name || c.lastName || c.firstName || "",
-      )
+      .map((c: any) => c.name || c.lastName || c.firstName || "")
       .filter(Boolean);
   } catch {
     return [];
@@ -80,10 +78,15 @@ async function extractPDFText(item: Zotero.Item): Promise<PDFTextResult> {
       const attachment = Zotero.Items.get(attachmentID);
       if (!attachment) continue;
 
+      const attachmentLike = attachment as any;
       const contentType = attachment.attachmentContentType || "";
+      const attachmentFileName =
+        typeof attachmentLike.attachmentFilename === "function"
+          ? attachmentLike.attachmentFilename()
+          : attachmentLike.attachmentFilename;
       const isPDF =
         contentType === "application/pdf" ||
-        attachment.attachmentFilename?.().toLowerCase().endsWith(".pdf");
+        attachmentFileName?.toLowerCase().endsWith(".pdf");
 
       if (!isPDF) continue;
 
@@ -91,7 +94,9 @@ async function extractPDFText(item: Zotero.Item): Promise<PDFTextResult> {
 
       // Try to get full-text content from Zotero's index
       try {
-        const fullTextItem = await Zotero.FullText.getItemText(attachment.id);
+        const fullTextItem = await (Zotero.FullText as any).getItemText?.(
+          attachment.id,
+        );
         if (fullTextItem && fullTextItem.text) {
           result.hasFullText = true;
           // Parse full text into pages (best effort)
@@ -128,7 +133,8 @@ function parseFullTextToPages(fullText: string): Array<{
   text: string;
 }> {
   // Simple page splitting heuristic - look for page markers or split by size
-  const pages: Array<{ pageIndex: number; pageLabel?: string; text: string }> = [];
+  const pages: Array<{ pageIndex: number; pageLabel?: string; text: string }> =
+    [];
 
   // Try to split by common page markers
   const pageMarkers = fullText.split(/(?=--- Page \d+ ---|=== Page \d+ ===)/gi);
@@ -136,7 +142,9 @@ function parseFullTextToPages(fullText: string): Array<{
   if (pageMarkers.length > 1) {
     pageMarkers.forEach((marker, idx) => {
       if (idx === 0 && marker.trim().length < 50) return;
-      const text = marker.replace(/--- Page \d+ ---|=== Page \d+ ===/g, "").trim();
+      const text = marker
+        .replace(/--- Page \d+ ---|=== Page \d+ ===/g, "")
+        .trim();
       if (text) {
         pages.push({
           pageIndex: idx,
@@ -158,13 +166,15 @@ function parseFullTextToPages(fullText: string): Array<{
   return pages;
 }
 
-async function getPDFAnnotations(attachment: Zotero.Item): Promise<Array<{
-  id: string;
-  type: string;
-  pageIndex: number;
-  text: string;
-  comment?: string;
-}>> {
+async function getPDFAnnotations(attachment: Zotero.Item): Promise<
+  Array<{
+    id: string;
+    type: string;
+    pageIndex: number;
+    text: string;
+    comment?: string;
+  }>
+> {
   const annotations: Array<{
     id: string;
     type: string;
@@ -175,12 +185,15 @@ async function getPDFAnnotations(attachment: Zotero.Item): Promise<Array<{
 
   try {
     // Get child items (annotations) of the attachment
-    const childIDs = attachment.getChildren();
+    const childIDs = (attachment as any).getChildren?.() ?? [];
     for (const childID of childIDs) {
       const child = Zotero.Items.get(childID);
       if (!child) continue;
 
-      const itemType = child.getItemType();
+      const itemType =
+        typeof (child as any).getItemType === "function"
+          ? (child as any).getItemType()
+          : child.itemType;
       if (itemType !== "annotation") continue;
 
       const annotationType = (child as any).annotationType || "highlight";
@@ -207,9 +220,7 @@ async function getPDFAnnotations(attachment: Zotero.Item): Promise<Array<{
   return annotations;
 }
 
-export async function extractEvidenceForItems(
-  items: Zotero.Item[],
-): Promise<{
+export async function extractEvidenceForItems(items: Zotero.Item[]): Promise<{
   chunks: EvidenceChunk[];
   hasPDFEvidence: boolean;
   warnings: string[];
