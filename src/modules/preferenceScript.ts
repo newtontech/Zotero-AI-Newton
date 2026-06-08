@@ -246,3 +246,4 @@ function bindPrefEvents() {
     element.addEventListener("command", handler);
   });
 
+}
