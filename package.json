@@ -22,7 +22,7 @@
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "zotero-plugin serve",
-    "build": "zotero-plugin build && mv .scaffold/build/zotero-ai-newton.xpi .scaffold/build/zotero-ai-newton-$npm_package_version.xpi && cp .scaffold/build/zotero-ai-newton-$npm_package_version.xpi release/ && node scripts/update-update-hash.ts && tsc --noEmit",
+    "build": "zotero-plugin build && mv .scaffold/build/zotero-ai-newton.xpi .scaffold/build/zotero-ai-newton-$npm_package_version.xpi && cp .scaffold/build/zotero-ai-newton-$npm_package_version.xpi release/ && tsc --noEmit",
     "lint:check": "prettier --check . && eslint .",
     "lint:fix": "prettier --write . && eslint . --fix",
     "release": "zotero-plugin release",
@@ -30,6 +30,7 @@
     "validate-fixtures": "node scripts/validate-fixtures.ts",
     "benchmark-stats": "node scripts/benchmark-stats.ts",
     "smoke-test": "node scripts/smoke-test.ts",
+    "update-release-hash": "node scripts/update-update-hash.ts",
     "update-deps": "npm update --save"
   },
   "dependencies": {
