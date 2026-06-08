@@ -1,24 +1,18 @@
 import { getString } from "../utils/locale";
 import { getPref } from "../utils/prefs";
-import {
-  EvidenceChunk,
-  extractEvidenceForItems,
-  formatEvidenceForPrompt,
-} from "./pdfTextExtractor";
+import { GroundedAnswer } from "./llmClient";
 
 export interface ChatTurn {
   role: "user" | "assistant";
   content: string;
   contextLabel?: string;
+  groundedAnswer?: GroundedAnswer;
 }
 
 export interface WorkspaceContext {
   items: Zotero.Item[];
   label: string;
   attachments: number;
-  evidenceChunks?: EvidenceChunk[];
-  hasPDFEvidence?: boolean;
-  pdfWarnings?: string[];
 }
 
 export function resolveTone(): string {
@@ -73,23 +67,6 @@ export function collectContext(): WorkspaceContext {
   };
 }
 
-export async function enrichContextWithPDFEvidence(
-  context: WorkspaceContext,
-): Promise<WorkspaceContext> {
-  if (!context.items.length) return context;
-
-  const { chunks, hasPDFEvidence, warnings } = await extractEvidenceForItems(
-    context.items,
-  );
-
-  return {
-    ...context,
-    evidenceChunks: chunks,
-    hasPDFEvidence,
-    pdfWarnings: warnings,
-  };
-}
-
 export function describeItems(items: Zotero.Item[], attachments: number) {
   if (!items.length) return getString("workspace-empty");
   const topItems = items.slice(0, 3).map((item) => {
@@ -124,13 +101,5 @@ export function formatContextForPrompt(context: WorkspaceContext) {
   const header = `${getString("workspace-context")} (${context.items.length} ${getString(
     "workspace-items",
   )}${context.attachments ? `, ${context.attachments} ${getString("workspace-pdfs")}` : ""})`;
-
-  const parts = [[header, ...itemLines].filter(Boolean).join("\n")];
-
-  // Include PDF evidence if available
-  if (context.evidenceChunks && context.evidenceChunks.length > 0) {
-    parts.push(formatEvidenceForPrompt(context.evidenceChunks));
-  }
-
-  return parts.join("\n\n");
+  return [header, ...itemLines].filter(Boolean).join("\n");
 }

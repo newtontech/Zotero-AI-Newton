@@ -4,9 +4,12 @@ import {
   WorkspaceContext,
   collectContext,
   describeItems,
-  enrichContextWithPDFEvidence,
 } from "./workspaceContext";
-import { requestLLMCompletion, summarizeContextForHistory } from "./llmClient";
+import {
+  requestLLMCompletion,
+  summarizeContextForHistory,
+  GroundedAnswer,
+} from "./llmClient";
 import { buildAnalysisInstruction, getAnalysisTemplates } from "./aiAnalysis";
 import type { AnalysisKind } from "./aiAnalysis";
 
@@ -26,6 +29,12 @@ function renderHistory(container: HTMLElement, history: ChatTurn[]) {
     const row = doc.createElement("div");
     row.classList.add("ai-workspace-line");
     row.textContent = `${turn.role === "user" ? "🧑" : "🤖"} ${turn.content}`;
+
+    // Render grounded answer with citations if available
+    if (turn.role === "assistant" && turn.groundedAnswer) {
+      renderGroundedAnswer(doc, row, turn.groundedAnswer);
+    }
+
     if (turn.contextLabel) {
       const detail = doc.createElement("div");
       detail.classList.add("ai-workspace-context");
@@ -34,6 +43,110 @@ function renderHistory(container: HTMLElement, history: ChatTurn[]) {
     }
     container.appendChild(row);
   });
+}
+
+function renderGroundedAnswer(
+  doc: Document,
+  container: HTMLElement,
+  answer: GroundedAnswer,
+) {
+  // Confidence indicator
+  const confidenceBadge = doc.createElement("span");
+  confidenceBadge.classList.add(
+    "ai-evidence-confidence",
+    `ai-confidence-${answer.confidence}`,
+  );
+  confidenceBadge.textContent =
+    getString(`workspace-confidence-${answer.confidence}` as any) ||
+    answer.confidence;
+  container.appendChild(confidenceBadge);
+
+  // Citations
+  if (answer.citations && answer.citations.length > 0) {
+    const citationsContainer = doc.createElement("div");
+    citationsContainer.classList.add("ai-evidence-citations");
+
+    const citationsTitle = doc.createElement("div");
+    citationsTitle.classList.add("ai-evidence-citations-title");
+    citationsTitle.textContent = getString("workspace-citations-title");
+    citationsContainer.appendChild(citationsTitle);
+
+    answer.citations.forEach((citation) => {
+      const citationCard = doc.createElement("div");
+      citationCard.classList.add("ai-evidence-card");
+
+      const citationHeader = doc.createElement("div");
+      citationHeader.classList.add("ai-evidence-card-header");
+      citationHeader.textContent = citation.title;
+      citationCard.appendChild(citationHeader);
+
+      if (citation.page) {
+        const pageInfo = doc.createElement("span");
+        pageInfo.classList.add("ai-evidence-card-page");
+        pageInfo.textContent = `p. ${citation.page}`;
+        citationHeader.appendChild(pageInfo);
+      }
+
+      if (citation.quote) {
+        const quote = doc.createElement("div");
+        quote.classList.add("ai-evidence-card-quote");
+        quote.textContent = ` "${citation.quote}"`;
+        citationCard.appendChild(quote);
+      }
+
+      citationsContainer.appendChild(citationCard);
+    });
+
+    container.appendChild(citationsContainer);
+  }
+
+  // Unsupported claims warning
+  if (answer.unsupportedClaims && answer.unsupportedClaims.length > 0) {
+    const warning = doc.createElement("div");
+    warning.classList.add("ai-evidence-unsupported");
+    warning.textContent = getString("workspace-unsupported-warning");
+
+    const claimsList = doc.createElement("ul");
+    answer.unsupportedClaims.forEach((claim) => {
+      const li = doc.createElement("li");
+      li.textContent = claim;
+      claimsList.appendChild(li);
+    });
+    warning.appendChild(claimsList);
+    container.appendChild(warning);
+  }
+
+  // Copy button for cited answer
+  const copyButton = doc.createElement("button");
+  copyButton.classList.add("ai-evidence-copy-btn");
+  copyButton.textContent = getString("workspace-copy-answer");
+  copyButton.addEventListener("click", () => {
+    const textToCopy = formatGroundedAnswerForCopy(answer);
+    Zotero.Utilities.Internal.copyTextToClipboard(textToCopy);
+  });
+  container.appendChild(copyButton);
+}
+
+export function formatGroundedAnswerForCopy(answer: GroundedAnswer): string {
+  const lines: string[] = [answer.answer, ""];
+
+  if (answer.citations && answer.citations.length > 0) {
+    lines.push("Citations:");
+    answer.citations.forEach((cit) => {
+      const pageStr = cit.page ? ` (p. ${cit.page})` : "";
+      lines.push(`- ${cit.title}${pageStr}`);
+      if (cit.quote) lines.push(`  "${cit.quote}"`);
+    });
+    lines.push("");
+  }
+
+  if (answer.unsupportedClaims && answer.unsupportedClaims.length > 0) {
+    lines.push("Unsupported claims:");
+    answer.unsupportedClaims.forEach((claim) => lines.push(`- ${claim}`));
+  }
+
+  lines.push(`Confidence: ${answer.confidence}`);
+  return lines.join("\n");
 }
 
 function updateStatus(doc: Document, text: string) {
@@ -245,21 +358,10 @@ function buildSectionBody(
     const freshContext = collectContext();
     summary.textContent = `${getString("workspace-context")}: ${freshContext.label}`;
 
-    // Enrich context with PDF evidence and show warnings
-    const enrichedContext = await enrichContextWithPDFEvidence(freshContext);
-
-    // Show PDF evidence status
-    if (enrichedContext.pdfWarnings && enrichedContext.pdfWarnings.length > 0) {
-      const warningText = `${getString("pdf-no-evidence")}\n${enrichedContext.pdfWarnings.join("\n")}`;
-      updateStatus(doc, warningText);
-    } else if (enrichedContext.hasPDFEvidence) {
-      updateStatus(doc, getString("pdf-evidence-available"));
-    }
-
     history.push({
       role: "user",
       content: question,
-      contextLabel: enrichedContext.label,
+      contextLabel: freshContext.label,
     });
     textarea.value = "";
     renderHistory(historyContainer, history);
@@ -267,14 +369,23 @@ function buildSectionBody(
     try {
       const answer = await requestLLMCompletion(
         question,
-        enrichedContext,
+        freshContext,
         history,
       );
-      history.push({
+
+      // Handle both GroundedAnswer and plain string responses
+      const chatTurn: ChatTurn = {
         role: "assistant",
-        content: answer,
-        contextLabel: summarizeContextForHistory(enrichedContext),
-      });
+        content: typeof answer === "string" ? answer : answer.answer,
+        contextLabel: summarizeContextForHistory(freshContext),
+      };
+
+      // Store grounded answer if available
+      if (typeof answer !== "string") {
+        chatTurn.groundedAnswer = answer;
+      }
+
+      history.push(chatTurn);
       renderHistory(historyContainer, history);
       updateStatus(doc, "");
     } catch (err: unknown) {
@@ -285,7 +396,7 @@ function buildSectionBody(
       history.push({
         role: "assistant",
         content: `${getString("workspace-error-generic")}: ${message}`,
-        contextLabel: summarizeContextForHistory(enrichedContext),
+        contextLabel: summarizeContextForHistory(freshContext),
       });
       renderHistory(historyContainer, history);
       updateStatus(doc, message);

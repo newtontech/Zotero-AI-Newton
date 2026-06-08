@@ -6,53 +6,23 @@ import {
   describeItems,
   formatContextForPrompt,
   resolveTone,
-  enrichContextWithPDFEvidence,
 } from "./workspaceContext";
-import { redactApiKey, isAllowedApiUrl, safeLog } from "../utils/security";
+
+export interface GroundedAnswer {
+  answer: string;
+  citations: Array<{
+    evidenceId: string;
+    title: string;
+    page?: number;
+    quote?: string;
+  }>;
+  unsupportedClaims?: string[];
+  confidence: "high" | "medium" | "low";
+}
 
 interface ChatMessage {
   role: "system" | "user" | "assistant";
   content: string;
-}
-
-/**
- * Sanitize user input to prevent prompt injection attacks.
- * Escapes delimiter markers and strips potential injection patterns.
- */
-function sanitizeUserInput(input: string): string {
-  if (!input) return input;
-
-  let sanitized = input;
-
-  // Escape delimiter markers to prevent breaking out of the safe zone
-  sanitized = sanitized.replace(
-    /### USER CONTENT START ###/gi,
-    "[REMOVED DELIMITER]",
-  );
-  sanitized = sanitized.replace(
-    /### USER CONTENT END ###/gi,
-    "[REMOVED DELIMITER]",
-  );
-
-  // Strip common prompt injection patterns
-  // Remove attempts to override system instructions
-  sanitized = sanitized.replace(
-    /ignore (all )?(previous|above|prior) instructions?/gi,
-    "[REMOVED]",
-  );
-  sanitized = sanitized.replace(
-    /you are now|act as|pretend to be/gi,
-    "[REMOVED]",
-  );
-
-  // Limit input length to prevent abuse (max 50k characters)
-  const MAX_INPUT_LENGTH = 50000;
-  if (sanitized.length > MAX_INPUT_LENGTH) {
-    sanitized =
-      sanitized.substring(0, MAX_INPUT_LENGTH) + "\n[CONTENT TRUNCATED]";
-  }
-
-  return sanitized;
 }
 
 function buildMessages(
@@ -67,13 +37,8 @@ function buildMessages(
     },
   });
   const contextText = formatContextForPrompt(context);
-
-  // Wrap untrusted content in delimiters to prevent prompt injection
-  const safeQuestion = sanitizeUserInput(question);
-  const wrappedContext = `### USER CONTENT START ###\n${contextText}\n### USER CONTENT END ###`;
-  const wrappedQuestion = `### USER CONTENT START ###\n${safeQuestion}\n### USER CONTENT END ###`;
-
-  const intro = `${systemPrompt}\n${getString("workspace-answer-context")} ${wrappedContext}`;
+  const evidenceInstruction = getString("workspace-evidence-instruction") || "";
+  const intro = `${systemPrompt}\n${getString("workspace-answer-context")} ${contextText}${evidenceInstruction ? "\n\n" + evidenceInstruction : ""}`;
 
   const trimmedHistory = history
     .slice(-8)
@@ -82,98 +47,99 @@ function buildMessages(
   return [
     { role: "system", content: intro },
     ...trimmedHistory,
-    { role: "user", content: wrappedQuestion },
+    { role: "user", content: question },
   ];
 }
 
-const MAX_REQUEST_SIZE = 100000; // 100KB max request size
-const MAX_RESPONSE_SIZE = 1000000; // 1MB max response size
-
 async function postJSON(url: string, body: any, key: string) {
-  const bodyString = JSON.stringify(body);
-
-  // Check request size
-  if (bodyString.length > MAX_REQUEST_SIZE) {
-    throw new Error(
-      `Request too large: ${bodyString.length} bytes exceeds limit of ${MAX_REQUEST_SIZE}`,
-    );
-  }
-
-  safeLog(`POST ${url}`, `Request size: ${bodyString.length} bytes`);
-
   const xhr = await Zotero.HTTP.request("POST", url, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${key}`,
     },
-    body: bodyString,
+    body: JSON.stringify(body),
     responseType: "json",
-    timeout: 60000, // 60 second timeout
+    timeout: 60000,
     successCodes: [200, 201],
   });
-
-  const response = xhr.response || JSON.parse(xhr.responseText || "{}");
-
-  // Check response size (approximate)
-  const responseSize = JSON.stringify(response).length;
-  if (responseSize > MAX_RESPONSE_SIZE) {
-    throw new Error(
-      `Response too large: ${responseSize} bytes exceeds limit of ${MAX_RESPONSE_SIZE}`,
-    );
-  }
-
-  safeLog(`Response received`, `Response size: ${responseSize} bytes`);
-
-  return response;
+  return xhr.response || JSON.parse(xhr.responseText || "{}");
 }
 
 export async function requestLLMCompletion(
   question: string,
   context: WorkspaceContext,
   history: ChatTurn[],
-): Promise<string> {
-  // Enrich context with PDF evidence if available
-  const enrichedContext = await enrichContextWithPDFEvidence(context);
-
+): Promise<GroundedAnswer | string> {
   const provider = resolveProviderFromPrefs();
-
-  // Validate API base URL to prevent SSRF
-  if (!isAllowedApiUrl(provider.apiBase)) {
-    throw new Error(`Invalid or disallowed API base URL: ${provider.apiBase}`);
-  }
-
   if (!provider.key) {
     throw new Error(getString("workspace-error-missing-key"));
   }
-
   const payload = {
     model: provider.model,
-    messages: buildMessages(question, enrichedContext, history),
+    messages: buildMessages(question, context, history),
     temperature: 0.4,
-    max_tokens: 4096, // Add max token limit
   };
 
-  const apiUrl = `${provider.apiBase}/chat/completions`;
-  safeLog(`Making LLM request to ${apiUrl}`);
-
   try {
-    const data = await postJSON(apiUrl, payload, provider.key);
+    const data = await postJSON(
+      `${provider.apiBase}/chat/completions`,
+      payload,
+      provider.key,
+    );
     const content = data?.choices?.[0]?.message?.content;
     if (!content) {
       throw new Error(getString("workspace-error-empty"));
     }
-    return String(content).trim();
+
+    // Try to parse as structured GroundedAnswer
+    const parsed = parseGroundedAnswer(String(content).trim());
+    return parsed;
   } catch (err: unknown) {
     if (err instanceof Error) {
-      // Redact API key from error message before throwing
-      const redactedMessage = redactApiKey(err.message, provider.key);
       throw new Error(
-        `${getString("workspace-error-generic")}: ${redactedMessage}`,
+        `${getString("workspace-error-generic")}: ${err.message}`,
         { cause: err },
       );
     }
     throw err as Error;
   }
+}
+
+function parseGroundedAnswer(content: string): GroundedAnswer | string {
+  // Try to extract JSON from the response (might be wrapped in markdown code blocks)
+  const jsonMatch = content.match(
+    /```(?:json)?\s*(\{[\s\S]*\})\s*```|(\{[\s\S]*\})/,
+  );
+
+  if (jsonMatch) {
+    try {
+      const jsonStr = jsonMatch[1] || jsonMatch[2];
+      const parsed = JSON.parse(jsonStr);
+
+      // Validate the structure
+      if (parsed && typeof parsed === "object" && "answer" in parsed) {
+        return {
+          answer: parsed.answer || content,
+          citations: Array.isArray(parsed.citations) ? parsed.citations : [],
+          unsupportedClaims: Array.isArray(parsed.unsupportedClaims)
+            ? parsed.unsupportedClaims
+            : undefined,
+          confidence: ["high", "medium", "low"].includes(parsed.confidence)
+            ? parsed.confidence
+            : "medium",
+        } as GroundedAnswer;
+      }
+    } catch (e) {
+      // JSON parsing failed, fall through to return plain text
+      console.warn(
+        "Failed to parse structured response, falling back to plain text:",
+        e,
+      );
+    }
+  }
+
+  // Return plain text if structured parsing fails
+  return content;
 }
 
 export function summarizeContextForHistory(context: WorkspaceContext) {

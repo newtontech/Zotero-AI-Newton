@@ -78,15 +78,10 @@ async function extractPDFText(item: Zotero.Item): Promise<PDFTextResult> {
       const attachment = Zotero.Items.get(attachmentID);
       if (!attachment) continue;
 
-      const attachmentLike = attachment as any;
       const contentType = attachment.attachmentContentType || "";
-      const attachmentFileName =
-        typeof attachmentLike.attachmentFilename === "function"
-          ? attachmentLike.attachmentFilename()
-          : attachmentLike.attachmentFilename;
       const isPDF =
         contentType === "application/pdf" ||
-        attachmentFileName?.toLowerCase().endsWith(".pdf");
+        attachment.attachmentFilename?.().toLowerCase().endsWith(".pdf");
 
       if (!isPDF) continue;
 
@@ -94,9 +89,7 @@ async function extractPDFText(item: Zotero.Item): Promise<PDFTextResult> {
 
       // Try to get full-text content from Zotero's index
       try {
-        const fullTextItem = await (Zotero.FullText as any).getItemText?.(
-          attachment.id,
-        );
+        const fullTextItem = await Zotero.FullText.getItemText(attachment.id);
         if (fullTextItem && fullTextItem.text) {
           result.hasFullText = true;
           // Parse full text into pages (best effort)
@@ -185,15 +178,12 @@ async function getPDFAnnotations(attachment: Zotero.Item): Promise<
 
   try {
     // Get child items (annotations) of the attachment
-    const childIDs = (attachment as any).getChildren?.() ?? [];
+    const childIDs = attachment.getChildren();
     for (const childID of childIDs) {
       const child = Zotero.Items.get(childID);
       if (!child) continue;
 
-      const itemType =
-        typeof (child as any).getItemType === "function"
-          ? (child as any).getItemType()
-          : child.itemType;
+      const itemType = child.getItemType();
       if (itemType !== "annotation") continue;
 
       const annotationType = (child as any).annotationType || "highlight";
