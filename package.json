@@ -34,6 +34,7 @@
     "validate-fixtures": "node scripts/validate-fixtures.ts",
     "benchmark-stats": "node scripts/benchmark-stats.ts",
     "benchmark-groundedness": "node scripts/benchmark-groundedness.ts",
+    "validate-xpi-urls": "node scripts/validate-xpi-urls.mjs",
     "update-deps": "npm update --save"
   },
   "dependencies": {
