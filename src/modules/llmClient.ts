@@ -8,6 +8,18 @@ import {
   resolveTone,
 } from "./workspaceContext";
 
+export interface GroundedAnswer {
+  answer: string;
+  citations: Array<{
+    evidenceId: string;
+    title: string;
+    page?: number;
+    quote?: string;
+  }>;
+  unsupportedClaims?: string[];
+  confidence: "high" | "medium" | "low";
+}
+
 interface ChatMessage {
   role: "system" | "user" | "assistant";
   content: string;
@@ -25,7 +37,8 @@ function buildMessages(
     },
   });
   const contextText = formatContextForPrompt(context);
-  const intro = `${systemPrompt}\n${getString("workspace-answer-context")} ${contextText}`;
+  const evidenceInstruction = getString("workspace-evidence-instruction") || "";
+  const intro = `${systemPrompt}\n${getString("workspace-answer-context")} ${contextText}${evidenceInstruction ? "\n\n" + evidenceInstruction : ""}`;
 
   const trimmedHistory = history
     .slice(-8)
@@ -56,7 +69,7 @@ export async function requestLLMCompletion(
   question: string,
   context: WorkspaceContext,
   history: ChatTurn[],
-): Promise<string> {
+): Promise<GroundedAnswer | string> {
   const provider = resolveProviderFromPrefs();
   if (!provider.key) {
     throw new Error(getString("workspace-error-missing-key"));
@@ -77,7 +90,10 @@ export async function requestLLMCompletion(
     if (!content) {
       throw new Error(getString("workspace-error-empty"));
     }
-    return String(content).trim();
+
+    // Try to parse as structured GroundedAnswer
+    const parsed = parseGroundedAnswer(String(content).trim());
+    return parsed;
   } catch (err: unknown) {
     if (err instanceof Error) {
       throw new Error(
@@ -87,6 +103,43 @@ export async function requestLLMCompletion(
     }
     throw err as Error;
   }
+}
+
+function parseGroundedAnswer(content: string): GroundedAnswer | string {
+  // Try to extract JSON from the response (might be wrapped in markdown code blocks)
+  const jsonMatch = content.match(
+    /```(?:json)?\s*(\{[\s\S]*\})\s*```|(\{[\s\S]*\})/,
+  );
+
+  if (jsonMatch) {
+    try {
+      const jsonStr = jsonMatch[1] || jsonMatch[2];
+      const parsed = JSON.parse(jsonStr);
+
+      // Validate the structure
+      if (parsed && typeof parsed === "object" && "answer" in parsed) {
+        return {
+          answer: parsed.answer || content,
+          citations: Array.isArray(parsed.citations) ? parsed.citations : [],
+          unsupportedClaims: Array.isArray(parsed.unsupportedClaims)
+            ? parsed.unsupportedClaims
+            : undefined,
+          confidence: ["high", "medium", "low"].includes(parsed.confidence)
+            ? parsed.confidence
+            : "medium",
+        } as GroundedAnswer;
+      }
+    } catch (e) {
+      // JSON parsing failed, fall through to return plain text
+      console.warn(
+        "Failed to parse structured response, falling back to plain text:",
+        e,
+      );
+    }
+  }
+
+  // Return plain text if structured parsing fails
+  return content;
 }
 
 export function summarizeContextForHistory(context: WorkspaceContext) {

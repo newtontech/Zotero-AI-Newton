@@ -1,10 +1,12 @@
 import { getString } from "../utils/locale";
 import { getPref } from "../utils/prefs";
+import { GroundedAnswer } from "./llmClient";
 
 export interface ChatTurn {
   role: "user" | "assistant";
   content: string;
   contextLabel?: string;
+  groundedAnswer?: GroundedAnswer;
 }
 
 export interface WorkspaceContext {
