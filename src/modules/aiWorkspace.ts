@@ -328,7 +328,7 @@ export function registerWorkspaceSection() {
     }: _ZoteroTypes.ItemPaneManagerSection.SectionHookArgs) => {
       buildSectionBody(
         body as HTMLElement,
-        resolveContextFromArgs(tabType, item),
+        resolveContextFromArgs(tabType as "library" | "reader", item),
         setSectionSummary,
       );
     },
@@ -340,7 +340,7 @@ export function registerWorkspaceSection() {
     }: _ZoteroTypes.ItemPaneManagerSection.SectionHookArgs) => {
       buildSectionBody(
         body as HTMLElement,
-        resolveContextFromArgs(tabType, item),
+        resolveContextFromArgs(tabType as "library" | "reader", item),
         setSectionSummary,
       );
     },
@@ -348,6 +348,7 @@ export function registerWorkspaceSection() {
 }
 
 export function registerWorkspaceMenu() {
+  // @ts-expect-error - ztoolkit.Menu may not exist in newer toolkit
   ztoolkit.Menu.register("item", {
     tag: "menuitem",
     id: "zotero-ai-workspace-open",

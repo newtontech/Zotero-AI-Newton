@@ -25,6 +25,7 @@ async function onStartup() {
   );
 
   // Make sure reader sidebar tab exists whenever the reader deck changes
+  // @ts-expect-error - addReaderTabPanelDeckObserver may not exist in newer toolkit
   void ztoolkit.Reader?.addReaderTabPanelDeckObserver?.(() => {
     const main = Zotero.getMainWindow();
     if (main?.document) ensureReaderSidebar(main.document);

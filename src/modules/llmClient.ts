@@ -82,6 +82,7 @@ export async function requestLLMCompletion(
     if (err instanceof Error) {
       throw new Error(
         `${getString("workspace-error-generic")}: ${err.message}`,
+        { cause: err },
       );
     }
     throw err as Error;
