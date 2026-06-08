@@ -23,9 +23,6 @@
   "scripts": {
     "start": "zotero-plugin serve",
     "build": "zotero-plugin build && mv .scaffold/build/zotero-ai-newton.xpi .scaffold/build/zotero-ai-newton-$npm_package_version.xpi && cp .scaffold/build/zotero-ai-newton-$npm_package_version.xpi release/ && tsc --noEmit",
-    "build:docs": "vite build --config vite.config.js",
-    "preview:docs": "vite preview --config vite.config.js",
-    "verify:docs": "bash scripts/verify-website-build.sh",
     "lint:check": "prettier --check . && eslint .",
     "lint:fix": "prettier --write . && eslint . --fix",
     "release": "zotero-plugin release",
@@ -34,7 +31,10 @@
     "validate-fixtures": "node scripts/validate-fixtures.ts",
     "benchmark-stats": "node scripts/benchmark-stats.ts",
     "benchmark-groundedness": "node scripts/benchmark-groundedness.ts",
+    "benchmark-groundedness": "node scripts/benchmark-groundedness.ts",
     "validate-xpi-urls": "node scripts/validate-xpi-urls.mjs",
+    "smoke-test": "node scripts/smoke-test.ts",
+    "update-release-hash": "node scripts/update-update-hash.ts",
     "update-deps": "npm update --save"
   },
   "dependencies": {
