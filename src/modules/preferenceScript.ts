@@ -3,6 +3,7 @@ import { getString } from "../utils/locale";
 import { getPref, setPref } from "../utils/prefs";
 import { DEFAULT_AI_SETTINGS, getProviderDefaults } from "./aiConfig";
 import type { AISettingKey, AISettings } from "./aiConfig";
+import { getMCPClient, resetMCPClient } from "./mcpClient";
 
 export async function registerPrefsScripts(_window: Window) {
   // This function is called when the prefs window is opened
@@ -246,4 +247,81 @@ function bindPrefEvents() {
     element.addEventListener("command", handler);
   });
 
+  // MCP Integration preferences (experimental)
+  const mcpEnabledEl = doc.querySelector(
+    `#zotero-prefpane-${config.addonRef}-mcp-enabled`,
+  ) as HTMLInputElement | null;
+  if (mcpEnabledEl) {
+    const enabled = getPref("mcp.enabled") === true;
+    mcpEnabledEl.checked = enabled;
+    mcpEnabledEl.addEventListener("command", () => {
+      const newValue = mcpEnabledEl.checked;
+      setPref("mcp.enabled", newValue);
+      getMCPClient().saveConfig({ enabled: newValue });
+      if (!newValue) {
+        resetMCPClient();
+      }
+    });
+    mcpEnabledEl.addEventListener("change", () => {
+      const newValue = mcpEnabledEl.checked;
+      setPref("mcp.enabled", newValue);
+      getMCPClient().saveConfig({ enabled: newValue });
+      if (!newValue) {
+        resetMCPClient();
+      }
+    });
+  }
+
+  const mcpServerCmdEl = doc.querySelector(
+    `#zotero-prefpane-${config.addonRef}-mcp-server-cmd`,
+  ) as HTMLInputElement | null;
+  if (mcpServerCmdEl) {
+    mcpServerCmdEl.value = String(getPref("mcp.serverCmd") || "");
+    mcpServerCmdEl.setAttribute("value", mcpServerCmdEl.value);
+    const handler = () => {
+      const newValue = mcpServerCmdEl.value;
+      setPref("mcp.serverCmd", newValue);
+      getMCPClient().saveConfig({ serverCmd: newValue });
+    };
+    mcpServerCmdEl.addEventListener("change", handler);
+    mcpServerCmdEl.addEventListener("input", handler);
+  }
+
+  const mcpServerArgsEl = doc.querySelector(
+    `#zotero-prefpane-${config.addonRef}-mcp-server-args`,
+  ) as HTMLInputElement | null;
+  if (mcpServerArgsEl) {
+    mcpServerArgsEl.value = String(getPref("mcp.serverArgs") || "[]");
+    mcpServerArgsEl.setAttribute("value", mcpServerArgsEl.value);
+    const handler = () => {
+      const newValue = mcpServerArgsEl.value;
+      try {
+        JSON.parse(newValue);
+        setPref("mcp.serverArgs", newValue);
+        getMCPClient().saveConfig({ serverArgs: JSON.parse(newValue) });
+      } catch {
+        // Invalid JSON, don't save
+      }
+    };
+    mcpServerArgsEl.addEventListener("change", handler);
+    mcpServerArgsEl.addEventListener("input", handler);
+  }
+
+  const mcpAnnotationsEl = doc.querySelector(
+    `#zotero-prefpane-${config.addonRef}-mcp-annotations`,
+  ) as HTMLInputElement | null;
+  if (mcpAnnotationsEl) {
+    const enabled = getPref("mcp.annotationsEnabled") === true;
+    mcpAnnotationsEl.checked = enabled;
+    mcpAnnotationsEl.addEventListener("command", () => {
+      const newValue = mcpAnnotationsEl.checked;
+      setPref("mcp.annotationsEnabled", newValue);
+      getMCPClient().saveConfig({ annotationsEnabled: newValue });
+    });
+    mcpAnnotationsEl.addEventListener("change", () => {
+      const newValue = mcpAnnotationsEl.checked;
+      setPref("mcp.annotationsEnabled", newValue);
+      getMCPClient().saveConfig({ annotationsEnabled: newValue });
+    });
+  }
 }
