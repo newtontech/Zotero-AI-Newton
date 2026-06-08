@@ -1,17 +1,20 @@
-// Hero Component
-window.Hero = ({ lang }) => {
-  const { Row, Col, Typography, Button, Space, Tag, Card, Avatar } = antd;
-  const { Title, Paragraph, Text } = Typography;
-  const { DownloadOutlined, GithubOutlined } = window.icons;
-  const { motion } = window.Motion;
-  const t = window.AppData[lang].hero;
+import { Row, Col, Typography, Button, Space, Tag, Card, Avatar } from "antd";
+import { DownloadOutlined, GithubOutlined } from "@ant-design/icons";
+import { motion } from "framer-motion";
+
+const { Title, Paragraph, Text } = Typography;
+
+const Hero = ({ lang }) => {
+  const t = AppData[lang].hero;
 
   return (
     <section
+      id="hero"
       style={{
         position: "relative",
         padding: "100px 20px",
         overflow: "hidden",
+        marginTop: "64px",
       }}
     >
       <div className="animated-bg">
@@ -94,21 +97,6 @@ window.Hero = ({ lang }) => {
                   {t.ctaSecondary}
                 </Button>
               </Space>
-
-              <div style={{ marginTop: "40px", display: "flex", gap: "32px" }}>
-                <div>
-                  <Title level={4} style={{ margin: 0 }}>
-                    {t.stats.downloads}
-                  </Title>
-                  <Text type="secondary">Downloads</Text>
-                </div>
-                <div>
-                  <Title level={4} style={{ margin: 0 }}>
-                    {t.stats.rating}
-                  </Title>
-                  <Text type="secondary">Rating</Text>
-                </div>
-              </div>
             </motion.div>
           </Col>
           <Col xs={24} md={12}>
@@ -236,3 +224,5 @@ window.Hero = ({ lang }) => {
     </section>
   );
 };
+
+export default Hero;
