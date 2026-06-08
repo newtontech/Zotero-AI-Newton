@@ -57,10 +57,17 @@ workspace-system-prompt = You are a research co-pilot inside Zotero. Use only th
 analysis-summary-prompt = Generate a grounded literature summary. Include the research question, methods/data, 5 key findings, limitations, and missing evidence. Do not invent PDF details that are absent from the context.
 analysis-keywords-prompt = Extract 8 to 12 scholarly keywords from the selected Zotero context. For each keyword, include a one-line reason and mark whether the evidence comes from title, creators/date, attachment metadata, or inferred context.
 analysis-related-prompt = Recommend related reading directions for the selected Zotero context. Group suggestions by theme, explain why each direction follows from the evidence, and state what extra database search would be needed.
-workspace-error-cancelled = Request cancelled
-workspace-error-timeout = Request timed out. Please try again.
-workspace-error-provider-not-found = Provider not found
-workspace-error-structured-output-not-supported = This provider does not support structured output
-workspace-error-json-parse = Failed to parse structured output as JSON
-workspace-error-missing-api-base = API base URL is not configured
-workspace-stream-status = Streaming response...
+
+# Evidence and citation strings
+workspace-evidence-instruction = IMPORTANT: When answering, structure your response as a JSON object with the following fields: "answer" (your answer text), "citations" (array of {evidenceId, title, page?, quote?}), "unsupportedClaims" (array of claims not fully supported by evidence, if any), and "confidence" ("high", "medium", or "low"). If you cannot provide valid JSON, still answer helpfully in plain text. Do not invent evidence that is not in the provided context.
+
+workspace-citations-title = Citations
+workspace-confidence-high = High Confidence
+workspace-confidence-medium = Medium Confidence
+workspace-confidence-low = Low Confidence
+workspace-unsupported-warning = The following claims may not be fully supported by the available evidence:
+workspace-copy-answer = Copy Answer with Citations
+workspace-no-evidence = Insufficient evidence: Answer based on metadata only, not full-text PDF content.
+workspace-evidence-available = Evidence from PDF available
+pdf-no-pdf = No PDF attachment found for "{ $title }"
+pdf-no-fulltext = PDF found for "{ $title }" but full-text not indexed in Zotero
