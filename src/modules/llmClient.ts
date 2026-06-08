@@ -6,6 +6,7 @@ import {
   describeItems,
   formatContextForPrompt,
   resolveTone,
+  enrichContextWithPDFEvidence,
 } from "./workspaceContext";
 
 interface ChatMessage {
@@ -57,13 +58,16 @@ export async function requestLLMCompletion(
   context: WorkspaceContext,
   history: ChatTurn[],
 ): Promise<string> {
+  // Enrich context with PDF evidence if available
+  const enrichedContext = await enrichContextWithPDFEvidence(context);
+
   const provider = resolveProviderFromPrefs();
   if (!provider.key) {
     throw new Error(getString("workspace-error-missing-key"));
   }
   const payload = {
     model: provider.model,
-    messages: buildMessages(question, context, history),
+    messages: buildMessages(question, enrichedContext, history),
     temperature: 0.4,
   };
 
