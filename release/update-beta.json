@@ -5,7 +5,7 @@
         {
           "version": "0.0.1-beta",
           "update_link": "https://raw.githubusercontent.com/newtontech/Zotero-AI-Newton/main/release/zotero-ai-newton-0.0.1-beta.xpi",
-          "update_hash": "sha512:ae20e4fc5984bf8904b3fe086f83c9cb40b13c14a53ae4d2a7e023057b4645fc2e8d2f06d37e7e1f7cba9ed75e54a91da86598a65f815f5f8c50e4ecbe8633a8",
+          "update_hash": "sha512:56a5769df6e05652b7b63cece4baf07ad1482b1e0d9f7f4eab598016b6b4a6961db9d0dccaa4976b37ee61b3de8194f91666a29e879aa3d407b337cadfb37b05",
           "applications": {
             "zotero": {
               "strict_min_version": "6.999",
