@@ -4,6 +4,7 @@ import {
   WorkspaceContext,
   collectContext,
   describeItems,
+  enrichContextWithPDFEvidence,
 } from "./workspaceContext";
 import { requestLLMCompletion, summarizeContextForHistory } from "./llmClient";
 import { buildAnalysisInstruction, getAnalysisTemplates } from "./aiAnalysis";
@@ -244,10 +245,21 @@ function buildSectionBody(
     const freshContext = collectContext();
     summary.textContent = `${getString("workspace-context")}: ${freshContext.label}`;
 
+    // Enrich context with PDF evidence and show warnings
+    const enrichedContext = await enrichContextWithPDFEvidence(freshContext);
+
+    // Show PDF evidence status
+    if (enrichedContext.pdfWarnings && enrichedContext.pdfWarnings.length > 0) {
+      const warningText = `${getString("pdf-no-evidence")}\n${enrichedContext.pdfWarnings.join("\n")}`;
+      updateStatus(doc, warningText);
+    } else if (enrichedContext.hasPDFEvidence) {
+      updateStatus(doc, getString("pdf-evidence-available"));
+    }
+
     history.push({
       role: "user",
       content: question,
-      contextLabel: freshContext.label,
+      contextLabel: enrichedContext.label,
     });
     textarea.value = "";
     renderHistory(historyContainer, history);
@@ -255,13 +267,13 @@ function buildSectionBody(
     try {
       const answer = await requestLLMCompletion(
         question,
-        freshContext,
+        enrichedContext,
         history,
       );
       history.push({
         role: "assistant",
         content: answer,
-        contextLabel: summarizeContextForHistory(freshContext),
+        contextLabel: summarizeContextForHistory(enrichedContext),
       });
       renderHistory(historyContainer, history);
       updateStatus(doc, "");
@@ -273,7 +285,7 @@ function buildSectionBody(
       history.push({
         role: "assistant",
         content: `${getString("workspace-error-generic")}: ${message}`,
-        contextLabel: summarizeContextForHistory(freshContext),
+        contextLabel: summarizeContextForHistory(enrichedContext),
       });
       renderHistory(historyContainer, history);
       updateStatus(doc, message);
