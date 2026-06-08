@@ -71,7 +71,7 @@ window.Hero = ({ lang }) => {
                   size="large"
                   shape="round"
                   icon={<DownloadOutlined />}
-                  href="https://raw.githubusercontent.com/newtontech/Zotero-AI-Newton/main/release/zotero-ai-newton-0.0.1-beta.xpi"
+                  href="https://newtontech.github.io/Zotero-AI-Newton/release/zotero-ai-newton-0.0.1-beta.xpi"
                   style={{
                     height: "50px",
                     padding: "0 32px",

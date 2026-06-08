@@ -16,7 +16,7 @@
 > **Transform your Zotero into an AI-powered knowledge hub!** 💥  
 > Chat with items, PDFs, or entire collections using OpenAI, DeepSeek, or custom LLMs. All data stays local. No more fragmented notes—unlock seamless AI research!
 
-📣 Promo site: https://newtontech.github.io/Zotero-AI-Newton-website
+📣 Promo site: https://newtontech.github.io/Zotero-AI-Newton/
 
 ## ✨ Killer Features
 
