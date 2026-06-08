@@ -296,33 +296,49 @@ describe("AI analysis evaluation", function () {
   // ---------------------------------------------------------------------------
 
   it("scores keyword extraction with F1", function () {
-    const score = scoreKeywordF1(
+    const result = scoreKeywordF1(
       ["perovskite", "bandgap", "stability"],
       ["perovskite", "defects", "stability"],
     );
 
-    assert.closeTo(score, 0.67, 0.01);
+    assert.closeTo(result.f1, 0.67, 0.01);
+    assert.closeTo(result.precision, 0.67, 0.01);
+    assert.closeTo(result.recall, 0.67, 0.01);
   });
 
   it("returns 1 when both keyword sets are empty", function () {
-    assert.strictEqual(scoreKeywordF1([], []), 1);
+    const result = scoreKeywordF1([], []);
+    assert.strictEqual(result.f1, 1);
+    assert.strictEqual(result.precision, 1);
+    assert.strictEqual(result.recall, 1);
   });
 
   it("returns 0 when candidate has no keywords", function () {
-    assert.strictEqual(scoreKeywordF1([], ["catalysis", "DFT"]), 0);
+    const result = scoreKeywordF1([], ["catalysis", "DFT"]);
+    assert.strictEqual(result.f1, 0);
+    assert.strictEqual(result.precision, 0);
+    assert.strictEqual(result.recall, 0);
   });
 
   it("returns 0 when expected has no keywords", function () {
-    assert.strictEqual(scoreKeywordF1(["catalysis"], []), 0);
+    const result = scoreKeywordF1(["catalysis"], []);
+    assert.strictEqual(result.f1, 0);
+    assert.strictEqual(result.precision, 0);
+    assert.strictEqual(result.recall, 0);
   });
 
   it("returns 1 for identical keyword sets", function () {
-    assert.strictEqual(scoreKeywordF1(["alpha", "beta"], ["alpha", "beta"]), 1);
+    const result = scoreKeywordF1(["alpha", "beta"], ["alpha", "beta"]);
+    assert.strictEqual(result.f1, 1);
+    assert.strictEqual(result.precision, 1);
+    assert.strictEqual(result.recall, 1);
   });
 
   it("is case-insensitive for keywords", function () {
-    const score = scoreKeywordF1(["DFT", "Catalysis"], ["dft", "catalysis"]);
-    assert.strictEqual(score, 1);
+    const result = scoreKeywordF1(["DFT", "Catalysis"], ["dft", "catalysis"]);
+    assert.strictEqual(result.f1, 1);
+    assert.strictEqual(result.precision, 1);
+    assert.strictEqual(result.recall, 1);
   });
 
   // ---------------------------------------------------------------------------
@@ -366,47 +382,57 @@ describe("AI analysis evaluation", function () {
 
   describe("related-literature relevance", function () {
     it("returns 1 when expected is empty", function () {
-      assert.strictEqual(scoreRelatedRelevance(["any paper"], []), 1);
+      const result = scoreRelatedRelevance(["any paper"], []);
+      assert.strictEqual(result.score, 1);
+      assert.strictEqual(result.precision, 1);
+      assert.strictEqual(result.recall, 1);
     });
 
     it("returns 0 when candidate is empty but expected is not", function () {
-      assert.strictEqual(scoreRelatedRelevance([], ["important paper"]), 0);
+      const result = scoreRelatedRelevance([], ["important paper"]);
+      assert.strictEqual(result.score, 0);
+      assert.strictEqual(result.precision, 0);
+      assert.strictEqual(result.recall, 0);
     });
 
     it("scores exact matches as 1", function () {
-      assert.strictEqual(
-        scoreRelatedRelevance(
-          ["deep learning for biology", "AlphaFold comparison"],
-          ["deep learning for biology", "AlphaFold comparison"],
-        ),
-        1,
+      const result = scoreRelatedRelevance(
+        ["deep learning for biology", "AlphaFold comparison"],
+        ["deep learning for biology", "AlphaFold comparison"],
       );
+      assert.strictEqual(result.score, 1);
+      assert.strictEqual(result.precision, 1);
+      assert.strictEqual(result.recall, 1);
     });
 
     it("scores partial matches proportionally", function () {
-      const score = scoreRelatedRelevance(
+      const result = scoreRelatedRelevance(
         ["deep learning for biology"],
         ["deep learning for biology", "AlphaFold comparison"],
       );
-      assert.strictEqual(score, 0.5);
+      assert.strictEqual(result.score, 0.5);
+      assert.strictEqual(result.precision, 1);
+      assert.strictEqual(result.recall, 0.5);
     });
 
     it("matches on substring containment", function () {
-      const score = scoreRelatedRelevance(
+      const result = scoreRelatedRelevance(
         ["deep learning for biology applications"],
         ["deep learning for biology"],
       );
-      assert.strictEqual(score, 1);
+      assert.strictEqual(result.score, 1);
+      assert.strictEqual(result.precision, 1);
+      assert.strictEqual(result.recall, 1);
     });
 
     it("is case-insensitive", function () {
-      assert.strictEqual(
-        scoreRelatedRelevance(
-          ["Deep Learning For Biology"],
-          ["deep learning for biology"],
-        ),
-        1,
+      const result = scoreRelatedRelevance(
+        ["Deep Learning For Biology"],
+        ["deep learning for biology"],
       );
+      assert.strictEqual(result.score, 1);
+      assert.strictEqual(result.precision, 1);
+      assert.strictEqual(result.recall, 1);
     });
   });
 
@@ -566,6 +592,97 @@ describe("AI analysis evaluation", function () {
 
       assert.isAbove(md.length, 200);
       assert.include(md, `**Total cases:** ${BENCHMARK_FIXTURES.length}`);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // LLM Provider Comparison (new)
+  // ---------------------------------------------------------------------------
+
+  describe("LLM provider comparison", function () {
+    const baseCase: AIAnalysisBenchmarkCase = {
+      id: "comparison-test",
+      title: "Provider Comparison Test",
+      expectedFacts: ["fact1", "fact2"],
+      expectedKeywords: ["kw1", "kw2"],
+      candidateSummary: "fact1 and fact2 are discussed.",
+      candidateKeywords: ["kw1", "kw2"],
+      candidateRelated: ["rel1"],
+      expectedRelated: ["rel1"],
+    };
+
+    it("compares multiple providers on the same case", function () {
+      const result = compareProviders(baseCase, [
+        {
+          provider: "openai",
+          model: "gpt-4",
+          candidateSummary: "fact1 and fact2 are discussed.",
+          candidateKeywords: ["kw1", "kw2"],
+          candidateRelated: ["rel1"],
+        },
+        {
+          provider: "anthropic",
+          model: "claude-3",
+          candidateSummary: "fact1 is mentioned. fact2 is also discussed.",
+          candidateKeywords: ["kw1"],
+          candidateRelated: ["rel1"],
+        },
+      ]);
+
+      assert.strictEqual(result.caseId, "comparison-test");
+      assert.strictEqual(result.results.length, 2);
+      assert.include(["openai", "anthropic"], result.bestProvider);
+      assert.property(result.metricComparisons, "factCoverage");
+      assert.property(result.metricComparisons, "keywordF1");
+    });
+
+    it("identifies best provider based on average metrics", function () {
+      const result = compareProviders(baseCase, [
+        {
+          provider: "provider-a",
+          model: "model-a",
+          candidateSummary: "fact1 and fact2 are discussed.",
+          candidateKeywords: ["kw1", "kw2"],
+          candidateRelated: ["rel1"],
+        },
+        {
+          provider: "provider-b",
+          model: "model-b",
+          candidateSummary: "Only fact1 mentioned.",
+          candidateKeywords: ["kw1"],
+          candidateRelated: [],
+        },
+      ]);
+
+      assert.strictEqual(result.bestProvider, "provider-a");
+    });
+
+    it("formats provider comparison as markdown", function () {
+      const comparisons = [
+        compareProviders(baseCase, [
+          {
+            provider: "openai",
+            model: "gpt-4",
+            candidateSummary: "fact1 and fact2 are discussed.",
+            candidateKeywords: ["kw1", "kw2"],
+            candidateRelated: ["rel1"],
+          },
+          {
+            provider: "anthropic",
+            model: "claude-3",
+            candidateSummary: "fact1 and fact2 are discussed in detail.",
+            candidateKeywords: ["kw1", "kw2"],
+            candidateRelated: ["rel1"],
+          },
+        ]),
+      ];
+
+      const md = formatProviderComparisonMarkdown(comparisons);
+
+      assert.include(md, "# LLM Provider Comparison Report");
+      assert.include(md, "openai");
+      assert.include(md, "anthropic");
+      assert.include(md, "provider-a");
     });
   });
 });
