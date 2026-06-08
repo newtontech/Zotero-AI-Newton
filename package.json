@@ -30,6 +30,7 @@
     "test:unit": "mocha --config .mocharc.yml",
     "validate-fixtures": "node scripts/validate-fixtures.ts",
     "benchmark-stats": "node scripts/benchmark-stats.ts",
+    "benchmark-groundedness": "node scripts/benchmark-groundedness.ts",
     "update-deps": "npm update --save"
   },
   "dependencies": {

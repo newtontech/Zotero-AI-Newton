@@ -7,6 +7,11 @@ import {
   scoreKeywordF1,
   scoreRelatedRelevance,
   scoreRougeL,
+  scoreCitationPrecision,
+  scoreCitationRecall,
+  scoreUnsupportedClaimRate,
+  scoreEvidenceCoverage,
+  scoreRefusalQuality,
   type AIAnalysisBenchmarkCase,
 } from "../src/modules/aiEvaluation";
 
@@ -357,6 +362,324 @@ describe("AI analysis evaluation", function () {
     it("is case-insensitive", function () {
       const a = scoreRougeL("The Quick Brown Fox", "the quick brown fox");
       assert.strictEqual(a, 1);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Groundedness metrics (issue #33)
+  // ---------------------------------------------------------------------------
+
+  describe("citation precision", function () {
+    it("returns 1 when all candidate citations are expected", function () {
+      const score = scoreCitationPrecision(
+        ["Smith2023", "Jones2022"],
+        ["Smith2023", "Jones2022", "Brown2021"],
+      );
+      assert.strictEqual(score, 1);
+    });
+
+    it("returns 0 when no candidate citations match", function () {
+      const score = scoreCitationPrecision(
+        ["Unknown2020"],
+        ["Smith2023", "Jones2022"],
+      );
+      assert.strictEqual(score, 0);
+    });
+
+    it("returns partial score for partial match", function () {
+      const score = scoreCitationPrecision(
+        ["Smith2023", "Unknown2020"],
+        ["Smith2023", "Jones2022"],
+      );
+      assert.strictEqual(score, 0.5);
+    });
+
+    it("returns 1 for empty candidate citations", function () {
+      assert.strictEqual(scoreCitationPrecision([], ["Smith2023"]), 1);
+    });
+
+    it("returns 0 for non-empty candidate but empty expected", function () {
+      assert.strictEqual(scoreCitationPrecision(["Smith2023"], []), 0);
+    });
+
+    it("is case-insensitive", function () {
+      const score = scoreCitationPrecision(["smith2023"], ["Smith2023"]);
+      assert.strictEqual(score, 1);
+    });
+  });
+
+  describe("citation recall", function () {
+    it("returns 1 when all expected citations are found", function () {
+      const score = scoreCitationRecall(
+        ["Smith2023", "Jones2022", "Brown2021"],
+        ["Smith2023", "Jones2022"],
+      );
+      assert.strictEqual(score, 1);
+    });
+
+    it("returns 0 when no expected citations are found", function () {
+      const score = scoreCitationRecall(
+        ["Unknown2020"],
+        ["Smith2023", "Jones2022"],
+      );
+      assert.strictEqual(score, 0);
+    });
+
+    it("returns partial score for partial match", function () {
+      const score = scoreCitationRecall(
+        ["Smith2023"],
+        ["Smith2023", "Jones2022"],
+      );
+      assert.strictEqual(score, 0.5);
+    });
+
+    it("returns 1 for empty expected citations", function () {
+      assert.strictEqual(scoreCitationRecall(["Smith2023"], []), 1);
+    });
+
+    it("returns 0 for non-empty expected but empty candidate", function () {
+      assert.strictEqual(scoreCitationRecall([], ["Smith2023"]), 0);
+    });
+  });
+
+  describe("unsupported-claim rate", function () {
+    it("returns 0 when all claims are supported", function () {
+      const rate = scoreUnsupportedClaimRate(
+        ["claim A is supported", "claim B is supported"],
+        ["evidence for claim A", "evidence for claim B"],
+      );
+      assert.strictEqual(rate, 0);
+    });
+
+    it("returns 1 when no claims are supported", function () {
+      const rate = scoreUnsupportedClaimRate(
+        ["claim A", "claim B"],
+        ["unrelated evidence"],
+      );
+      assert.strictEqual(rate, 1);
+    });
+
+    it("returns partial rate for partially supported claims", function () {
+      const rate = scoreUnsupportedClaimRate(
+        ["claim A", "claim B"],
+        ["evidence for claim A"],
+      );
+      assert.strictEqual(rate, 0.5);
+    });
+
+    it("returns 0 for empty claims", function () {
+      assert.strictEqual(scoreUnsupportedClaimRate([], ["evidence"]), 0);
+    });
+
+    it("returns 1 for non-empty claims but empty evidence", function () {
+      assert.strictEqual(scoreUnsupportedClaimRate(["claim A"], []), 1);
+    });
+  });
+
+  describe("evidence coverage", function () {
+    it("returns 1 when all evidence chunks support a claim", function () {
+      const coverage = scoreEvidenceCoverage(
+        ["claim A", "claim B"],
+        ["evidence for claim A", "evidence for claim B"],
+      );
+      assert.strictEqual(coverage, 1);
+    });
+
+    it("returns 0 when no evidence chunks support any claim", function () {
+      const coverage = scoreEvidenceCoverage(
+        ["claim A"],
+        ["unrelated evidence"],
+      );
+      assert.strictEqual(coverage, 0);
+    });
+
+    it("returns partial coverage", function () {
+      const coverage = scoreEvidenceCoverage(
+        ["claim A"],
+        ["evidence for claim A", "unrelated evidence"],
+      );
+      assert.strictEqual(coverage, 0.5);
+    });
+
+    it("returns 1 for empty evidence chunks", function () {
+      assert.strictEqual(scoreEvidenceCoverage(["claim A"], []), 1);
+    });
+
+    it("returns 0 for non-empty evidence but empty claims", function () {
+      assert.strictEqual(scoreEvidenceCoverage([], ["evidence"]), 0);
+    });
+  });
+
+  describe("refusal quality", function () {
+    it("returns 1 when correctly refused for insufficient evidence", function () {
+      const quality = scoreRefusalQuality(
+        "There is insufficient evidence to answer this question.",
+        true,
+      );
+      assert.strictEqual(quality, 1);
+    });
+
+    it("returns 0 when failed to refuse for insufficient evidence", function () {
+      const quality = scoreRefusalQuality("The answer is 42.", true);
+      assert.strictEqual(quality, 0);
+    });
+
+    it("returns 1 when correctly answered for sufficient evidence", function () {
+      const quality = scoreRefusalQuality(
+        "The answer is 42 based on the evidence.",
+        false,
+      );
+      assert.strictEqual(quality, 1);
+    });
+
+    it("returns 0 when incorrectly refused for sufficient evidence", function () {
+      const quality = scoreRefusalQuality(
+        "There is insufficient evidence to determine the answer.",
+        false,
+      );
+      assert.strictEqual(quality, 0);
+    });
+
+    it("detects various refusal keywords", function () {
+      assert.strictEqual(
+        scoreRefusalQuality("Cannot answer from the provided sources.", false),
+        0,
+      );
+      assert.strictEqual(
+        scoreRefusalQuality("Not enough information to answer.", true),
+        1,
+      );
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Full case evaluation with groundedness
+  // ---------------------------------------------------------------------------
+
+  describe("evaluateAnalysisCase with groundedness", function () {
+    it("includes groundedness metrics in evaluation result", function () {
+      const result = evaluateAnalysisCase({
+        id: "test-groundedness",
+        title: "Test Groundedness",
+        expectedFacts: ["fact1"],
+        expectedKeywords: ["kw1"],
+        candidateSummary: "fact1 is supported by evidence.",
+        candidateKeywords: ["kw1"],
+        expectedCitations: ["Smith2023"],
+        candidateCitations: ["Smith2023"],
+        evidenceChunks: ["evidence for fact1"],
+        claims: ["fact1 is supported"],
+        insufficientEvidence: false,
+        sourceType: "pdf-text",
+      });
+
+      assert.property(result, "citationPrecision");
+      assert.property(result, "citationRecall");
+      assert.property(result, "unsupportedClaimRate");
+      assert.property(result, "evidenceCoverage");
+      assert.property(result, "refusalQuality");
+      assert.property(result, "sourceType");
+      assert.strictEqual(result.sourceType, "pdf-text");
+    });
+
+    it("calculates citation precision and recall correctly", function () {
+      const result = evaluateAnalysisCase({
+        id: "test-citations",
+        title: "Test Citations",
+        expectedFacts: ["fact1"],
+        expectedKeywords: ["kw1"],
+        candidateSummary: "fact1 with citation.",
+        candidateKeywords: ["kw1"],
+        expectedCitations: ["Smith2023", "Jones2022"],
+        candidateCitations: ["Smith2023"],
+      });
+
+      assert.strictEqual(result.citationPrecision, 1); // Smith2023 matches
+      assert.strictEqual(result.citationRecall, 0.5); // Only 1 of 2 expected found
+    });
+
+    it("calculates unsupported claim rate correctly", function () {
+      const result = evaluateAnalysisCase({
+        id: "test-claims",
+        title: "Test Claims",
+        expectedFacts: ["fact1"],
+        expectedKeywords: ["kw1"],
+        candidateSummary: "fact1 and unsupported claim.",
+        candidateKeywords: ["kw1"],
+        claims: ["fact1 is supported", "unsupported claim"],
+        evidenceChunks: ["evidence for fact1"],
+      });
+
+      assert.strictEqual(result.unsupportedClaimRate, 0.5);
+    });
+
+    it("evaluates refusal quality correctly", function () {
+      const resultRefused = evaluateAnalysisCase({
+        id: "test-refusal-1",
+        title: "Test Refusal 1",
+        expectedFacts: [],
+        expectedKeywords: ["insufficient"],
+        candidateSummary: "There is insufficient evidence to answer.",
+        candidateKeywords: ["insufficient"],
+        insufficientEvidence: true,
+      });
+
+      assert.strictEqual(resultRefused.refusalQuality, 1);
+
+      const resultNotRefused = evaluateAnalysisCase({
+        id: "test-refusal-2",
+        title: "Test Refusal 2",
+        expectedFacts: ["fact1"],
+        expectedKeywords: ["kw1"],
+        candidateSummary: "The answer is fact1.",
+        candidateKeywords: ["kw1"],
+        insufficientEvidence: false,
+      });
+
+      assert.strictEqual(resultNotRefused.refusalQuality, 1);
+    });
+  });
+
+  describe("runBenchmark with groundedness", function () {
+    it("aggregates groundedness metrics across cases", function () {
+      const report = runBenchmark([
+        {
+          id: "g1",
+          title: "G1",
+          expectedFacts: ["fact1"],
+          expectedKeywords: ["kw1"],
+          candidateSummary: "fact1 here.",
+          candidateKeywords: ["kw1"],
+          expectedCitations: ["Smith2023"],
+          candidateCitations: ["Smith2023"],
+          claims: ["fact1 is supported"],
+          evidenceChunks: ["evidence for fact1"],
+          sourceType: "pdf-text",
+        },
+        {
+          id: "g2",
+          title: "G2",
+          expectedFacts: ["fact2"],
+          expectedKeywords: ["kw2"],
+          candidateSummary: "fact2 here.",
+          candidateKeywords: ["kw2"],
+          expectedCitations: ["Jones2022"],
+          candidateCitations: ["Jones2022"],
+          claims: ["fact2 is supported"],
+          evidenceChunks: ["evidence for fact2"],
+          sourceType: "metadata",
+        },
+      ]);
+
+      assert.property(report, "avgCitationPrecision");
+      assert.property(report, "avgCitationRecall");
+      assert.property(report, "avgUnsupportedClaimRate");
+      assert.property(report, "avgEvidenceCoverage");
+      assert.property(report, "avgRefusalQuality");
+      assert.property(report, "metadataCases");
+      assert.property(report, "pdfTextCases");
+      assert.strictEqual(report.metadataCases, 1);
+      assert.strictEqual(report.pdfTextCases, 1);
     });
   });
 
