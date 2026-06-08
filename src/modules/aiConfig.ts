@@ -8,7 +8,11 @@ export type AISettingKey =
   | "apiKey"
   | "apiModel"
   | "conversationMode"
-  | "agentTone";
+  | "agentTone"
+  | "maxAgentSteps"
+  | "maxAgentTime"
+  | "maxTokensPerRequest"
+  | "maxCostPerSession";
 
 export type AISettings = Record<AISettingKey, string>;
 
@@ -46,6 +50,10 @@ export const DEFAULT_AI_SETTINGS: AISettings = {
   apiModel: PROVIDER_DEFAULTS.openai.model,
   conversationMode: "auto",
   agentTone: "concise",
+  maxAgentSteps: "10",
+  maxAgentTime: "300", // 5 minutes in seconds
+  maxTokensPerRequest: "4096",
+  maxCostPerSession: "1.0", // $1.00 USD
 };
 
 export function normalizeProviderName(value: unknown): ProviderName {
@@ -59,6 +67,27 @@ export function getProviderDefaults(value: unknown): ProviderDefaults {
 
 function prefString(key: string): string {
   return String(getPref(key) || "").trim();
+}
+
+export interface AgentRuntimeLimits {
+  maxSteps: number;
+  maxTimeSeconds: number;
+  maxTokensPerRequest: number;
+  maxCostPerSession: number;
+}
+
+export function getAgentRuntimeLimits(): AgentRuntimeLimits {
+  const maxSteps = parseInt(getPref("maxAgentSteps") as string) || 10;
+  const maxTimeSeconds = parseInt(getPref("maxAgentTime") as string) || 300;
+  const maxTokens = parseInt(getPref("maxTokensPerRequest") as string) || 4096;
+  const maxCost = parseFloat(getPref("maxCostPerSession") as string) || 1.0;
+
+  return {
+    maxSteps: Math.max(1, Math.min(100, maxSteps)), // Clamp between 1-100
+    maxTimeSeconds: Math.max(30, Math.min(3600, maxTimeSeconds)), // Clamp between 30s-1hr
+    maxTokensPerRequest: Math.max(256, Math.min(16384, maxTokens)), // Clamp between 256-16384
+    maxCostPerSession: Math.max(0.01, Math.min(100, maxCost)), // Clamp between $0.01-$100
+  };
 }
 
 export function resolveProviderFromPrefs(): ProviderChoice {

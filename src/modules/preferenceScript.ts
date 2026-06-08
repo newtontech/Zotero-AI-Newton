@@ -3,6 +3,7 @@ import { getString } from "../utils/locale";
 import { getPref, setPref } from "../utils/prefs";
 import { DEFAULT_AI_SETTINGS, getProviderDefaults } from "./aiConfig";
 import type { AISettingKey, AISettings } from "./aiConfig";
+import { isAllowedApiUrl } from "../utils/security";
 
 export async function registerPrefsScripts(_window: Window) {
   // This function is called when the prefs window is opened
@@ -194,6 +195,19 @@ function bindPrefEvents() {
       if (prefs.settings) {
         prefs.settings[key] = nextValue;
       }
+
+      // Validate API base URL
+      if (key === "apiBase" && nextValue) {
+        if (!isAllowedApiUrl(nextValue)) {
+          // Show warning to user (non-blocking, just a console warning for now)
+          ztoolkit.log(
+            "Warning: Custom API base URL may not be secure:",
+            nextValue,
+          );
+          // In a real implementation, you'd show a Zotero alert dialog here
+        }
+      }
+
       if (key === "provider") {
         const defaults = getProviderDefaults(nextValue);
         const apiBaseEl = doc.querySelector(
