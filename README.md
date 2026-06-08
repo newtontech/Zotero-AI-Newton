@@ -8,9 +8,7 @@
   [![Zotero](https://img.shields.io/badge/Zotero-7-green?style=flat-square&logo=zotero&logoColor=CC2936)](https://www.zotero.org)
   [![Stars](https://img.shields.io/github/stars/newtontech/Zotero-AI-Newton?style=social)](https://github.com/newtontech/Zotero-AI-Newton)
   [![License](https://img.shields.io/github/license/newtontech/Zotero-AI-Newton?style=flat-square)](LICENSE)
-  [![Beta](https://img.shields.io/badge/version-0.0.1-beta-orange?style=flat-square)](release/zotero-ai-newton-0.0.1-beta.xpi)
-  [![CI](https://github.com/newtontech/Zotero-AI-Newton/actions/workflows/ci.yml/badge.svg)](https://github.com/newtontech/Zotero-AI-Newton/actions/workflows/ci.yml)
-  [![Release](https://github.com/newtontech/Zotero-AI-Newton/actions/workflows/release.yml/badge.svg)](https://github.com/newtontech/Zotero-AI-Newton/actions/workflows/release.yml)
+  [![Beta](https://img.shields.io/github/v/release/newtontech/Zotero-AI-Newton?include_prereleases&label=version&color=orange&style=flat-square)](https://github.com/newtontech/Zotero-AI-Newton/releases/latest)
 </div>
 
 <div align="center">[English](README.md) | [简体中文](release/README-zhCN.md)</div>
@@ -18,7 +16,7 @@
 > **Transform your Zotero into an AI-powered knowledge hub!** 💥  
 > Chat with items, PDFs, or entire collections using OpenAI, DeepSeek, or custom LLMs. All data stays local. No more fragmented notes—unlock seamless AI research!
 
-📣 Promo site: https://newtontech.github.io/Zotero-AI-Newton/
+📣 Promo site: https://newtontech.github.io/Zotero-AI-Newton-website
 
 ## ✨ Killer Features
 
@@ -30,7 +28,7 @@
 
 ## 🚀 Lightning-Fast Install (Prebuilt Beta)
 
-1. 🎯 **[Download XPI Now](release/zotero-ai-newton-0.0.1-beta.xpi)** – No build required!
+1. 🎯 **[Download XPI Now](https://github.com/newtontech/Zotero-AI-Newton/releases/latest)** – No build required!
 2. Zotero: **Tools → Add-ons → Install Add-on From File** → Pick the XPI
 3. ✅ **Auto-Updates** via `release/update-beta.json` – Stay on bleeding edge!
 
@@ -82,8 +80,6 @@ The active AI surface is intentionally small for the beta: summaries, keyword
 extraction, related-reading directions, and grounded chat. See
 [AI Feature Roadmap](docs/AI_ROADMAP.md) for the YAGNI boundary and evaluation
 baseline.
-
-See [Project Roadmap](ROADMAP.md) for the stabilization roadmap and implementation status.
 
 ## 🎯 Get Started in Seconds
 

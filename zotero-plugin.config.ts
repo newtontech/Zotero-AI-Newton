@@ -10,7 +10,7 @@ export default defineConfig({
   updateURL: `https://raw.githubusercontent.com/newtontech/Zotero-AI-Newton/main/release/${
     pkg.version.includes("-") ? "update-beta.json" : "update.json"
   }`,
-  xpiDownloadLink: `https://raw.githubusercontent.com/newtontech/Zotero-AI-Newton/main/release/zotero-ai-newton-${pkg.version}.xpi`,
+  xpiDownloadLink: `https://github.com/newtontech/Zotero-AI-Newton/releases/latest/download/zotero-ai-newton-${pkg.version}.xpi`,
 
   build: {
     assets: ["addon/**/*.*"],
