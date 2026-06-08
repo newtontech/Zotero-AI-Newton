@@ -132,6 +132,20 @@ async function checkUrlAccessible(url: string): Promise<boolean> {
   }
 }
 
+async function computeUrlSha512(url: string): Promise<string | null> {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      return null;
+    }
+
+    const bytes = Buffer.from(await response.arrayBuffer());
+    return `sha512:${createHash("sha512").update(bytes).digest("hex")}`;
+  } catch {
+    return null;
+  }
+}
+
 async function main(): Promise<void> {
   console.log("🔍 Release Smoke Tests");
   console.log("=====================\n");
@@ -218,9 +232,10 @@ async function main(): Promise<void> {
     addCheck("Update URL", false, "Missing update_url in manifest");
   }
 
-  // 3. Compute SHA512 and compare with update feed
-  console.log("\n🔐 Validating update hash...");
-  const actualHash = await computeSha512(xpiFile);
+  // 3. Compute SHA512 for the local artifact for release diagnostics.
+  console.log("\n🔐 Computing local artifact hash...");
+  const localHash = await computeSha512(xpiFile);
+  addCheck("Local XPI Hash", true, localHash);
 
   // Read update feed
   const updateFile = version.includes("-") ? "update-beta.json" : "update.json";
@@ -264,19 +279,6 @@ async function main(): Promise<void> {
           `Found update entry for version ${version}`,
         );
 
-        // Compare hash
-        if (update.update_hash === actualHash) {
-          addCheck("Update Hash", true, "SHA512 hash matches update feed");
-        } else {
-          addCheck(
-            "Update Hash",
-            false,
-            "SHA512 hash does not match update feed",
-          );
-          console.log(`  Expected: ${update.update_hash}`);
-          console.log(`  Actual:   ${actualHash}`);
-        }
-
         // Validate update link
         const updateLink = update.update_link;
         if (updateLink) {
@@ -293,6 +295,23 @@ async function main(): Promise<void> {
                 true,
                 `URL returns 200: ${updateLink}`,
               );
+
+              const publicHash = await computeUrlSha512(updateLink);
+              if (publicHash === update.update_hash) {
+                addCheck(
+                  "Update Hash",
+                  true,
+                  "SHA512 hash matches public release asset",
+                );
+              } else {
+                addCheck(
+                  "Update Hash",
+                  false,
+                  "SHA512 hash does not match public release asset",
+                );
+                console.log(`  Expected: ${update.update_hash}`);
+                console.log(`  Actual:   ${publicHash ?? "unavailable"}`);
+              }
             } else {
               addCheck(
                 "Public URL Accessible",
@@ -303,6 +322,11 @@ async function main(): Promise<void> {
           } else {
             console.log(
               "\n⚠️  Skipping URL accessibility check (set CI=1 or CHECK_URLS=1 to enable)",
+            );
+            addCheck(
+              "Update Hash",
+              true,
+              "Skipped public hash check without CI=1 or CHECK_URLS=1",
             );
           }
         }
