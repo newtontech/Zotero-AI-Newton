@@ -3,7 +3,6 @@ import { getString } from "../utils/locale";
 import { getPref, setPref } from "../utils/prefs";
 import { DEFAULT_AI_SETTINGS, getProviderDefaults } from "./aiConfig";
 import type { AISettingKey, AISettings } from "./aiConfig";
-import { getMCPClient, resetMCPClient } from "./mcpClient";
 
 export async function registerPrefsScripts(_window: Window) {
   // This function is called when the prefs window is opened
@@ -257,17 +256,15 @@ function bindPrefEvents() {
     mcpEnabledEl.addEventListener("command", () => {
       const newValue = mcpEnabledEl.checked;
       setPref("mcp.enabled", newValue);
-      getMCPClient().saveConfig({ enabled: newValue });
       if (!newValue) {
-        resetMCPClient();
+        // MCP client runs in Node.js context; disconnection handled at runtime
       }
     });
     mcpEnabledEl.addEventListener("change", () => {
       const newValue = mcpEnabledEl.checked;
       setPref("mcp.enabled", newValue);
-      getMCPClient().saveConfig({ enabled: newValue });
       if (!newValue) {
-        resetMCPClient();
+        // MCP client runs in Node.js context; disconnection handled at runtime
       }
     });
   }
@@ -281,7 +278,6 @@ function bindPrefEvents() {
     const handler = () => {
       const newValue = mcpServerCmdEl.value;
       setPref("mcp.serverCmd", newValue);
-      getMCPClient().saveConfig({ serverCmd: newValue });
     };
     mcpServerCmdEl.addEventListener("change", handler);
     mcpServerCmdEl.addEventListener("input", handler);
@@ -298,7 +294,6 @@ function bindPrefEvents() {
       try {
         JSON.parse(newValue);
         setPref("mcp.serverArgs", newValue);
-        getMCPClient().saveConfig({ serverArgs: JSON.parse(newValue) });
       } catch {
         // Invalid JSON, don't save
       }
@@ -316,12 +311,10 @@ function bindPrefEvents() {
     mcpAnnotationsEl.addEventListener("command", () => {
       const newValue = mcpAnnotationsEl.checked;
       setPref("mcp.annotationsEnabled", newValue);
-      getMCPClient().saveConfig({ annotationsEnabled: newValue });
     });
     mcpAnnotationsEl.addEventListener("change", () => {
       const newValue = mcpAnnotationsEl.checked;
       setPref("mcp.annotationsEnabled", newValue);
-      getMCPClient().saveConfig({ annotationsEnabled: newValue });
     });
   }
 }
