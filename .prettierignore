@@ -1,8 +1,13 @@
-.vscode
-build
-logs
-node_modules
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-docs/vendor
+# Build output
+docs/assets/
+docs/index.html
+
+# Dependencies
+node_modules/
+docs-src/node_modules/
+
+# Zotero plugin build
+.scaffold/
+
+# Release files
+release/*.xpi

@@ -16,8 +16,9 @@ export default [
   }),
   {
     ignores: [
-      "docs/vendor/**", // Third-party vendor libraries
-      "docs/js/**", // Documentation site JavaScript files (contain JSX)
+      "docs/assets/**", // Built website assets
+      "docs/index.html", // Built website entry point
+      "docs-src/node_modules/**", // Website dependencies
     ],
   },
 ];

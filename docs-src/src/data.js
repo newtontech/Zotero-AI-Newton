@@ -1,4 +1,4 @@
-window.AppData = {
+const AppData = {
   en: {
     nav: {
       home: "Home",
@@ -15,7 +15,6 @@ window.AppData = {
         "The local-first AI co-pilot for Zotero. Grounded chats on items, PDFs, or entire collections with zero data leaks.",
       ctaPrimary: "Download Beta",
       ctaSecondary: "View on GitHub",
-      stats: { downloads: "1", rating: "5/5", active: "2k+" },
     },
     features: [
       {
@@ -63,18 +62,18 @@ window.AppData = {
     },
     testimonials: [
       {
-        name: "Haoming Yan",
-        role: "PhD Candidate",
+        name: "Demo User A",
+        role: "Researcher",
         text: "Finally, an AI tool that respects my privacy and integrates directly into my workflow. No more copy-pasting into ChatGPT.",
       },
       {
-        name: "Haoming Yan",
-        role: "PhD Candidate",
+        name: "Demo User B",
+        role: "PhD Student",
         text: "Newton lets me chat with an entire Zotero collection as if it were one document—lit reviews are twice as fast now.",
       },
       {
-        name: "Haoming Yan",
-        role: "PhD Candidate",
+        name: "Demo User C",
+        role: "Academic",
         text: "The local-first design means I can analyze sensitive PDFs with zero data leaks while keeping answers grounded in my library.",
       },
     ],
@@ -109,7 +108,6 @@ window.AppData = {
         "Zotero 的本地优先 AI 副驾。基于条目、PDF 或整个集合的有据问答，零数据泄露。",
       ctaPrimary: "下载 Beta 版",
       ctaSecondary: "GitHub 源码",
-      stats: { downloads: "1", rating: "5/5", active: "2k+" },
     },
     features: [
       {
@@ -157,18 +155,18 @@ window.AppData = {
     },
     testimonials: [
       {
-        name: "Haoming Yan",
-        role: "博士候选人",
+        name: "示例用户 A",
+        role: "研究人员",
         text: "终于有一个尊重隐私并直接融入我工作流的 AI 工具了，再也不用复制粘贴到 ChatGPT。",
       },
       {
-        name: "Haoming Yan",
-        role: "博士候选人",
+        name: "示例用户 B",
+        role: "博士生",
         text: "可以把整个 Zotero 集合当作一本书来对话，文献综述效率直接翻倍。",
       },
       {
-        name: "Haoming Yan",
-        role: "博士候选人",
+        name: "示例用户 C",
+        role: "学者",
         text: "本地优先的设计让我能分析敏感 PDF 而无需担心数据泄露，回答还会自动引用我的库。",
       },
     ],
@@ -188,3 +186,5 @@ window.AppData = {
     ],
   },
 };
+
+export default AppData;
