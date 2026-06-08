@@ -90,6 +90,43 @@
     <html:div id="__addonRef__-table-container" />
   </hbox>
 </groupbox>
+<groupbox>
+  <label><html:h2 data-l10n-id="pref-mcp-title"></html:h2></label>
+  <description data-l10n-id="pref-mcp-desc" />
+  <separator />
+  <vbox id="__addonRef__-mcp" spacing="10">
+    <checkbox
+      id="zotero-prefpane-__addonRef__-mcp-enabled"
+      data-l10n-id="pref-mcp-enabled"
+    />
+    <hbox align="center">
+      <html:label
+        for="zotero-prefpane-__addonRef__-mcp-server-cmd"
+        data-l10n-id="pref-mcp-server-cmd"
+      ></html:label>
+      <html:input
+        type="text"
+        id="zotero-prefpane-__addonRef__-mcp-server-cmd"
+        preference="mcpServerCmd"
+      ></html:input>
+    </hbox>
+    <hbox align="center">
+      <html:label
+        for="zotero-prefpane-__addonRef__-mcp-server-args"
+        data-l10n-id="pref-mcp-server-args"
+      ></html:label>
+      <html:input
+        type="text"
+        id="zotero-prefpane-__addonRef__-mcp-server-args"
+        preference="mcpServerArgs"
+      ></html:input>
+    </hbox>
+    <checkbox
+      id="zotero-prefpane-__addonRef__-mcp-annotations"
+      data-l10n-id="pref-mcp-annotations"
+    />
+  </vbox>
+</groupbox>
 <vbox>
   <html:label
     data-l10n-id="pref-help"
