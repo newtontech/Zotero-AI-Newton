@@ -17,8 +17,8 @@ Zotero AI Newton 在 Zotero 中提供类似“玻尔知识库”的本地智能�
 ### 快速安装（0.0.1-beta 预构建包）
 
 1. 直接下载 XPI（无需本地编译）：
-   - 仓库内路径：[`release/zotero-ai-newton-0.0.1-beta.xpi`](../release/zotero-ai-newton-0.0.1-beta.xpi)
-   - 原始链接：<https://raw.githubusercontent.com/newtontech/Zotero-AI-Newton/main/release/zotero-ai-newton-0.0.1-beta.xpi>
+   - 仓库内路径（仅用于构建输出，不提交）：`release/zotero-ai-newton-0.0.1-beta.xpi`
+   - Release 最新下载：<https://github.com/newtontech/Zotero-AI-Newton/releases/latest>
 2. 在 Zotero 中打开 **工具 → 附加组件**，点击 **从文件安装附加组件…** 并选择下载的 XPI。
 3. 自动更新会使用 `release/update-beta.json`，保持 Beta 渠道同步，无需重复构建。
 

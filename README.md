@@ -8,7 +8,7 @@
   [![Zotero](https://img.shields.io/badge/Zotero-7-green?style=flat-square&logo=zotero&logoColor=CC2936)](https://www.zotero.org)
   [![Stars](https://img.shields.io/github/stars/newtontech/Zotero-AI-Newton?style=social)](https://github.com/newtontech/Zotero-AI-Newton)
   [![License](https://img.shields.io/github/license/newtontech/Zotero-AI-Newton?style=flat-square)](LICENSE)
-  [![Beta](https://img.shields.io/badge/version-0.0.1-beta-orange?style=flat-square)](release/zotero-ai-newton-0.0.1-beta.xpi)
+  [![Beta](https://img.shields.io/github/v/release/newtontech/Zotero-AI-Newton?include_prereleases&label=version&color=orange&style=flat-square)](https://github.com/newtontech/Zotero-AI-Newton/releases/latest)
 </div>
 
 <div align="center">[English](README.md) | [简体中文](release/README-zhCN.md)</div>
@@ -28,7 +28,7 @@
 
 ## 🚀 Lightning-Fast Install (Prebuilt Beta)
 
-1. 🎯 **[Download XPI Now](release/zotero-ai-newton-0.0.1-beta.xpi)** – No build required!
+1. 🎯 **[Download XPI Now](https://github.com/newtontech/Zotero-AI-Newton/releases/latest)** – No build required!
 2. Zotero: **Tools → Add-ons → Install Add-on From File** → Pick the XPI
 3. ✅ **Auto-Updates** via `release/update-beta.json` – Stay on bleeding edge!
 
