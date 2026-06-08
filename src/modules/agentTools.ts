@@ -90,10 +90,10 @@ export interface ToolError {
 // ---------------------------------------------------------------------------
 
 export class ToolRegistry {
-  private tools: Map<string, ToolDefinition> = new Map();
+  private tools: Map<string, ToolDefinition<any, any>> = new Map();
 
   /** Register a tool.  Throws if the name is already taken. */
-  register(tool: ToolDefinition): void {
+  register<TInput, TOutput>(tool: ToolDefinition<TInput, TOutput>): void {
     if (this.tools.has(tool.name)) {
       throw new Error(`Tool "${tool.name}" is already registered.`);
     }
@@ -106,22 +106,22 @@ export class ToolRegistry {
   }
 
   /** Look up a single tool by name. */
-  get(name: string): ToolDefinition | undefined {
+  get(name: string): ToolDefinition<any, any> | undefined {
     return this.tools.get(name);
   }
 
   /** List all registered tools. */
-  list(): ToolDefinition[] {
+  list(): ToolDefinition<any, any>[] {
     return Array.from(this.tools.values());
   }
 
   /** List only read-only tools. */
-  listReadTools(): ToolDefinition[] {
+  listReadTools(): ToolDefinition<any, any>[] {
     return this.list().filter((t) => t.permission === "read");
   }
 
   /** List only write tools. */
-  listWriteTools(): ToolDefinition[] {
+  listWriteTools(): ToolDefinition<any, any>[] {
     return this.list().filter((t) => t.permission === "write");
   }
 
@@ -159,7 +159,7 @@ export class ToolRegistry {
   }
 
   private async withTimeout(
-    tool: ToolDefinition,
+    tool: ToolDefinition<any, any>,
     input: ToolInputSchema,
     timeoutMs: number,
   ): Promise<ToolOutputSchema> {
@@ -276,11 +276,8 @@ export const searchLibraryTool: ToolDefinition<
     const query = input.query.toLowerCase();
     const results: EvidenceChunk[] = [];
 
-    // Walk all library items (simplified; real impl would use Zotero.Search)
-    const library = Zotero.getActiveZoteroDatabase
-      ? Zotero.getActiveZoteroDatabase()
-      : null;
-    const items = Zotero.Items ? (Zotero.Items.getAll?.() ?? []) : [];
+    // Walk all library items (simplified; real impl would use Zotero.Search).
+    const items = ((await (Zotero.Items as any).getAll?.()) ?? []) as any[];
 
     for (const item of items) {
       if (!item || typeof item.getField !== "function") continue;
@@ -392,15 +389,21 @@ export const getAnnotationsTool: ToolDefinition<
 
     // Try to get child annotations (Zotero 6+)
     const children =
-      typeof item.getChildren === "function" ? item.getChildren() : [];
+      typeof (item as any).getChildren === "function"
+        ? (item as any).getChildren()
+        : [];
     for (const child of children) {
-      if (child.itemType === "annotation") {
-        const text = (child.getNote?.() as string) || "";
+      const annotation =
+        typeof child === "number" ? Zotero.Items.get(child) : child;
+      if (!annotation) continue;
+
+      if (annotation.itemType === "annotation") {
+        const text = (annotation.getNote?.() as string) || "";
         annotations.push({
           itemKey: input.itemKey,
           label: `Annotation on ${input.itemKey}`,
           snippet: text.slice(0, 300),
-          annotationKey: child.key || "",
+          annotationKey: annotation.key || "",
         });
       }
     }
