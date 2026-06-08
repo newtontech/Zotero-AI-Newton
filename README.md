@@ -9,6 +9,8 @@
   [![Stars](https://img.shields.io/github/stars/newtontech/Zotero-AI-Newton?style=social)](https://github.com/newtontech/Zotero-AI-Newton)
   [![License](https://img.shields.io/github/license/newtontech/Zotero-AI-Newton?style=flat-square)](LICENSE)
   [![Beta](https://img.shields.io/badge/version-0.0.1-beta-orange?style=flat-square)](release/zotero-ai-newton-0.0.1-beta.xpi)
+  [![CI](https://github.com/newtontech/Zotero-AI-Newton/actions/workflows/ci.yml/badge.svg)](https://github.com/newtontech/Zotero-AI-Newton/actions/workflows/ci.yml)
+  [![Release](https://github.com/newtontech/Zotero-AI-Newton/actions/workflows/release.yml/badge.svg)](https://github.com/newtontech/Zotero-AI-Newton/actions/workflows/release.yml)
 </div>
 
 <div align="center">[English](README.md) | [简体中文](release/README-zhCN.md)</div>
@@ -80,6 +82,8 @@ The active AI surface is intentionally small for the beta: summaries, keyword
 extraction, related-reading directions, and grounded chat. See
 [AI Feature Roadmap](docs/AI_ROADMAP.md) for the YAGNI boundary and evaluation
 baseline.
+
+See [Project Roadmap](ROADMAP.md) for the stabilization roadmap and implementation status.
 
 ## 🎯 Get Started in Seconds
 
