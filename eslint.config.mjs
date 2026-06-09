@@ -19,6 +19,9 @@ export default [
       "docs/assets/**", // Built website assets
       "docs/index.html", // Built website entry point
       "docs-src/node_modules/**", // Website dependencies
+      ".omx/**", // Local orchestration state
+      ".workbuddy/**", // Local orchestration state
+      ".worktrees/**", // Local orchestration state
     ],
   },
 ];

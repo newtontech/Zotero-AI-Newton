@@ -11,11 +11,13 @@ Zotero AI Newton takes security seriously. This document outlines security featu
 The plugin implements prompt injection boundaries to prevent untrusted content (from PDFs, annotations, notes) from overriding system instructions.
 
 **Implementation:**
+
 - User content is wrapped in `### USER CONTENT START ###` and `### USER CONTENT END ###` delimiters
 - The system prompt explicitly instructs the LLM to treat content within delimiters as data only
 - User input is sanitized to remove common injection patterns (e.g., "ignore previous instructions")
 
 **Files:**
+
 - `src/modules/llmClient.ts` - `sanitizeUserInput()` function
 - `addon/locale/en-US/addon.ftl` - System prompt with security instructions
 
@@ -24,11 +26,13 @@ The plugin implements prompt injection boundaries to prevent untrusted content (
 API keys are never exposed in logs, error messages, or UI output.
 
 **Implementation:**
+
 - `src/utils/security.ts` provides `redactApiKey()` and `redactSensitiveData()` functions
 - All error messages are automatically redacted before being shown to users
 - API key input field uses `type="password"` in the preferences UI
 
 **Best Practices for Contributors:**
+
 - Always use `redactApiKey()` when logging or returning error messages
 - Use `safeLog()` instead of `console.log()` or `Zotero.debug()` for sensitive data
 - Never commit code that logs API keys or other credentials
@@ -42,6 +46,7 @@ To prevent abuse and denial-of-service attacks:
 - Maximum input length: 50,000 characters
 
 **Files:**
+
 - `src/modules/llmClient.ts` - `postJSON()` function
 
 ### 4. API Base URL Validation
@@ -49,6 +54,7 @@ To prevent abuse and denial-of-service attacks:
 Custom API endpoints are validated to prevent SSRF (Server-Side Request Forgery) attacks.
 
 **Implementation:**
+
 - Only HTTPS URLs are allowed
 - Private IP ranges (localhost, 192.168.x.x, 10.x.x.x, 172.x.x.x) are blocked
 - URL validation in `src/utils/security.ts` - `isAllowedApiUrl()` function
@@ -63,6 +69,7 @@ When using agent/tool mode, the following limits apply:
 - Maximum cost per session: $1.00 USD (configurable via `maxCostPerSession`)
 
 **Files:**
+
 - `src/modules/aiConfig.ts` - `getAgentRuntimeLimits()` function
 
 ### 6. Write Action Confirmation
@@ -70,6 +77,7 @@ When using agent/tool mode, the following limits apply:
 All write actions (creating notes, modifying tags, deleting items) require explicit user confirmation before execution.
 
 **Implementation:**
+
 - `src/modules/writeConfirmation.ts` provides confirmation infrastructure
 - Write actions are defined as types: `create_note`, `delete_note`, `modify_tags`, etc.
 - Confirmation dialog is shown before each write action
@@ -82,16 +90,17 @@ All write actions (creating notes, modifying tags, deleting items) require expli
 
 Users can configure security-related settings in the Add-on Preferences:
 
-| Setting | Default | Description |
-|---------|---------|-------------|
-| `maxAgentSteps` | 10 | Maximum number of agent steps per session |
-| `maxAgentTime` | 300 | Maximum time (seconds) for agent execution |
-| `maxTokensPerRequest` | 4096 | Maximum tokens per LLM request |
-| `maxCostPerSession` | 1.0 | Maximum cost (USD) per session |
+| Setting               | Default | Description                                |
+| --------------------- | ------- | ------------------------------------------ |
+| `maxAgentSteps`       | 10      | Maximum number of agent steps per session  |
+| `maxAgentTime`        | 300     | Maximum time (seconds) for agent execution |
+| `maxTokensPerRequest` | 4096    | Maximum tokens per LLM request             |
+| `maxCostPerSession`   | 1.0     | Maximum cost (USD) per session             |
 
 ### API Base URL Allowlist
 
 By default, the following API hosts are allowed:
+
 - `api.openai.com`
 - `api.deepseek.com`
 - `generativelanguage.googleapis.com`
@@ -106,6 +115,7 @@ Custom URLs are allowed but validated for security (HTTPS only, no private IPs).
 Instead, please report them responsibly by emailing: [SECURITY_CONTACT_EMAIL]
 
 **What to include:**
+
 - Description of the vulnerability
 - Steps to reproduce
 - Potential impact
@@ -166,11 +176,13 @@ We aim to respond to security reports within 48 hours.
 ## Security-Related Tests
 
 Run security tests:
+
 ```bash
 npm test -- test/security.test.ts
 ```
 
 **Test coverage:**
+
 - API key redaction
 - Prompt injection prevention
 - URL validation

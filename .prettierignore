@@ -9,5 +9,10 @@ docs-src/node_modules/
 # Zotero plugin build
 .scaffold/
 
+# Local orchestration state
+.omx/
+.workbuddy/
+.worktrees/
+
 # Release files
 release/*.xpi

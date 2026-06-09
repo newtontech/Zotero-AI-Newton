@@ -39,7 +39,8 @@ export default defineConfig({
   },
 
   test: {
-    waitForPlugin: `() => Zotero.${pkg.config.addonInstance}.data.initialized`,
+    entries: "test/zotero",
+    waitForPlugin: `() => Boolean(Zotero.${pkg.config.addonInstance})`,
   },
 
   // If you need to see a more detailed log, uncomment the following line:

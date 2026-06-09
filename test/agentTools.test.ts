@@ -1,3 +1,5 @@
+/* eslint-disable mocha/max-top-level-suites */
+
 import { assert } from "chai";
 import {
   ToolRegistry,

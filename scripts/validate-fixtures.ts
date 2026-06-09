@@ -25,6 +25,7 @@ interface AIAnalysisBenchmarkCase {
   candidateKeywords: string[];
   candidateRelated?: string[];
   expectedRelated?: string[];
+  insufficientEvidence?: boolean;
   // Optional metadata for source-backed fixtures
   doi?: string;
   arxivId?: string;
@@ -58,10 +59,10 @@ function validateFixture(
   }
   if (
     !Array.isArray(fixture.expectedFacts) ||
-    fixture.expectedFacts.length === 0
+    (fixture.expectedFacts.length === 0 && !fixture.insufficientEvidence)
   ) {
     errors.push(
-      `Fixture ${index} (${fixture.id}): 'expectedFacts' must be a non-empty array`,
+      `Fixture ${index} (${fixture.id}): 'expectedFacts' must be a non-empty array unless insufficientEvidence is true`,
     );
   }
   if (
