@@ -27,11 +27,11 @@ export function redactApiKey(text: string, apiKey?: string): string {
 
   // Generic API key patterns in URLs or headers
   redacted = redacted.replace(
-    /Bearer\s+[a-zA-Z0-9_\-\.]{10,}/g,
+    /Bearer\s+[a-zA-Z0-9_.-]{10,}/g,
     `Bearer ${API_KEY_REDACTED}`,
   );
   redacted = redacted.replace(
-    /Authorization:\s*Bearer\s+[a-zA-Z0-9_\-\.]{10,}/gi,
+    /Authorization:\s*Bearer\s+[a-zA-Z0-9_.-]{10,}/gi,
     `Authorization: Bearer ${API_KEY_REDACTED}`,
   );
 
@@ -109,7 +109,9 @@ function escapeRegex(string: string): string {
  */
 export function safeLog(message: string, data?: unknown): void {
   const redactedData = data ? redactSensitiveData(data) : undefined;
-  Zotero.debug(`[AI Newton] ${redactApiKey(message)}`, redactedData);
+  const suffix =
+    redactedData === undefined ? "" : ` ${JSON.stringify(redactedData)}`;
+  Zotero.debug(`[AI Newton] ${redactApiKey(message)}${suffix}`);
 }
 
 /**

@@ -39,9 +39,9 @@ describe("Security: API Key Redaction", () => {
     }
 
     // Redact common API key patterns
-    redacted = redacted.replace(/sk-[a-zA-Z0-9]{20,}/g, "[REDACTED]");
+    redacted = redacted.replace(/sk-[a-zA-Z0-9]{3,}/g, "[REDACTED]");
     redacted = redacted.replace(
-      /Bearer\s+[a-zA-Z0-9_\-\.]{10,}/g,
+      /Bearer\s+[a-zA-Z0-9_.-]{10,}/g,
       "Bearer [REDACTED]",
     );
     redacted = redacted.replace(

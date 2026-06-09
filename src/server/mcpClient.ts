@@ -9,6 +9,7 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import {
   type Resource,
+  type TextResourceContents,
   type Tool,
   type ReadResourceResult,
   type CallToolResult,
@@ -185,8 +186,7 @@ export class ZoteroMCPClient {
         },
         {
           capabilities: {
-            resources: {},
-            tools: {},
+            experimental: {},
           },
         },
       );
@@ -372,7 +372,7 @@ export class ZoteroMCPClient {
     const selection = this.getSelectionContext();
 
     if (uri === "zotero://selection") {
-      const resource: Resource = {
+      const resource: TextResourceContents = {
         uri: "zotero://selection",
         mimeType: "application/json",
         text: JSON.stringify({ items: selection.items }, null, 2),
@@ -389,7 +389,7 @@ export class ZoteroMCPClient {
         throw new Error(`Item "${itemKey}" not found in selection.`);
       }
 
-      const resource: Resource = {
+      const resource: TextResourceContents = {
         uri: uri,
         mimeType: "application/json",
         text: JSON.stringify(item, null, 2),
@@ -410,7 +410,7 @@ export class ZoteroMCPClient {
         );
       }
 
-      const resource: Resource = {
+      const resource: TextResourceContents = {
         uri: uri,
         mimeType: "application/json",
         text: JSON.stringify(collection, null, 2),

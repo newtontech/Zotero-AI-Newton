@@ -1,5 +1,9 @@
 import { getString } from "../utils/locale";
-import { requestLLMCompletion, summarizeContextForHistory } from "./llmClient";
+import {
+  groundedAnswerToText,
+  requestLLMCompletion,
+  summarizeContextForHistory,
+} from "./llmClient";
 import type { ChatTurn, WorkspaceContext } from "./workspaceContext";
 import { describeItems, formatContextForPrompt } from "./workspaceContext";
 
@@ -45,7 +49,7 @@ export abstract class BaseAIAnalysis {
     return {
       kind: this.kind,
       prompt,
-      output,
+      output: groundedAnswerToText(output),
       contextLabel: summarizeContextForHistory(this.context),
     };
   }

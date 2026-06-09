@@ -79,6 +79,38 @@ export interface BenchmarkReport {
   pdfTextCases: number;
 }
 
+export interface PrecisionRecallScore {
+  score: number;
+  precision: number;
+  recall: number;
+}
+
+export interface F1Score {
+  f1: number;
+  precision: number;
+  recall: number;
+}
+
+export interface ProviderCandidate {
+  provider: string;
+  model: string;
+  candidateSummary: string;
+  candidateKeywords: string[];
+  candidateRelated?: string[];
+}
+
+export interface ProviderComparisonResult {
+  caseId: string;
+  results: Array<{
+    provider: string;
+    model: string;
+    evaluation: AIAnalysisEvaluation;
+    averageScore: number;
+  }>;
+  bestProvider: string;
+  metricComparisons: Record<string, Record<string, number>>;
+}
+
 // ---------------------------------------------------------------------------
 // Term normalization (shared)
 // ---------------------------------------------------------------------------
@@ -110,20 +142,28 @@ export function scoreFactCoverage(
 export function scoreKeywordF1(
   candidateKeywords: string[],
   expectedKeywords: string[],
-): number {
-  if (!candidateKeywords.length && !expectedKeywords.length) return 1;
-  if (!candidateKeywords.length || !expectedKeywords.length) return 0;
+): F1Score {
+  if (!candidateKeywords.length && !expectedKeywords.length) {
+    return { f1: 1, precision: 1, recall: 1 };
+  }
+  if (!candidateKeywords.length || !expectedKeywords.length) {
+    return { f1: 0, precision: 0, recall: 0 };
+  }
 
   const predicted = new Set(candidateKeywords.map(normalizeTerm));
   const expected = new Set(expectedKeywords.map(normalizeTerm));
   const truePositive = [...predicted].filter((term) =>
     expected.has(term),
   ).length;
-  if (!truePositive) return 0;
+  if (!truePositive) return { f1: 0, precision: 0, recall: 0 };
 
   const precision = truePositive / predicted.size;
   const recall = truePositive / expected.size;
-  return (2 * precision * recall) / (precision + recall);
+  return {
+    f1: (2 * precision * recall) / (precision + recall),
+    precision,
+    recall,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -173,16 +213,22 @@ export function scoreRougeL(candidate: string, reference: string): number {
 export function scoreRelatedRelevance(
   candidateRelated: string[],
   expectedRelated: string[],
-): number {
-  if (!expectedRelated.length) return 1;
-  if (!candidateRelated.length) return 0;
+): PrecisionRecallScore {
+  if (!expectedRelated.length) {
+    return { score: 1, precision: 1, recall: 1 };
+  }
+  if (!candidateRelated.length) {
+    return { score: 0, precision: 0, recall: 0 };
+  }
 
   const expected = expectedRelated.map((t) => normalizeTerm(t));
   const matched = candidateRelated.filter((cand) => {
     const nc = normalizeTerm(cand);
     return expected.some((exp) => nc.includes(exp) || exp.includes(nc));
   });
-  return matched.length / expected.length;
+  const precision = matched.length / candidateRelated.length;
+  const recall = matched.length / expected.length;
+  return { score: recall, precision, recall };
 }
 
 // ---------------------------------------------------------------------------
@@ -250,8 +296,16 @@ export function scoreUnsupportedClaimRate(
 
   const evidence = evidenceChunks.map(normalizeTerm);
   const unsupported = claims.filter((claim) => {
-    const nc = normalizeTerm(claim);
-    return !evidence.some((ev) => ev.includes(nc) || nc.includes(ev));
+    const normalizedClaim = normalizeTerm(claim)
+      .replace(/\bis supported\b/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    return !evidence.some(
+      (ev) =>
+        ev.includes(normalizedClaim) ||
+        normalizedClaim.includes(ev) ||
+        normalizeTerm(claim).includes(ev),
+    );
   });
   return unsupported.length / claims.length;
 }
@@ -343,18 +397,20 @@ export function evaluateAnalysisCase(
     benchmark.candidateSummary,
     benchmark.expectedFacts,
   );
-  const keywordF1 = scoreKeywordF1(
+  const keywordScore = scoreKeywordF1(
     benchmark.candidateKeywords,
     benchmark.expectedKeywords,
   );
+  const keywordF1 = keywordScore.f1;
   const rougeL = scoreRougeL(
     benchmark.candidateSummary,
     benchmark.expectedFacts.join(". "),
   );
-  const relatedRelevance = scoreRelatedRelevance(
+  const relatedScore = scoreRelatedRelevance(
     benchmark.candidateRelated ?? [],
     benchmark.expectedRelated ?? [],
   );
+  const relatedRelevance = relatedScore.score;
 
   // --- Groundedness metrics ---
   const citationPrecision = scoreCitationPrecision(
@@ -518,5 +574,77 @@ export function formatReportMarkdown(report: BenchmarkReport): string {
     "- **Refusal Quality**: did the model correctly refuse when evidence was insufficient?",
     "",
   ];
+  return lines.join("\n");
+}
+
+export function compareProviders(
+  baseCase: AIAnalysisBenchmarkCase,
+  candidates: ProviderCandidate[],
+): ProviderComparisonResult {
+  const results = candidates.map((candidate) => {
+    const evaluation = evaluateAnalysisCase({
+      ...baseCase,
+      candidateSummary: candidate.candidateSummary,
+      candidateKeywords: candidate.candidateKeywords,
+      candidateRelated: candidate.candidateRelated ?? [],
+    });
+    const averageScore =
+      (evaluation.factCoverage +
+        evaluation.keywordF1 +
+        evaluation.rougeL +
+        evaluation.relatedRelevance) /
+      4;
+
+    return {
+      provider: candidate.provider,
+      model: candidate.model,
+      evaluation,
+      averageScore,
+    };
+  });
+
+  const best = results.reduce((currentBest, candidate) =>
+    candidate.averageScore > currentBest.averageScore ? candidate : currentBest,
+  );
+
+  return {
+    caseId: baseCase.id,
+    results,
+    bestProvider: best.provider,
+    metricComparisons: {
+      factCoverage: Object.fromEntries(
+        results.map((r) => [r.provider, r.evaluation.factCoverage]),
+      ),
+      keywordF1: Object.fromEntries(
+        results.map((r) => [r.provider, r.evaluation.keywordF1]),
+      ),
+      rougeL: Object.fromEntries(
+        results.map((r) => [r.provider, r.evaluation.rougeL]),
+      ),
+      relatedRelevance: Object.fromEntries(
+        results.map((r) => [r.provider, r.evaluation.relatedRelevance]),
+      ),
+    },
+  };
+}
+
+export function formatProviderComparisonMarkdown(
+  comparisons: ProviderComparisonResult[],
+): string {
+  const lines = [
+    "# LLM Provider Comparison Report",
+    "",
+    "| Case | Provider | Model | Avg. Score | Best |",
+    "|------|----------|-------|------------|------|",
+  ];
+
+  for (const comparison of comparisons) {
+    for (const result of comparison.results) {
+      lines.push(
+        `| ${comparison.caseId} | ${result.provider} | ${result.model} | ${result.averageScore.toFixed(3)} | ${result.provider === comparison.bestProvider ? "Yes" : "No"} |`,
+      );
+    }
+  }
+
   return lines.join("\n");
 }

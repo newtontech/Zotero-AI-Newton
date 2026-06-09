@@ -37,7 +37,8 @@ function buildMessages(
     },
   });
   const contextText = formatContextForPrompt(context);
-  const evidenceInstruction = getString("workspace-evidence-instruction") || "";
+  const evidenceInstruction =
+    getString("workspace-evidence-instruction" as any) || "";
   const intro = `${systemPrompt}\n${getString("workspace-answer-context")} ${contextText}${evidenceInstruction ? "\n\n" + evidenceInstruction : ""}`;
 
   const trimmedHistory = history
@@ -105,7 +106,11 @@ export async function requestLLMCompletion(
   }
 }
 
-function parseGroundedAnswer(content: string): GroundedAnswer | string {
+export function groundedAnswerToText(answer: GroundedAnswer | string): string {
+  return typeof answer === "string" ? answer : answer.answer;
+}
+
+export function parseGroundedAnswer(content: string): GroundedAnswer | string {
   // Try to extract JSON from the response (might be wrapped in markdown code blocks)
   const jsonMatch = content.match(
     /```(?:json)?\s*(\{[\s\S]*\})\s*```|(\{[\s\S]*\})/,

@@ -32,7 +32,7 @@ export class CustomProvider implements LLMProvider {
   defaultModel = "gpt-4o-mini";
 
   constructor(config?: { apiBase?: string; apiKey?: string; model?: string }) {
-    this.apiBase = config?.apiBase || "https://api.openai.com/v1";
+    this.apiBase = config?.apiBase || "";
     this.apiKey = config?.apiKey;
     if (config?.model) {
       this.defaultModel = config.model;

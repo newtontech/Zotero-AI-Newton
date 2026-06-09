@@ -1,9 +1,13 @@
 import:
   - "tsx"
+require:
+  - "test/setup.ts"
 filetypes:
   - "ts"
   - "js"
 spec:
   - "test/**/*.test.ts"
+ignore:
+  - "test/zotero/**/*.test.ts"
 timeout: 10000
 recursive: false

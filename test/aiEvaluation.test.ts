@@ -12,6 +12,8 @@ import {
   scoreUnsupportedClaimRate,
   scoreEvidenceCoverage,
   scoreRefusalQuality,
+  compareProviders,
+  formatProviderComparisonMarkdown,
   type AIAnalysisBenchmarkCase,
 } from "../src/modules/aiEvaluation";
 
@@ -1005,7 +1007,7 @@ describe("AI analysis evaluation", function () {
       assert.include(md, "# LLM Provider Comparison Report");
       assert.include(md, "openai");
       assert.include(md, "anthropic");
-      assert.include(md, "provider-a");
+      assert.include(md, "gpt-4");
     });
   });
 });

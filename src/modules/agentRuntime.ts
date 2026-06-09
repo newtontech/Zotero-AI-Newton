@@ -8,7 +8,7 @@
  */
 
 import type { ChatTurn, WorkspaceContext } from "./workspaceContext";
-import { requestLLMCompletion } from "./llmClient";
+import { groundedAnswerToText, requestLLMCompletion } from "./llmClient";
 import {
   ToolConfirmation,
   ToolDefinition,
@@ -131,7 +131,8 @@ export async function runAgent(
       history,
     );
 
-    const parsed = parseToolCall(llmReply);
+    const llmReplyText = groundedAnswerToText(llmReply);
+    const parsed = parseToolCall(llmReplyText);
 
     // Final answer
     if (parsed && "answer" in parsed) {
@@ -141,7 +142,7 @@ export async function runAgent(
         input: {},
         output: null,
         error: null,
-        reasoning: llmReply,
+        reasoning: llmReplyText,
       });
       return { finalAnswer: parsed.answer, steps, evidence, toolCalls };
     }
@@ -179,7 +180,14 @@ export async function runAgent(
         error = err as ToolError;
       }
 
-      steps.push({ step, toolName, input, output, error, reasoning: llmReply });
+      steps.push({
+        step,
+        toolName,
+        input,
+        output,
+        error,
+        reasoning: llmReplyText,
+      });
 
       if (error) {
         currentPrompt = `Tool "${toolName}" failed: ${error.message}\nWhat should I do next?`;
@@ -191,7 +199,7 @@ export async function runAgent(
 
     // Unstructured reply – treat as final answer
     return {
-      finalAnswer: llmReply,
+      finalAnswer: llmReplyText,
       steps,
       evidence,
       toolCalls,

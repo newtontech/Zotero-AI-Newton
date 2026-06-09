@@ -24,7 +24,7 @@ import { CustomProvider } from "./providers/customProvider";
 
 // ==================== Registry ====================
 
-class ProviderRegistry {
+export class LLMProviderRegistry {
   private providers: Map<ProviderName, LLMProvider> = new Map();
   private defaultProvider: ProviderName = "openai";
 
@@ -174,7 +174,7 @@ class ProviderRegistry {
 
 // ==================== Singleton Export ====================
 
-export const LLMProviderRegistry = new ProviderRegistry();
+export const defaultProviderRegistry = new LLMProviderRegistry();
 
 // ==================== Provider Implementations ====================
 
