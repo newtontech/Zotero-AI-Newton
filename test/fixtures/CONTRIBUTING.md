@@ -104,6 +104,7 @@ We aim for diverse coverage across scientific domains:
 ### Expanding Coverage
 
 Contributions welcome for additional diversity:
+
 - 🔄 **More CS papers**: Algorithms, security, networking, databases
 - 🔄 **More interdisciplinary work**: Materials informatics, computational biology
 - 🔄 **More negative/insufficient-evidence cases**: Test model refusal behavior
@@ -164,13 +165,13 @@ For testing, provide realistic candidate outputs:
 
 The benchmark now includes groundedness metrics to evaluate whether AI answers are properly supported by sources:
 
-| Metric | Description | Target |
-|--------|-------------|--------|
-| Citation Precision | Fraction of candidate citations that are correct | ≥ 0.50 |
-| Citation Recall | Fraction of expected citations that were found | ≥ 0.50 |
-| Unsupported-Claim Rate | Fraction of claims NOT supported by evidence | ≤ 0.30 |
-| Evidence Coverage | Fraction of evidence chunks actually used | ≥ 0.50 |
-| Refusal Quality | Did model correctly refuse when evidence insufficient? | ≥ 0.80 |
+| Metric                 | Description                                            | Target |
+| ---------------------- | ------------------------------------------------------ | ------ |
+| Citation Precision     | Fraction of candidate citations that are correct       | ≥ 0.50 |
+| Citation Recall        | Fraction of expected citations that were found         | ≥ 0.50 |
+| Unsupported-Claim Rate | Fraction of claims NOT supported by evidence           | ≤ 0.30 |
+| Evidence Coverage      | Fraction of evidence chunks actually used              | ≥ 0.50 |
+| Refusal Quality        | Did model correctly refuse when evidence insufficient? | ≥ 0.80 |
 
 ### Adding Groundedness Fields
 

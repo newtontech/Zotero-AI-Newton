@@ -67,9 +67,8 @@ describe("pdfTextExtractor", function () {
         attachments: [],
       });
 
-      const { chunks, hasPDFEvidence, warnings } = await extractEvidenceForItems([
-        item,
-      ]);
+      const { chunks, hasPDFEvidence, warnings } =
+        await extractEvidenceForItems([item]);
 
       assert.strictEqual(chunks.length, 1);
       assert.strictEqual(chunks[0].sourceType, "metadata");
@@ -96,9 +95,8 @@ describe("pdfTextExtractor", function () {
       // No full-text indexed
       mockFullText[999] = null;
 
-      const { chunks, hasPDFEvidence, warnings } = await extractEvidenceForItems([
-        item,
-      ]);
+      const { chunks, hasPDFEvidence, warnings } =
+        await extractEvidenceForItems([item]);
 
       // Should have metadata chunk + warning
       assert.isAtLeast(chunks.length, 1);
